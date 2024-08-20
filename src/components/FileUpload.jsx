@@ -1,81 +1,57 @@
-import { useState } from "react";
-import { Button, Typography, Box } from "@mui/material";
+import { useState } from 'react';
+import { Button, Typography, Box } from '@mui/material';
+import axios from 'axios';
+import { Stack } from '@mui/system';
 
 const MAX_FILE_SIZE_MB = 1;
 const ALLOWED_FILE_TYPES = ["text/csv"];
 
 const FileUpload = () => {
-  const [selectedFiles, setSelectedFiles] = useState(null);
-  const [error, setError] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-
-    // File type validation
-    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      setError("Invalid file type. Please upload a CSV");
-      return;
-    }
-
-    // File size validation
-    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-      setError(
-        `File size exceeds ${MAX_FILE_SIZE_MB} MB. Please choose a smaller file.`
-      );
-      return;
-    }
-
+    const files = Array.from(event.target.files);
+    files.filter(file => ALLOWED_FILE_TYPES.includes(file.type) && file.size > MAX_FILE_SIZE_MB * 1024 * 1024)
     setSelectedFiles(files);
-    setError(null);
   };
 
   const handleUpload = () => {
-    if (selectedFiles) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
-      console.log("Uploading file...", formData);
+    if (selectedFiles.length > 0) {
+      axios.postForm('http://localhost:9222/upload', {
+        "expenditures": selectedFiles
+      })
     } else {
-      console.error("No file selected");
+      console.error('No files selected');
     }
   };
 
   return (
-    <Box p={3} border="1px dashed #ccc" borderRadius={8} textAlign="center">
+    <Box p={3} border="1px dashed" borderColor={(theme => theme.palette.primary.dark)} borderRadius={8} textAlign="center">
       <input
         type="file"
         accept="text/csv"
+        multiple
         onChange={handleFileChange}
-        style={{ display: "none" }}
-        id="csv-file-input"
+        style={{ display: 'none' }}
+        id="multiple-file-input"
       />
-      <label htmlFor="csv-file-input">
+      <label htmlFor="multiple-file-input">
         <Button variant="outlined" component="span">
           Select Files
         </Button>
       </label>
-      {selectedFiles && (
-        <div>
+      {selectedFiles.length > 0 && (
+        <Stack>
           <Typography variant="subtitle1" mt={2}>
             Selected Files:
           </Typography>
-          {selectedFile.map(file => (
-            <Typography>{file.name}</Typography>
+          {selectedFiles.map(file => (
+            <Typography variant="caption">{file.name}</Typography>
           ))}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleUpload}
-            mt={2}
-          >
+          <Button variant="contained" color="primary" onClick={handleUpload} mt={2}>
             Upload
           </Button>
-        </div>
-      )}
-      {error && (
-        <Typography variant="body2" color="error" mt={2}>
-          {error}
-        </Typography>
+        </Stack>
       )}
     </Box>
   );
