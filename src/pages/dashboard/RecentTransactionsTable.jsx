@@ -1,23 +1,16 @@
-import PropTypes from 'prop-types';
 // material-ui
 import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 // third-party
 import { NumericFormat } from 'react-number-format';
 import { useQuery, gql } from '@apollo/client';
-
-// project import
-import Dot from 'components/@extended/Dot';
-
 
 const LIST_EXPENDITURES = gql`query Expenditures {
   expenditures(count: 10) {
@@ -83,7 +76,7 @@ const headCells = [
 
 // ==============================|| ORDER TABLE - HEADER ||============================== //
 
-function OrderTableHead({ order, orderBy }) {
+function RecentTransactionsTableHeader({ order, orderBy }) {
   return (
     <TableHead>
       <TableRow>
@@ -104,10 +97,9 @@ function OrderTableHead({ order, orderBy }) {
 
 // ==============================|| ORDER TABLE ||============================== //
 
-export default function OrderTable() {
+export default function RecentTransactionsTable() {
   const order = 'asc';
   const orderBy = 'tracking_no';
-
 
   const { loading, error, data } = useQuery(LIST_EXPENDITURES);
 
@@ -132,7 +124,7 @@ export default function OrderTable() {
         }}
       >
         <Table aria-labelledby="tableTitle">
-          <OrderTableHead order={order} orderBy={orderBy} />
+          <RecentTransactionsTableHeader order={order} orderBy={orderBy} />
           <TableBody>
             {data.expenditures && data.expenditures.map(({ id, date, name, amount, method, budget_category, reward_category, comment }) => {
               const labelId = `enhanced-table-checkbox-${id}`;
@@ -164,5 +156,4 @@ export default function OrderTable() {
   );
 }
 
-OrderTableHead.propTypes = { order: PropTypes.any, orderBy: PropTypes.string };
-
+// RecentTransactionsTableHeader.propTypes = { order: PropTypes.any, orderBy: PropTypes.string };

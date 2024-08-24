@@ -16,10 +16,9 @@ import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 import MonthlyBarChart from './MonthlyBarChart';
-import ReportAreaChart from './ReportAreaChart';
 import UniqueVisitorCard from './UniqueVisitorCard';
 import SaleReportCard from './SaleReportCard';
-import OrdersTable from './OrdersTable';
+import RecentTransactionsTable from './RecentTransactionsTable';
 
 // apollo client
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
@@ -115,7 +114,7 @@ export default function DashboardDefault() {
             <Grid item />
           </Grid>
           <MainCard sx={{ mt: 2 }} content={false}>
-            <OrdersTable />
+            <RecentTransactionsTable />
           </MainCard>
         </Grid>
         <Grid item xs={12} md={5} lg={4}>

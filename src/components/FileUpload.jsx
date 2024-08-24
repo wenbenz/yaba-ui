@@ -23,7 +23,7 @@ const FileUpload = () => {
         "expenditures": selectedFiles
       }).then(() =>
           apolloClient.refetchQueries({
-            include: ["Expenditures"],
+            include: ["Expenditures", "AggregatedExpenditures"],
           })
       )
       setSelectedFiles([])
