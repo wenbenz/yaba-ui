@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import MainCard from 'components/MainCard';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 import MonthlyBarChart from './MonthlyBarChart';
-import UniqueVisitorCard from './UniqueVisitorCard';
+import SpendingCard from './SpendingCard';
 import SaleReportCard from './SaleReportCard';
 import RecentTransactionsTable from './RecentTransactionsTable';
 
@@ -83,7 +83,7 @@ export default function DashboardDefault() {
 
         {/* row 2 */}
         <Grid item xs={12} md={7} lg={8}>
-          <UniqueVisitorCard />
+          <SpendingCard />
         </Grid>
         <Grid item xs={12} md={5} lg={4}>
           <Grid container alignItems="center" justifyContent="space-between">
