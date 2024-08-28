@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { Button, Typography, Box } from '@mui/material';
 import axios from 'axios';
+import { useApolloClient } from '@apollo/client';
 import { Stack } from '@mui/system';
 
 const MAX_FILE_SIZE_MB = 1;
 const ALLOWED_FILE_TYPES = ["text/csv"];
 
 const FileUpload = () => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  let [selectedFiles, setSelectedFiles] = useState([]);
+  let apolloClient = useApolloClient()
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
@@ -19,7 +21,12 @@ const FileUpload = () => {
     if (selectedFiles.length > 0) {
       axios.postForm('http://localhost:9222/upload', {
         "expenditures": selectedFiles
-      })
+      }).then(() =>
+          apolloClient.refetchQueries({
+            include: ["Expenditures", "AggregatedExpenditures"],
+          })
+      )
+      setSelectedFiles([])
     } else {
       console.error('No files selected');
     }
