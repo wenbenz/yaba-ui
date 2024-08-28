@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
-import { useQuery, gql } from "@apollo/client";
+import {useQuery} from "@apollo/client";
+import {AGGREGATE_EXPENDITURES} from "../../api/queries";
+import {dateString, oneWeekAgo, startOfMonth, startOfYear} from "../../utils/dates";
 
 // chart options
 const areaChartOptions = {
@@ -28,45 +30,6 @@ const areaChartOptions = {
     strokeDashArray: 0
   }
 };
-
-// GraphQL Query
-const AGGREGATE_EXPENDITURES = gql`
-query AggregatedExpenditures($since: String, $until: String, $span: Timespan) {
-  aggregatedExpenditures(
-    since: $since
-    until: $until
-    span: $span
-    groupBy: NONE
-    aggregation: SUM
-  ) {
-    groupByCategory
-    amount
-    spanStart
-    span
-  }
-}`
-
-const dateString = (date) => {
-  return date.toISOString().split('T')[0]
-}
-
-const oneWeekAgo = () => {
-  let d = new Date()
-  d.setDate(d.getDate() - 7)
-  return d
-}
-
-function startOfMonth() {
-  let d = new Date()
-  d.setUTCFullYear(d.getUTCFullYear(), d.getMonth(), 0)
-  return d
-}
-
-function startOfYear() {
-  let d = new Date()
-  d.setUTCFullYear(d.getUTCFullYear(), 0, 0)
-  return d
-}
 
 const getXCategories = (data) =>  {
   if (data) {
@@ -90,7 +53,8 @@ export default function SpendingChart({ slot }) {
     variables: {
       since: start,
       until: dateString(new Date()),
-      span: span
+      span: span,
+      groupBy: "NONE"
     }
   });
 
@@ -100,12 +64,11 @@ export default function SpendingChart({ slot }) {
     data: slot === 'year' ? new Array(12) : new Array(31)
   }])
 
-  useEffect(() => {
+  useMemo(() => {
     setOptions((prevState) => ({
       ...prevState,
       colors: [theme.palette.primary.main, theme.palette.primary[700]],
       xaxis: {
-        categories: getXCategories(data),
         labels: {
           style: {
             colors: secondary
@@ -127,9 +90,15 @@ export default function SpendingChart({ slot }) {
         borderColor: line
       }
     }));
-  }, [primary, secondary, line, theme, slot, data]);
+  }, [secondary, line, theme]);
 
-  useEffect(() => {
+  useMemo(() => {
+    setOptions(prevState => ({
+      ...prevState,
+      xaxis: {
+        categories: getXCategories(data)
+      }
+    }))
     if (slot === 'year') {
       setStart(dateString(startOfYear()))
       setSpan("MONTH")
