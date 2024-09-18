@@ -12,11 +12,10 @@ import RecentTransactionsTable from './RecentTransactionsTable';
 // assets
 import FileUpload from 'components/FileUpload';
 import {Link} from '@mui/material';
-import Box from "@mui/material/Box";
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
-export default function DashboardDefault() {
+export default function ExpenditureDashboard() {
   return (
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
@@ -26,9 +25,7 @@ export default function DashboardDefault() {
         <Grid item xs={12} md={5} lg={4}>
           <Typography variant="h5">Top 10 categories</Typography>
           <MainCard sx={{ mt: 2 }} content={false}>
-            <Box sx={{ pt: 1, pr: 2 }}>
-              <MonthlyBarChart />
-            </Box>
+            <MonthlyBarChart />
           </MainCard>
         </Grid>
 

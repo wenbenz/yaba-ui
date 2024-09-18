@@ -9,14 +9,8 @@ const initialState = {
   isComponentDrawerOpened: true
 };
 
-export const endpoints = {
-  key: 'api/menu',
-  master: 'master',
-  dashboard: '/dashboard' // server URL
-};
-
 export function useGetMenuMaster() {
-  const { data, isLoading } = useSWR(endpoints.key + endpoints.master, () => initialState, {
+  const { data, isLoading } = useSWR("menu", () => initialState, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
@@ -37,11 +31,11 @@ export function handlerDrawerOpen(isDashboardDrawerOpened) {
   // to update local state based on key
 
   mutate(
-    endpoints.key + endpoints.master,
-    (currentMenuMaster) => {
-      return { ...currentMenuMaster, isDashboardDrawerOpened };
-    },
-    false
+      "menu",
+      (currentMenuMaster) => {
+        return { ...currentMenuMaster, isDashboardDrawerOpened };
+      },
+      false
   );
 }
 
@@ -49,10 +43,10 @@ export function handlerActiveItem(openedItem) {
   // to update local state based on key
 
   mutate(
-    endpoints.key + endpoints.master,
-    (currentMenuMaster) => {
-      return { ...currentMenuMaster, openedItem };
-    },
-    false
+      "menu",
+      (currentMenuMaster) => {
+        return { ...currentMenuMaster, openedItem };
+      },
+      false
   );
 }
