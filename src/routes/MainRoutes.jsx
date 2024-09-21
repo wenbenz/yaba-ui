@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import Dashboard from 'layout/Dashboard';
+import CreditCards from "../pages/creditcards";
 
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 const BudgetDashboard = Loadable(lazy(() => import('pages/budget/index')));
@@ -29,6 +30,10 @@ const MainRoutes = {
     {
       path: 'expenditure',
       element: <ExpenditureDashboard />
+    },
+    {
+      path: 'creditcards',
+      element: <CreditCards />
     }
   ]
 };

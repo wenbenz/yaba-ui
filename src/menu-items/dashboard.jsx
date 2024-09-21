@@ -1,5 +1,5 @@
 // assets
-import { DashboardOutlined, PieChartOutlined, DollarOutlined } from '@ant-design/icons';
+import {DashboardOutlined, PieChartOutlined, DollarOutlined, CreditCardOutlined} from '@ant-design/icons';
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 
@@ -30,6 +30,14 @@ const dashboard = {
       type: 'item',
       url: '/expenditure',
       icon: DollarOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'creditcards',
+      title: 'Credit Cards',
+      type: 'item',
+      url: '/creditcards',
+      icon: CreditCardOutlined,
       breadcrumbs: false
     }
   ]
