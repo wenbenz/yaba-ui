@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 // material-ui
 import {useTheme} from '@mui/material/styles';
@@ -43,7 +43,7 @@ const getXCategories = (data) =>  {
 export default function SpendingChart({ slot }) {
   const theme = useTheme();
 
-  const { secondary } = theme.palette.text;
+  const { primary, secondary } = theme.palette.text;
   const line = theme.palette.divider;
 
   const [options, setOptions] = useState(areaChartOptions);
