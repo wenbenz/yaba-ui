@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 
 // material-ui
 import {useTheme} from '@mui/material/styles';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
-import {useExpenditureAggregate} from "../../api/graph";
-import { startOfMonth, startOfYear } from "../../utils/dates";
+import {useQuery} from "@apollo/client";
+import {AGGREGATE_EXPENDITURES} from "../../api/queries";
+import {dateString, oneWeekAgo, startOfMonth, startOfYear} from "../../utils/dates";
 
 // chart options
 const areaChartOptions = {
@@ -42,13 +43,19 @@ const getXCategories = (data) =>  {
 export default function SpendingChart({ slot }) {
   const theme = useTheme();
 
-  const { secondary } = theme.palette.text;
+  const { primary, secondary } = theme.palette.text;
   const line = theme.palette.divider;
 
   const [options, setOptions] = useState(areaChartOptions);
-  const { loading, error, data } = useExpenditureAggregate({
-    since: slot === 'year' ? startOfYear() : startOfMonth(),
-    span: slot === 'year' ? "MONTH" : "DAY",
+  const [start, setStart] = useState(dateString(oneWeekAgo()))
+  const [span, setSpan] = useState("DAY")
+  const { data } = useQuery(AGGREGATE_EXPENDITURES, {
+    variables: {
+      since: start,
+      until: dateString(new Date()),
+      span: span,
+      groupBy: "NONE"
+    }
   });
 
   // Initial state
@@ -92,6 +99,14 @@ export default function SpendingChart({ slot }) {
         categories: getXCategories(data)
       }
     }))
+    if (slot === 'year') {
+      setStart(dateString(startOfYear()))
+      setSpan("MONTH")
+    } else {
+      setStart(dateString(startOfMonth()))
+      setSpan("DAY")
+    }
+
     setSeries([
       {
         name: 'Spending',
