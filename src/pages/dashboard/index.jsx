@@ -20,16 +20,8 @@ export default function DashboardDefault() {
   return (
       <Grid container rowSpacing={4.5} columnSpacing={2.75}>
         {/* row 1 */}
-        <Grid item xs={12} md={7} lg={8}>
+        <Grid item xs={12}>
           <SpendingCard />
-        </Grid>
-        <Grid item xs={12} md={5} lg={4}>
-          <Typography variant="h5">Top 10 categories</Typography>
-          <MainCard sx={{ mt: 2 }} content={false}>
-            <Box sx={{ pt: 1, pr: 2 }}>
-              <MonthlyBarChart />
-            </Box>
-          </MainCard>
         </Grid>
 
         {/* row 2 */}

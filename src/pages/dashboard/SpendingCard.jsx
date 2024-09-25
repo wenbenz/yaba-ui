@@ -10,11 +10,12 @@ import Box from '@mui/material/Box';
 // project import
 import MainCard from 'components/MainCard';
 import SpendingChart from './SpendingChart';
+import MonthlyBarChart from "./MonthlyBarChart";
 
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
 
 export default function SpendingCard() {
-  const [slot, setSlot] = useState('month');
+  const [slot, setSlot] = useState('last');
 
   return (
     <>
@@ -26,26 +27,26 @@ export default function SpendingCard() {
           <Stack direction="row" alignItems="center" spacing={0}>
             <Button
               size="small"
-              onClick={() => setSlot('month')}
-              color={slot === 'month' ? 'primary' : 'secondary'}
-              variant={slot === 'month' ? 'outlined' : 'text'}
+              onClick={() => setSlot('this')}
+              color={slot === 'this' ? 'primary' : 'secondary'}
+              variant={slot === 'this' ? 'outlined' : 'text'}
             >
-              Month
+              This Month
             </Button>
             <Button
               size="small"
-              onClick={() => setSlot('year')}
-              color={slot === 'year' ? 'primary' : 'secondary'}
-              variant={slot === 'year' ? 'outlined' : 'text'}
+              onClick={() => setSlot('last')}
+              color={slot === 'last' ? 'primary' : 'secondary'}
+              variant={slot === 'last' ? 'outlined' : 'text'}
             >
-              Year
+              Last Month
             </Button>
           </Stack>
         </Grid>
       </Grid>
       <MainCard content={false} sx={{ mt: 1 }}>
         <Box sx={{ pt: 1, pr: 2 }}>
-          <SpendingChart slot={slot} />
+          <MonthlyBarChart slot={slot} />
         </Box>
       </MainCard>
     </>
