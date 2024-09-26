@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react';
+import {useMemo, useState} from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+import {useTheme} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
-import { endOfLastMonth, startOfLastMonth, startOfMonth } from "../../utils/dates";
+import {endOfLastMonth, startOfLastMonth, startOfMonth} from "../../utils/dates";
 import {useExpenditureAggregate} from "../../api/graph";
 
 // chart options
@@ -14,7 +14,6 @@ const numCategories = 10
 const barChartOptions = {
   chart: {
     type: 'bar',
-    height: 800,
     toolbar: {
       show: true
     }
@@ -27,26 +26,33 @@ const barChartOptions = {
       dataLabels: {
         position: 'bottom'
       },
+      barHeight: 22,
     }
   },
   xaxis: {
     axisBorder: {
-      show: false
+      show: true
     },
     axisTicks: {
-      show: false
+      show: true
     },
   },
   yaxis: {
-    show: true
+    show: true,
+    labels: {
+      style: {
+        fontSize: 14,
+        fontWeight: 400
+      }
+    }
   },
   dataLabels: {
     enabled: true,
     textAnchor: 'start',
     offsetX: 0,
-    formatter: function(val) {
-      return "$" + val.toFixed(2)
-      // return opt.w.globals.labels[opt.dataPointIndex] + ": $" + val.toFixed(0)// + " / $" + budget[opt.dataPointIndex].toFixed(0)
+    formatter: function(val, opt) {
+      // return "$" + val.toFixed(2)
+      return opt.config.series[opt.seriesIndex].name + ": $" + val.toFixed(0)// + " / $" + budget[opt.dataPointIndex].toFixed(0)
     }
   },
   grid: {
@@ -78,28 +84,14 @@ export default function MonthlyBarChart({ slot }) {
           .toReversed()
 
       setCategories(sortedData.slice(0, numCategories)
-          .map(e => e.groupByCategory)
-          .concat(["other"]))
+          .map(e => e.groupByCategory))
 
       setSpent(sortedData.slice(0, numCategories)
-          .map(e => e.amount)
-          .concat([
-            sortedData.slice(numCategories).reduce((sum, e) => sum + e.amount, 0),
-          ]))
+          .map(e => e.amount))
 
-      const budget = [7000, 6000, 5500, 5000, 5000, 4000, 3000, 2000, 1500, 1000, 10000]
+      const budget = [7000, 6000, 5500, 5000, 5000, 4000, 3000, 2000, 1500, 1000]
 
       setBudgeted(budget)
-
-      // setOptions((prevState) => ({
-      //   ...prevState,
-      //   dataLabels: {
-      //     ...prevState.dataLabels,
-      //     formatter: function(val, opt) {
-      //       return opt.w.globals.labels[opt.dataPointIndex] + ": $" + val.toFixed(0)// + " / $" + budget[opt.dataPointIndex].toFixed(0)
-      //     }
-      //   },
-      // }))
     }
   }, [data])
 
@@ -115,12 +107,22 @@ export default function MonthlyBarChart({ slot }) {
         },
         categories: categories
       },
+      yaxis: {
+        ...prevState.yaxis,
+        labels: {
+          ...prevState.yaxis.labels,
+          style: {
+            ...prevState.yaxis.labels.style,
+            colors: theme.palette.text.primary
+          }
+        }
+      },
       legend: {
         show: true,
         showForSingleSeries: true,
-        customLegendItems: ['spent', 'budgeted', 'over budget'],
+        customLegendItems: ['spent', 'budgeted'],
         markers: {
-          fillColors: [theme.palette.primary.main, theme.palette.primary.dark, theme.palette.error.main]
+          fillColors: [theme.palette.primary.main, theme.palette.primary.dark]
         }
       }
     }));
@@ -128,30 +130,35 @@ export default function MonthlyBarChart({ slot }) {
 
   return (
     <Box id="chart" sx={{ bgcolor: 'transparent' }}>
-      <ReactApexChart options={options} series={buildSeries(categories, spent, budgeted, theme)} type="bar" height={460} />
+      <ReactApexChart options={options} series={buildSeries(categories, spent, budgeted, theme)} type="bar" height={80 + 50 * categories.length} />
     </Box>
   );
 }
 
 function buildSeries(categories, spent, budgeted, theme) {
-  let d = []
-  for (let i = 0; i < spent.length; i++) {
-    d.push({
-      x: categories[i],
-      y: spent[i],
-      fillColor: spent[i] <= budgeted[i] ? theme.palette.primary.main : theme.palette.error.main,
-      goals: [
-        {
-          name: "budgeted",
-          value: budgeted[i],
-          strokeWidth: 5,
-          strokeColor: theme.palette.primary.dark
-        }
-      ]
-    })
-  }
+  // let d = [] 10=570, 2=180,
+  // for (let i = 0; i < spent.length; i++) {
+  //   d.push({
+  //     x: categories[i],
+  //     y: spent[i],
+  //     fillColor: spent[i] <= budgeted[i] ? theme.palette.primary.main : theme.palette.error.main,
+  //     // goals: [
+  //     //   {
+  //     //     name: "budgeted",
+  //     //     value: budgeted[i],
+  //     //     strokeWidth: 5,
+  //     //     strokeColor: theme.palette.primary.dark
+  //     //   }
+  //     // ]
+  //   })
+  // }
   return [{
     name: "spent",
-    data: d
+    data: spent,
+    color: theme.palette.primary.main
+  }, {
+    name: "budgeted",
+    data: budgeted,
+    color: theme.palette.secondary.main
   }]
 }

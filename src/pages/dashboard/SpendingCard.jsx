@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 
 // material-ui
 import Button from '@mui/material/Button';
@@ -9,7 +9,6 @@ import Box from '@mui/material/Box';
 
 // project import
 import MainCard from 'components/MainCard';
-import SpendingChart from './SpendingChart';
 import MonthlyBarChart from "./MonthlyBarChart";
 
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
@@ -21,7 +20,7 @@ export default function SpendingCard() {
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Your Spending</Typography>
+          <Typography variant="h5">Spending vs. Budget</Typography>
         </Grid>
         <Grid item>
           <Stack direction="row" alignItems="center" spacing={0}>
