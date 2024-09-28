@@ -6,14 +6,24 @@ import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 
 function Income({budget, setBudget, index}) {
+    const [errorMessage, setErrorMessage] = useState('')
+
     const income = budget.incomes[index];
 
     let changeSource = e => {
-        income.source = e.target.value
-        setBudget(budget)
+        if (budget.incomes
+            .map(i => i.source)
+            .filter((_, i) => i !== index)
+            .includes(e.target.value)) {
+            setErrorMessage("Source already exists.")
+        } else {
+            income.source = e.target.value
+            setErrorMessage('')
+            setBudget(budget)
+        }
     }
 
     let changeAmount = e => {
@@ -29,7 +39,10 @@ function Income({budget, setBudget, index}) {
                            variant="standard"
                            defaultValue={income.source}
                            fullWidth={true}
-                           onChange={changeSource}/>
+                           onChange={changeSource}
+                           error={errorMessage !== ''}
+                           helperText={errorMessage}
+                />
             </Grid2>
 
             <Grid2 xs={6}>
@@ -54,11 +67,21 @@ function Income({budget, setBudget, index}) {
 }
 
 function Expense({budget, setBudget, index}) {
+    const [errorMessage, setErrorMessage] = useState('')
+
     const expense = budget.expenses[index];
 
     let changeCategory = e => {
-        expense.category = e.target.value
-        setBudget(budget)
+        if (budget.expenses
+            .map(e => e.category)
+            .filter((_, i) => i !== index)
+            .includes(e.target.value)) {
+            setErrorMessage("Category already exists.")
+        } else {
+            setErrorMessage('')
+            expense.category = e.target.value
+            setBudget(budget)
+        }
     }
 
     let changeAmount = e => {
@@ -80,7 +103,10 @@ function Expense({budget, setBudget, index}) {
                            variant="standard"
                            defaultValue={expense.category}
                            fullWidth={true}
-                           onChange={changeCategory}/>
+                           onChange={changeCategory}
+                           error={errorMessage !== ''}
+                           helperText={errorMessage}
+                />
             </Grid2>
 
             <Grid2 xs={5}>

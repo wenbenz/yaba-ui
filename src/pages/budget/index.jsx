@@ -8,6 +8,11 @@ import {useBudgets} from "../../api/graph";
 import {useState} from "react";
 import BudgetEditor from "./BudgetEditor";
 import {clone} from "lodash";
+import ManageBudget from "./ManageBudget";
+import LinearProgress from "@mui/material/LinearProgress";
+import {AlertTitle} from "@mui/material";
+import {Alert} from "@mui/lab";
+import {QuestionCircleFilled} from "@ant-design/icons";
 
 // project import
 const templateBudget = {
@@ -41,34 +46,32 @@ const templateBudget = {
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 export default function BudgetDashboard() {
-    const {data} = useBudgets(1)
     const [budget, setBudget] = useState(templateBudget)
-    const hasBudget = data && data.budgets && data.budgets.length === 0
+
+    const {loading, data, error} = useBudgets(1)
+    const hasBudget = data && data.budgets && data.budgets.length > 0
+
+    if (loading) {
+        return (
+            <>
+                <Typography variant="h5">Loading</Typography>
+                <LinearProgress />
+            </>)
+    }
+
+    if (error) {
+        return (<Typography variant="h5">An unexpected error has occurred.</Typography>)
+    }
 
     return (
         <>
         <Typography variant="h5">Budget</Typography>
-            {hasBudget &&
-            <Typography variant="subtitle2" color='secondary'>
-                Looks like you don't have a budget saved. Here's a basic template to get you started.
-            </Typography>
+            {!hasBudget &&
+                <Alert color="primary" icon={<QuestionCircleFilled />}>
+                    No existing budget found. New budget created from template.
+                </Alert>
             }
-        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-            <Grid item xs={12} md={6}>
-                <MainCard content={false} sx={{ mt: 2 }}>
-                    <Box sx={{ pt: 1, pr: 2 }}>
-                        <BudgetPieChart budget={budget} />
-                    </Box>
-                </MainCard>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                <MainCard title="Budget Editor" sx={{ mt: 2 }} content={true}>
-                    <Box sx={{ pt: 1, pr: 2 }}>
-                        <BudgetEditor budget={budget} setBudget={b => setBudget(clone(b))} saveBudget={e => console.log("SAVE")} />
-                    </Box>
-                </MainCard>
-            </Grid>
-        </Grid>
+            <ManageBudget budget={budget} setBudget={setBudget} saveBudget={e => {console.log("SAVE", budget)}} />
         </>
     );
 }
