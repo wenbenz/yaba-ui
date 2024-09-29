@@ -130,28 +130,12 @@ export default function MonthlyBarChart({ slot }) {
 
   return (
     <Box id="chart" sx={{ bgcolor: 'transparent' }}>
-      <ReactApexChart options={options} series={buildSeries(categories, spent, budgeted, theme)} type="bar" height={80 + 50 * categories.length} />
+      <ReactApexChart options={options} series={buildSeries(spent, budgeted, theme)} type="bar" height={80 + 50 * categories.length} />
     </Box>
   );
 }
 
-function buildSeries(categories, spent, budgeted, theme) {
-  // let d = [] 10=570, 2=180,
-  // for (let i = 0; i < spent.length; i++) {
-  //   d.push({
-  //     x: categories[i],
-  //     y: spent[i],
-  //     fillColor: spent[i] <= budgeted[i] ? theme.palette.primary.main : theme.palette.error.main,
-  //     // goals: [
-  //     //   {
-  //     //     name: "budgeted",
-  //     //     value: budgeted[i],
-  //     //     strokeWidth: 5,
-  //     //     strokeColor: theme.palette.primary.dark
-  //     //   }
-  //     // ]
-  //   })
-  // }
+function buildSeries(spent, budgeted, theme) {
   return [{
     name: "spent",
     data: spent,
