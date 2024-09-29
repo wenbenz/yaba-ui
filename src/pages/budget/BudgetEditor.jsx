@@ -119,19 +119,21 @@ function Expense({budget, setBudget, index}) {
             </Grid2>
 
             <Grid2 xs={2}>
-                <FormControlLabel id={"expense-fixed-" + index}
+                { !expense.isSlack &&
+                    <FormControlLabel id={"expense-fixed-" + index}
                                   control={<Switch checked={expense.isFixed} />}
                                   label="Fixed"
-                                  onChange={toggleFixed}/>
+                                  onChange={toggleFixed}/>}
             </Grid2>
 
+
             <Grid2 sx={{ justifyContent: 'flex-end' }} xs={1}>
-                <Fab color="secondary" aria-label="remove" size="small" onClick={() => {
+                { !expense.isSlack && <Fab color="secondary" aria-label="remove" size="small" onClick={() => {
                     budget.expenses.splice(index, 1)
                     setBudget(budget)
                 }}>
                     <DeleteOutlined style={{ fontSize: '1.3rem' }} />
-                </Fab>
+                </Fab>}
             </Grid2>
         </Grid2>
     )
@@ -182,8 +184,9 @@ export default function BudgetEditor({budget, setBudget, saveBudget}) {
                 <Typography variant="subtitle1">Expenses</Typography>
                 <Stack spacing={2}>
                     {
-                        budget.expenses.map((_, index) =>
-                            <Expense key={index} budget={budget} setBudget={setBudget} index={index} />)
+                        budget.expenses.map((e, index) =>
+                            [e.isSlack, <Expense key={index} budget={budget} setBudget={setBudget} index={index} />])
+                            .filter(e => !e[0])
                     }
 
                     <Grid2>
@@ -194,6 +197,14 @@ export default function BudgetEditor({budget, setBudget, saveBudget}) {
                             <PlusOutlined style={{ fontSize: '1.3rem' }} />
                         </Fab>
                     </Grid2>
+
+                    <Typography variant={"subtitle2"}>All other expenses</Typography>
+                    {
+                        budget.expenses.map((e, index) =>
+                            [e.isSlack, <Expense key={index} budget={budget} setBudget={setBudget} index={index} showAmount={false}/>])
+                            .filter(e => e[0])
+                    }
+
                 </Stack>
             </Grid2>
 

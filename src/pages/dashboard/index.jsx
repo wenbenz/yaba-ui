@@ -42,17 +42,8 @@ export default function DashboardDefault() {
     // calculate the total spent this and last month
     useMemo(() => {
         if (monthlySpending.data) {
-            const now = new Date()
-            let [lastMonth, thisMonth] = totalSpent
-            monthlySpending.data.aggregatedExpenditures.forEach(e => {
-                const start = new Date(e.spanStart)
-                if (start.getMonth() === now.getMonth()) {
-                    thisMonth = e.amount
-                } else {
-                    lastMonth = e.amount
-                }
-            })
-            setTotalSpent([lastMonth, thisMonth])
+            const spendingData = monthlySpending.data.aggregatedExpenditures
+            setTotalSpent([spendingData[0].amount, spendingData[1].amount])
         }
     }, [monthlySpending.data])
 
@@ -68,26 +59,26 @@ export default function DashboardDefault() {
 
     // find the budget adherance by counting the number of categories in budget
     useMemo(() => {
-        if (budgets.data && budgets.data.budgets.length > 0) {
+        if (groupedMonthlySpending && groupedMonthlySpending.data && budgets.data && budgets.data.budgets.length > 0) {
             const budget = budgets.data.budgets[0]
             const categories = budget.expenses.length
             let overbudget = 0
 
-            // build a map
+            // build a map from budget category to amount
             let b = {}
             budget.expenses.forEach(e => {
                 b[e.category] = e.amount
             })
 
             groupedMonthlySpending.data.aggregatedExpenditures.forEach(e => {
-                if (b[e.groupByCategory] < e.amount) {
+                if (!b[e.groupByCategory] || b[e.groupByCategory] < e.amount) {
                     overbudget += 1
                 }
             })
 
             setAdherance((categories - overbudget) / categories)
         }
-    }, [groupedMonthlySpending.data, budgets.data])
+    }, [groupedMonthlySpending, budgets.data])
 
 
     return (
@@ -108,7 +99,7 @@ export default function DashboardDefault() {
                 <MonthlyStat title="Cashflow"
                              prev={cashflow[0]}
                              current={cashflow[1]}
-                             format={(v) => '$' + Math.abs(v).toFixed(2)}
+                             format={(v) => '$' + v.toFixed(2)}
                              positiveMessage="Your cashflow increased by"
                              negativeMessage="Your casfhlow decreased by" />
             </Grid>

@@ -1,18 +1,9 @@
 // material-ui
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import MainCard from "../../components/MainCard";
-import Box from "@mui/material/Box";
-import BudgetPieChart from "./BudgetPieChart";
 import {useBudgets, useUpdateBudget} from "../../api/graph";
 import {useMemo, useState} from "react";
-import BudgetEditor from "./BudgetEditor";
-import {clone, cloneDeep} from "lodash";
+import {cloneDeep} from "lodash";
 import ManageBudget from "./ManageBudget";
-import LinearProgress from "@mui/material/LinearProgress";
-import {AlertTitle} from "@mui/material";
-import {Alert} from "@mui/lab";
-import {QuestionCircleFilled} from "@ant-design/icons";
 import CreateBudget from "./CreateBudget";
 import Loader from "../../components/Loader";
 
@@ -37,7 +28,7 @@ const templateBudget = {
             isSlack: false
         },
         {
-            category: "Savings",
+            category: "Miscellaneous",
             amount: 800.00,
             isFixed: false,
             isSlack: true
