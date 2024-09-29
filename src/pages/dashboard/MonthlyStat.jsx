@@ -47,7 +47,7 @@ export default function MonthlyStat({
                                 variant="combined"
                                 color={color}
                                 icon={diff < 0 ? <FallOutlined style={iconSX} /> : <RiseOutlined style={iconSX} />}
-                                label={`${ (Math.abs(diff + .00000001) / (prev + .00001) * 100).toFixed(0) }%`}
+                                label={`${ Math.abs((diff + .00000001) / (prev + .00001) * 100).toFixed(0) }%`}
                                 sx={{ ml: 1.25, pl: 1 }}
                                 size="small"
                             />

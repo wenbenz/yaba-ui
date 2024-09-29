@@ -1,5 +1,5 @@
 export const dateString = (date) => {
-    return date.toISOString().split('T')[0]
+    return [date.getFullYear(), pad(date.getMonth() + 1), pad(date.getDate())].join('-')
 }
 export const oneWeekAgo = () => {
     let d = new Date()
@@ -29,4 +29,9 @@ export function startOfYear() {
     let d = new Date()
     d.setFullYear(d.getFullYear(), 0, 1)
     return d
+}
+
+function pad(n) {
+    const s = '0' + n
+    return s.substring(s.length-2)
 }
