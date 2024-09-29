@@ -46,7 +46,10 @@ export function useCreateBudget({name, incomes, expenses}) {
     return useMutation(CREATE_BUDGET, {
         variables: {
             name, incomes, expenses
-        }
+        },
+        refetchQueries: [
+            LIST_BUDGETS
+        ]
     })
 }
 
@@ -54,7 +57,10 @@ export function useUpdateBudget({id, name, incomes, expenses}) {
     return useMutation(UPDATE_BUDGET, {
         variables: {
             id, name, incomes, expenses
-        }
+        },
+        refetchQueries: [
+            GET_BUDGET_BY_ID
+        ]
     })
 }
 

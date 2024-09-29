@@ -4,10 +4,10 @@ import Typography from '@mui/material/Typography';
 import MainCard from "../../components/MainCard";
 import Box from "@mui/material/Box";
 import BudgetPieChart from "./BudgetPieChart";
-import {useBudgets} from "../../api/graph";
-import {useState} from "react";
+import {useBudgets, useUpdateBudget} from "../../api/graph";
+import {useMemo, useState} from "react";
 import BudgetEditor from "./BudgetEditor";
-import {clone} from "lodash";
+import {clone, cloneDeep} from "lodash";
 import ManageBudget from "./ManageBudget";
 import LinearProgress from "@mui/material/LinearProgress";
 import {AlertTitle} from "@mui/material";
@@ -51,7 +51,10 @@ export default function BudgetDashboard() {
     const [budget, setBudget] = useState(templateBudget)
 
     const {loading, data, error} = useBudgets(1)
+    const [updateBudget, updateBudgetResponse] = useUpdateBudget(budget)
     const hasBudget = data && data.budgets && data.budgets.length > 0
+
+    useMemo(() => data && setBudget(cloneDeep(data.budgets[0])), [data])
 
     if (loading) {
         return (<Loader />)
@@ -65,7 +68,12 @@ export default function BudgetDashboard() {
         <>
         <Typography variant="h5">Budget</Typography>
             {!hasBudget && <CreateBudget budget={budget} />}
-            <ManageBudget budget={budget} setBudget={setBudget} saveBudget={e => {console.log("SAVE", budget)}} />
+            <ManageBudget budget={budget} setBudget={setBudget} saveBudget={e => {
+                updateBudget()
+                if (updateBudgetResponse.error) {
+                    console.log(error)
+                }
+            }} />
         </>
     );
 }
