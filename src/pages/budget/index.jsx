@@ -13,6 +13,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import {AlertTitle} from "@mui/material";
 import {Alert} from "@mui/lab";
 import {QuestionCircleFilled} from "@ant-design/icons";
+import CreateBudget from "./CreateBudget";
+import Loader from "../../components/Loader";
 
 // project import
 const templateBudget = {
@@ -52,11 +54,7 @@ export default function BudgetDashboard() {
     const hasBudget = data && data.budgets && data.budgets.length > 0
 
     if (loading) {
-        return (
-            <>
-                <Typography variant="h5">Loading</Typography>
-                <LinearProgress />
-            </>)
+        return (<Loader />)
     }
 
     if (error) {
@@ -66,11 +64,7 @@ export default function BudgetDashboard() {
     return (
         <>
         <Typography variant="h5">Budget</Typography>
-            {!hasBudget &&
-                <Alert color="primary" icon={<QuestionCircleFilled />}>
-                    No existing budget found. New budget created from template.
-                </Alert>
-            }
+            {!hasBudget && <CreateBudget budget={budget} />}
             <ManageBudget budget={budget} setBudget={setBudget} saveBudget={e => {console.log("SAVE", budget)}} />
         </>
     );
