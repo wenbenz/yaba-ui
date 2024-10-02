@@ -1,5 +1,5 @@
 // material-ui
-import { alpha } from '@mui/material/styles';
+import { alpha } from "@mui/material/styles";
 
 // ==============================|| OVERRIDES - TAB ||============================== //
 
@@ -11,17 +11,17 @@ export default function Tab(theme) {
           minHeight: 46,
           color: theme.palette.text.primary,
           borderRadius: 4,
-          '&:hover': {
+          "&:hover": {
             backgroundColor: alpha(theme.palette.primary.lighter, 0.6),
-            color: theme.palette.primary.main
+            color: theme.palette.primary.main,
           },
-          '&:focus-visible': {
+          "&:focus-visible": {
             borderRadius: 4,
             outline: `2px solid ${theme.palette.secondary.dark}`,
-            outlineOffset: -3
-          }
-        }
-      }
-    }
+            outlineOffset: -3,
+          },
+        },
+      },
+    },
   };
 }

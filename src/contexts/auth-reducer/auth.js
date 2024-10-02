@@ -1,11 +1,11 @@
 // action - state management
-import { REGISTER, LOGIN, LOGOUT } from './actions';
+import { REGISTER, LOGIN, LOGOUT } from "./actions";
 
 // initial state
 export const initialState = {
   isLoggedIn: false,
   isInitialized: false,
-  user: null
+  user: null,
 };
 
 // ==============================|| AUTH REDUCER ||============================== //
@@ -16,7 +16,7 @@ const auth = (state = initialState, action) => {
       const { user } = action.payload;
       return {
         ...state,
-        user
+        user,
       };
     }
     case LOGIN: {
@@ -25,7 +25,7 @@ const auth = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         isInitialized: true,
-        user
+        user,
       };
     }
     case LOGOUT: {
@@ -33,7 +33,7 @@ const auth = (state = initialState, action) => {
         ...state,
         isInitialized: true,
         isLoggedIn: false,
-        user: null
+        user: null,
       };
     }
     default: {

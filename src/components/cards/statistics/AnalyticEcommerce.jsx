@@ -1,22 +1,34 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 // material-ui
-import Chip from '@mui/material/Chip';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Chip from "@mui/material/Chip";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 // project import
-import MainCard from 'components/MainCard';
+import MainCard from "components/MainCard";
 
 // assets
-import RiseOutlined from '@ant-design/icons/RiseOutlined';
-import FallOutlined from '@ant-design/icons/FallOutlined';
+import RiseOutlined from "@ant-design/icons/RiseOutlined";
+import FallOutlined from "@ant-design/icons/FallOutlined";
 
-const iconSX = { fontSize: '0.75rem', color: 'inherit', marginLeft: 0, marginRight: 0 };
+const iconSX = {
+  fontSize: "0.75rem",
+  color: "inherit",
+  marginLeft: 0,
+  marginRight: 0,
+};
 
-export default function AnalyticEcommerce({ color = 'primary', title, count, percentage, isLoss, extra }) {
+export default function AnalyticEcommerce({
+  color = "primary",
+  title,
+  count,
+  percentage,
+  isLoss,
+  extra,
+}) {
   return (
     <MainCard contentSX={{ p: 2.25 }}>
       <Stack spacing={0.5}>
@@ -34,7 +46,13 @@ export default function AnalyticEcommerce({ color = 'primary', title, count, per
               <Chip
                 variant="combined"
                 color={color}
-                icon={isLoss ? <FallOutlined style={iconSX} /> : <RiseOutlined style={iconSX} />}
+                icon={
+                  isLoss ? (
+                    <FallOutlined style={iconSX} />
+                  ) : (
+                    <RiseOutlined style={iconSX} />
+                  )
+                }
                 label={`${percentage}%`}
                 sx={{ ml: 1.25, pl: 1 }}
                 size="small"
@@ -45,10 +63,13 @@ export default function AnalyticEcommerce({ color = 'primary', title, count, per
       </Stack>
       <Box sx={{ pt: 2.25 }}>
         <Typography variant="caption" color="text.secondary">
-          You made an extra{' '}
-          <Typography variant="caption" sx={{ color: `${color || 'primary'}.main` }}>
+          You made an extra{" "}
+          <Typography
+            variant="caption"
+            sx={{ color: `${color || "primary"}.main` }}
+          >
             {extra}
-          </Typography>{' '}
+          </Typography>{" "}
           this year
         </Typography>
       </Box>
@@ -62,5 +83,5 @@ AnalyticEcommerce.propTypes = {
   count: PropTypes.string,
   percentage: PropTypes.number,
   isLoss: PropTypes.bool,
-  extra: PropTypes.string
+  extra: PropTypes.string,
 };

@@ -1,77 +1,78 @@
 // material-ui
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Box from '@mui/material/Box';
+import Link from "@mui/material/Link";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Box from "@mui/material/Box";
 
 // third-party
-import { NumericFormat } from 'react-number-format';
-import { useQuery, gql } from '@apollo/client';
+import { NumericFormat } from "react-number-format";
+import { useQuery, gql } from "@apollo/client";
 
-const LIST_EXPENDITURES = gql`query Expenditures {
-  expenditures(count: 10) {
-    id
-    owner
-    name
-    amount
-    date
-    method
-    budget_category
-    reward_category
-    comment
-    created
-    source
+const LIST_EXPENDITURES = gql`
+  query Expenditures {
+    expenditures(count: 10) {
+      id
+      owner
+      name
+      amount
+      date
+      method
+      budget_category
+      reward_category
+      comment
+      created
+      source
+    }
   }
-}
-`
+`;
 
 const headCells = [
   {
-    id: 'date',
-    align: 'left',
+    id: "date",
+    align: "left",
     disablePadding: false,
-    label: 'Date'
+    label: "Date",
   },
   {
-    id: 'name',
-    align: 'left',
+    id: "name",
+    align: "left",
     disablePadding: true,
-    label: 'Name'
+    label: "Name",
   },
   {
-    id: 'amount',
-    align: 'left',
+    id: "amount",
+    align: "left",
     disablePadding: false,
-    label: 'Amount'
+    label: "Amount",
   },
   {
-    id: 'method',
-    align: 'left',
+    id: "method",
+    align: "left",
     disablePadding: false,
-    label: 'Method'
+    label: "Method",
   },
   {
-    id: 'budget_category',
-    align: 'left',
+    id: "budget_category",
+    align: "left",
     disablePadding: false,
-    label: 'Budget Category'
+    label: "Budget Category",
   },
   {
-    id: 'reward_category',
-    align: 'left',
+    id: "reward_category",
+    align: "left",
     disablePadding: false,
-    label: 'Reward Category'
+    label: "Reward Category",
   },
   {
-    id: 'comment',
-    align: 'right',
+    id: "comment",
+    align: "right",
     disablePadding: false,
-    label: 'Comment'
-  }
+    label: "Comment",
+  },
 ];
 
 // ==============================|| ORDER TABLE - HEADER ||============================== //
@@ -84,7 +85,7 @@ function RecentTransactionsTableHeader({ order, orderBy }) {
           <TableCell
             key={headCell.id}
             align={headCell.align}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.label}
@@ -98,57 +99,72 @@ function RecentTransactionsTableHeader({ order, orderBy }) {
 // ==============================|| ORDER TABLE ||============================== //
 
 export default function RecentTransactionsTable() {
-  const order = 'asc';
-  const orderBy = 'tracking_no';
+  const order = "asc";
+  const orderBy = "tracking_no";
 
   const { loading, error, data } = useQuery(LIST_EXPENDITURES);
 
-  if (loading) return (
-    <p>Loading...</p>
-  );
+  if (loading) return <p>Loading...</p>;
 
-  if (error) return (
-    <p>Error : {error.message}</p>
-  );
+  if (error) return <p>Error : {error.message}</p>;
 
   return (
     <Box>
       <TableContainer
         sx={{
-          width: '100%',
-          overflowX: 'auto',
-          position: 'relative',
-          display: 'block',
-          maxWidth: '100%',
-          '& td, & th': { whiteSpace: 'nowrap' }
+          width: "100%",
+          overflowX: "auto",
+          position: "relative",
+          display: "block",
+          maxWidth: "100%",
+          "& td, & th": { whiteSpace: "nowrap" },
         }}
       >
         <Table aria-labelledby="tableTitle">
           <RecentTransactionsTableHeader order={order} orderBy={orderBy} />
           <TableBody>
-            {data.expenditures && data.expenditures.map(({ id, date, name, amount, method, budget_category, reward_category, comment }) => {
-              const labelId = `enhanced-table-checkbox-${id}`;
+            {data.expenditures &&
+              data.expenditures.map(
+                ({
+                  id,
+                  date,
+                  name,
+                  amount,
+                  method,
+                  budget_category,
+                  reward_category,
+                  comment,
+                }) => {
+                  const labelId = `enhanced-table-checkbox-${id}`;
 
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  tabIndex={-1}
-                  key={id}
-                >
-                  <TableCell component="th" id={labelId} scope="row">
-                    <Link color="secondary"> {date}</Link>
-                  </TableCell>
-                  <TableCell>{name}</TableCell>
-                  <TableCell><NumericFormat value={amount} displayType="text" thousandSeparator prefix="$" /></TableCell>
-                  <TableCell>{method}</TableCell>
-                  <TableCell>{budget_category}</TableCell>
-                  <TableCell>{reward_category}</TableCell>
-                  <TableCell align='right'>{comment}</TableCell>
-                </TableRow>
-              );
-            })}
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      tabIndex={-1}
+                      key={id}
+                    >
+                      <TableCell component="th" id={labelId} scope="row">
+                        <Link color="secondary"> {date}</Link>
+                      </TableCell>
+                      <TableCell>{name}</TableCell>
+                      <TableCell>
+                        <NumericFormat
+                          value={amount}
+                          displayType="text"
+                          thousandSeparator
+                          prefix="$"
+                        />
+                      </TableCell>
+                      <TableCell>{method}</TableCell>
+                      <TableCell>{budget_category}</TableCell>
+                      <TableCell>{reward_category}</TableCell>
+                      <TableCell align="right">{comment}</TableCell>
+                    </TableRow>
+                  );
+                },
+              )}
           </TableBody>
         </Table>
       </TableContainer>

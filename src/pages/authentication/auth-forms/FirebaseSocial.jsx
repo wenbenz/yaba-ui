@@ -1,16 +1,16 @@
-import useMediaQuery from '@mui/material/useMediaQuery';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 
 // assets
-import Google from 'assets/images/icons/google.svg';
-import Twitter from 'assets/images/icons/twitter.svg';
-import Facebook from 'assets/images/icons/facebook.svg';
+import Google from "assets/images/icons/google.svg";
+import Twitter from "assets/images/icons/twitter.svg";
+import Facebook from "assets/images/icons/facebook.svg";
 
 // ==============================|| FIREBASE - SOCIAL BUTTON ||============================== //
 
 export default function FirebaseSocial() {
-  const downSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const downSM = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   // @ts-ignore
   const googleHandler = async () => {
@@ -29,8 +29,13 @@ export default function FirebaseSocial() {
     <Stack
       direction="row"
       spacing={{ xs: 1, sm: 2 }}
-      justifyContent={{ xs: 'space-around', sm: 'space-between' }}
-      sx={{ '& .MuiButton-startIcon': { mr: { xs: 0, sm: 1 }, ml: { xs: 0, sm: -0.5 } } }}
+      justifyContent={{ xs: "space-around", sm: "space-between" }}
+      sx={{
+        "& .MuiButton-startIcon": {
+          mr: { xs: 0, sm: 1 },
+          ml: { xs: 0, sm: -0.5 },
+        },
+      }}
     >
       <Button
         variant="outlined"
@@ -39,7 +44,7 @@ export default function FirebaseSocial() {
         startIcon={<img src={Google} alt="Google" />}
         onClick={googleHandler}
       >
-        {!downSM && 'Google'}
+        {!downSM && "Google"}
       </Button>
       <Button
         variant="outlined"
@@ -48,7 +53,7 @@ export default function FirebaseSocial() {
         startIcon={<img src={Twitter} alt="Twitter" />}
         onClick={twitterHandler}
       >
-        {!downSM && 'Twitter'}
+        {!downSM && "Twitter"}
       </Button>
       <Button
         variant="outlined"
@@ -57,7 +62,7 @@ export default function FirebaseSocial() {
         startIcon={<img src={Facebook} alt="Facebook" />}
         onClick={facebookHandler}
       >
-        {!downSM && 'Facebook'}
+        {!downSM && "Facebook"}
       </Button>
     </Stack>
   );

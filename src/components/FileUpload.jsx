@@ -1,45 +1,57 @@
-import { useState } from 'react';
-import { Button, Typography, Box } from '@mui/material';
-import axios from 'axios';
-import { useApolloClient } from '@apollo/client';
-import { Stack } from '@mui/system';
+import { useState } from "react";
+import { Button, Typography, Box } from "@mui/material";
+import axios from "axios";
+import { useApolloClient } from "@apollo/client";
+import { Stack } from "@mui/system";
 
 const MAX_FILE_SIZE_MB = 1;
 const ALLOWED_FILE_TYPES = ["text/csv"];
 
 const FileUpload = () => {
   let [selectedFiles, setSelectedFiles] = useState([]);
-  let apolloClient = useApolloClient()
+  let apolloClient = useApolloClient();
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    files.filter(file => ALLOWED_FILE_TYPES.includes(file.type) && file.size > MAX_FILE_SIZE_MB * 1024 * 1024)
+    files.filter(
+      (file) =>
+        ALLOWED_FILE_TYPES.includes(file.type) &&
+        file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
+    );
     setSelectedFiles(files);
   };
 
   const handleUpload = () => {
     if (selectedFiles.length > 0) {
-      axios.postForm('http://localhost:9222/upload', {
-        "expenditures": selectedFiles
-      }).then(() =>
+      axios
+        .postForm("http://localhost:9222/upload", {
+          expenditures: selectedFiles,
+        })
+        .then(() =>
           apolloClient.refetchQueries({
             include: ["Expenditures", "AggregatedExpenditures"],
-          })
-      )
-      setSelectedFiles([])
+          }),
+        );
+      setSelectedFiles([]);
     } else {
-      console.error('No files selected');
+      console.error("No files selected");
     }
   };
 
   return (
-    <Box p={3} border="1px dashed" borderColor={(theme => theme.palette.primary.dark)} borderRadius={8} textAlign="center">
+    <Box
+      p={3}
+      border="1px dashed"
+      borderColor={(theme) => theme.palette.primary.dark}
+      borderRadius={8}
+      textAlign="center"
+    >
       <input
         type="file"
         accept="text/csv"
         multiple
         onChange={handleFileChange}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         id="multiple-file-input"
       />
       <label htmlFor="multiple-file-input">
@@ -52,10 +64,15 @@ const FileUpload = () => {
           <Typography variant="subtitle1" mt={2}>
             Selected Files:
           </Typography>
-          {selectedFiles.map(file => (
+          {selectedFiles.map((file) => (
             <Typography variant="caption">{file.name}</Typography>
           ))}
-          <Button variant="contained" color="primary" onClick={handleUpload} mt={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleUpload}
+            mt={2}
+          >
             Upload
           </Button>
         </Stack>

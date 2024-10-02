@@ -6,11 +6,11 @@ export default function CardContent() {
       styleOverrides: {
         root: {
           padding: 20,
-          '&:last-child': {
-            paddingBottom: 20
-          }
-        }
-      }
-    }
+          "&:last-child": {
+            paddingBottom: 20,
+          },
+        },
+      },
+    },
   };
 }
