@@ -43,7 +43,7 @@ const getXCategories = (data) =>  {
 export default function SpendingChart({ slot }) {
   const theme = useTheme();
 
-  const { primary, secondary } = theme.palette.text;
+  const { secondary } = theme.palette.text;
   const line = theme.palette.divider;
 
   const [options, setOptions] = useState(areaChartOptions);

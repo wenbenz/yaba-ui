@@ -6,8 +6,10 @@ import Box from '@mui/material/Box';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
-import {endOfLastMonth, startOfLastMonth, startOfMonth} from "../../utils/dates";
-import {useBudgets, useExpenditureAggregate} from "../../api/graph";
+import {startOfMonth, startOfYear} from "../../utils/dates";
+import {useExpenditureAggregate} from "../../api/graph";
+import MainCard from "../../components/MainCard";
+import SpendingChart from "./SpendingChart";
 
 // chart options
 const barChartOptions = {
@@ -72,50 +74,19 @@ const barChartOptions = {
 
 // ==============================|| MONTHLY BAR CHART ||============================== //
 
-export default function MonthlyBarChart({ slot }) {
+export default function TopCategories() {
   const theme = useTheme();
 
-  const budgets = useBudgets(1)
-
   const { data } = useExpenditureAggregate({
-    since: slot === "this" ? startOfMonth() : startOfLastMonth(),
-    until: slot === "this" ? new Date() : endOfLastMonth(),
-    span: "MONTH",
+    since: startOfYear(),
+    until: new Date(),
+    span: "YEAR",
     groupBy: "BUDGET_CATEGORY",
   })
 
   const [categories, setCategories] = useState([]);
   const [spent, setSpent] = useState(new Map());
-  const [budgeted, setBudgeted] = useState(new Map());
   const [options, setOptions] = useState(barChartOptions);
-
-  useMemo(() => {
-    // If the user has (at least) one budget
-    if (budgets && budgets.data && budgets.data.budgets && budgets.data.budgets.length > 0) {
-      const budget = budgets.data.budgets[0]
-
-      // expenses
-      const expensesMap = new Map(
-          budget.expenses.map(expense => [expense.category, expense.amount])
-      )
-      setBudgeted(expensesMap)
-
-      // categories, grouped by non-fixed non-slack, fixed, slack; ordered by amount budgeted
-      let variableCategories = []
-      let fixedCategories = []
-      let slackCategory = ""
-      budget.expenses.forEach(expense => {
-        if (expense.isFixed) {
-          fixedCategories.push(expense.category)
-        } else if (expense.isSlack) {
-          slackCategory = expense.category
-        } else {
-          variableCategories.push(expense.category)
-        }
-      })
-      setCategories(variableCategories.concat(fixedCategories).concat(slackCategory))
-    }
-  }, [budgets]);
 
   useMemo(() => {
     setOptions((prevState) => ({
@@ -132,6 +103,12 @@ export default function MonthlyBarChart({ slot }) {
           data.aggregatedExpenditures.map(expense => [expense.groupByCategory, expense.amount])
       )
       setSpent(spendingMap)
+
+      setCategories(data.aggregatedExpenditures
+          .toSorted((a, b) => a.amount - b.amount)
+          .toReversed()
+          .slice(0, 10)
+          .map(e => e.groupByCategory))
     }
   }, [data])
 
@@ -170,31 +147,18 @@ export default function MonthlyBarChart({ slot }) {
   console.log(options)
 
   return (
-    <Box id="chart" sx={{ bgcolor: 'transparent' }}>
-      <ReactApexChart options={options} series={buildSeries(spent, budgeted, categories, theme)} type="bar" height={80 + 60 * categories.length} />
-    </Box>
+      <Box id="chart" sx={{ bgcolor: 'transparent', pt: 1, pr: 2}}>
+        <ReactApexChart options={options} series={buildSeries(spent, categories, theme)} type="bar" height={450} />
+      </Box>
   );
 }
 
-function buildSeries(spent, budgeted, categories, theme) {
-  const budgetedSeries = categories.map(category => budgeted.get(category) ? budgeted.get(category) : 0)
+function buildSeries(spent, categories, theme) {
   let spentSeries = categories.map(category => spent.get(category) ? spent.get(category) : 0)
-
-  let miscSpent = spentSeries[categories.length - 1]
-  spent.forEach((amount, category) => {
-    if (!categories.includes(category)) {
-      miscSpent += amount
-    }
-  })
-  spentSeries[categories.length - 1] = miscSpent
 
   return [{
     name: "spent",
     data: spentSeries,
     color: theme.palette.primary.main
-  }, {
-    name: "budgeted",
-    data: budgetedSeries,
-    color: theme.palette.secondary.main
   }]
 }

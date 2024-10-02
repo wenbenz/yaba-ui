@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 // project import
 import MainCard from 'components/MainCard';
-import MonthlyBarChart from './MonthlyBarChart';
+import TopCategories from './TopCategories';
 import SpendingCard from './SpendingCard';
 import RecentTransactionsTable from './RecentTransactionsTable';
 
@@ -23,9 +23,9 @@ export default function ExpenditureDashboard() {
           <SpendingCard />
         </Grid>
         <Grid item xs={12} md={5} lg={4}>
-          <Typography variant="h5">Top 10 categories</Typography>
+          <Typography variant="h5">Top categories</Typography>
           <MainCard sx={{ mt: 2 }} content={false}>
-            <MonthlyBarChart />
+            <TopCategories />
           </MainCard>
         </Grid>
 
