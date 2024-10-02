@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 // material-ui
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import MuiBreadcrumbs from "@mui/material/Breadcrumbs";
 
 // project import
-import MainCard from 'components/MainCard';
+import MainCard from "components/MainCard";
 
 export default function Breadcrumbs({ navigation, title, ...others }) {
   const location = useLocation();
@@ -19,9 +19,9 @@ export default function Breadcrumbs({ navigation, title, ...others }) {
   const getCollapse = (menu) => {
     if (menu.children) {
       menu.children.filter((collapse) => {
-        if (collapse.type && collapse.type === 'collapse') {
+        if (collapse.type && collapse.type === "collapse") {
           getCollapse(collapse);
-        } else if (collapse.type && collapse.type === 'item') {
+        } else if (collapse.type && collapse.type === "item") {
           if (location.pathname === collapse.url) {
             setMain(menu);
             setItem(collapse);
@@ -34,7 +34,7 @@ export default function Breadcrumbs({ navigation, title, ...others }) {
 
   useEffect(() => {
     navigation?.items?.map((menu) => {
-      if (menu.type && menu.type === 'group') {
+      if (menu.type && menu.type === "group") {
         getCollapse(menu);
       }
       return false;
@@ -42,26 +42,32 @@ export default function Breadcrumbs({ navigation, title, ...others }) {
   });
 
   // only used for component demo breadcrumbs
-  if (location.pathname === '/breadcrumbs') {
-    location.pathname = '/dashboard/analytics';
+  if (location.pathname === "/breadcrumbs") {
+    location.pathname = "/dashboard/analytics";
   }
 
   let mainContent;
   let itemContent;
   let breadcrumbContent = <Typography />;
-  let itemTitle = '';
+  let itemTitle = "";
 
   // collapse item
-  if (main && main.type === 'collapse') {
+  if (main && main.type === "collapse") {
     mainContent = (
-      <Typography component={Link} to={document.location.pathname} variant="h6" sx={{ textDecoration: 'none' }} color="textSecondary">
+      <Typography
+        component={Link}
+        to={document.location.pathname}
+        variant="h6"
+        sx={{ textDecoration: "none" }}
+        color="textSecondary"
+      >
         {main.title}
       </Typography>
     );
   }
 
   // items
-  if (item && item.type === 'item') {
+  if (item && item.type === "item") {
     itemTitle = item.title;
     itemContent = (
       <Typography variant="subtitle1" color="textPrimary">
@@ -72,11 +78,28 @@ export default function Breadcrumbs({ navigation, title, ...others }) {
     // main
     if (item.breadcrumbs !== false) {
       breadcrumbContent = (
-        <MainCard border={false} sx={{ mb: 3, bgcolor: 'transparent' }} {...others} content={false}>
-          <Grid container direction="column" justifyContent="flex-start" alignItems="flex-start" spacing={1}>
+        <MainCard
+          border={false}
+          sx={{ mb: 3, bgcolor: "transparent" }}
+          {...others}
+          content={false}
+        >
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            spacing={1}
+          >
             <Grid item>
               <MuiBreadcrumbs aria-label="breadcrumb">
-                <Typography component={Link} to="/" color="textSecondary" variant="h6" sx={{ textDecoration: 'none' }}>
+                <Typography
+                  component={Link}
+                  to="/"
+                  color="textSecondary"
+                  variant="h6"
+                  sx={{ textDecoration: "none" }}
+                >
                   Home
                 </Typography>
                 {mainContent}
@@ -111,5 +134,5 @@ Breadcrumbs.propTypes = {
   title: PropTypes.bool,
   titleBottom: PropTypes.bool,
   sx: PropTypes.any,
-  others: PropTypes.any
+  others: PropTypes.any,
 };

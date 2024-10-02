@@ -1,51 +1,53 @@
 // material-ui
-import { styled } from '@mui/material/styles';
-import Drawer from '@mui/material/Drawer';
+import { styled } from "@mui/material/styles";
+import Drawer from "@mui/material/Drawer";
 
 // project import
-import { drawerWidth } from 'config';
+import { drawerWidth } from "config";
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  borderRight: '1px solid',
+  borderRight: "1px solid",
   borderRightColor: theme.palette.divider,
 
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen
+    duration: theme.transitions.duration.enteringScreen,
   }),
 
-  overflowX: 'hidden',
-  boxShadow: 'none'
+  overflowX: "hidden",
+  boxShadow: "none",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen
+    duration: theme.transitions.duration.leavingScreen,
   }),
 
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: 0,
-  borderRight: 'none',
-  boxShadow: theme.customShadows.z1
+  borderRight: "none",
+  boxShadow: theme.customShadows.z1,
 });
 
 // ==============================|| DRAWER - MINI STYLED ||============================== //
 
-const MiniDrawerStyled = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
+const MiniDrawerStyled = styled(Drawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
   width: drawerWidth,
   flexShrink: 0,
-  whiteSpace: 'nowrap',
-  boxSizing: 'border-box',
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
   ...(open && {
     ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme)
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
   ...(!open && {
     ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme)
-  })
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
 }));
 
 export default MiniDrawerStyled;

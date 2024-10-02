@@ -1,20 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 // material-ui
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 // project import
-import MainCard from 'components/MainCard';
-import IncomeAreaChart from './IncomeAreaChart';
+import MainCard from "components/MainCard";
+import IncomeAreaChart from "./IncomeAreaChart";
 
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
 
 export default function UniqueVisitorCard() {
-  const [slot, setSlot] = useState('week');
+  const [slot, setSlot] = useState("week");
 
   return (
     <>
@@ -26,17 +26,17 @@ export default function UniqueVisitorCard() {
           <Stack direction="row" alignItems="center" spacing={0}>
             <Button
               size="small"
-              onClick={() => setSlot('month')}
-              color={slot === 'month' ? 'primary' : 'secondary'}
-              variant={slot === 'month' ? 'outlined' : 'text'}
+              onClick={() => setSlot("month")}
+              color={slot === "month" ? "primary" : "secondary"}
+              variant={slot === "month" ? "outlined" : "text"}
             >
               Month
             </Button>
             <Button
               size="small"
-              onClick={() => setSlot('week')}
-              color={slot === 'week' ? 'primary' : 'secondary'}
-              variant={slot === 'week' ? 'outlined' : 'text'}
+              onClick={() => setSlot("week")}
+              color={slot === "week" ? "primary" : "secondary"}
+              variant={slot === "week" ? "outlined" : "text"}
             >
               Week
             </Button>

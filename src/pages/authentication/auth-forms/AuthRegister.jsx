@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 // material-ui
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 // third party
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import * as Yup from "yup";
+import { Formik } from "formik";
 
 // project import
-import AnimateButton from 'components/@extended/AnimateButton';
-import { strengthColor, strengthIndicator } from 'utils/password-strength';
+import AnimateButton from "components/@extended/AnimateButton";
+import { strengthColor, strengthIndicator } from "utils/password-strength";
 
 // assets
-import EyeOutlined from '@ant-design/icons/EyeOutlined';
-import EyeInvisibleOutlined from '@ant-design/icons/EyeInvisibleOutlined';
+import EyeOutlined from "@ant-design/icons/EyeOutlined";
+import EyeInvisibleOutlined from "@ant-design/icons/EyeInvisibleOutlined";
 
 // ============================|| JWT - REGISTER ||============================ //
 
@@ -46,33 +46,46 @@ export default function AuthRegister() {
   };
 
   useEffect(() => {
-    changePassword('');
+    changePassword("");
   }, []);
 
   return (
     <>
       <Formik
         initialValues={{
-          firstname: '',
-          lastname: '',
-          email: '',
-          company: '',
-          password: '',
-          submit: null
+          firstname: "",
+          lastname: "",
+          email: "",
+          company: "",
+          password: "",
+          submit: null,
         }}
         validationSchema={Yup.object().shape({
-          firstname: Yup.string().max(255).required('First Name is required'),
-          lastname: Yup.string().max(255).required('Last Name is required'),
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          firstname: Yup.string().max(255).required("First Name is required"),
+          lastname: Yup.string().max(255).required("Last Name is required"),
+          email: Yup.string()
+            .email("Must be a valid email")
+            .max(255)
+            .required("Email is required"),
+          password: Yup.string().max(255).required("Password is required"),
         })}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({
+          errors,
+          handleBlur,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          touched,
+          values,
+        }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="firstname-signup">First Name*</InputLabel>
+                  <InputLabel htmlFor="firstname-signup">
+                    First Name*
+                  </InputLabel>
                   <OutlinedInput
                     id="firstname-login"
                     type="firstname"
@@ -163,7 +176,7 @@ export default function AuthRegister() {
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
                     id="password-signup"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     value={values.password}
                     name="password"
                     onBlur={handleBlur}
@@ -180,7 +193,11 @@ export default function AuthRegister() {
                           edge="end"
                           color="secondary"
                         >
-                          {showPassword ? <EyeOutlined /> : <EyeInvisibleOutlined />}
+                          {showPassword ? (
+                            <EyeOutlined />
+                          ) : (
+                            <EyeInvisibleOutlined />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -196,7 +213,14 @@ export default function AuthRegister() {
                 <FormControl fullWidth sx={{ mt: 2 }}>
                   <Grid container spacing={2} alignItems="center">
                     <Grid item>
-                      <Box sx={{ bgcolor: level?.color, width: 85, height: 8, borderRadius: '7px' }} />
+                      <Box
+                        sx={{
+                          bgcolor: level?.color,
+                          width: 85,
+                          height: 8,
+                          borderRadius: "7px",
+                        }}
+                      />
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle1" fontSize="0.75rem">
@@ -225,7 +249,15 @@ export default function AuthRegister() {
               )}
               <Grid item xs={12}>
                 <AnimateButton>
-                  <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
+                  <Button
+                    disableElevation
+                    disabled={isSubmitting}
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                  >
                     Create Account
                   </Button>
                 </AnimateButton>

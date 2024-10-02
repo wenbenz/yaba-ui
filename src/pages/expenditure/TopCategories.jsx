@@ -1,23 +1,23 @@
-import {useMemo, useState} from 'react';
+import { useMemo, useState } from "react";
 
 // material-ui
-import {useTheme} from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
 // third-party
-import ReactApexChart from 'react-apexcharts';
-import {startOfMonth, startOfYear} from "../../utils/dates";
-import {useExpenditureAggregate} from "../../api/graph";
+import ReactApexChart from "react-apexcharts";
+import { startOfMonth, startOfYear } from "../../utils/dates";
+import { useExpenditureAggregate } from "../../api/graph";
 import MainCard from "../../components/MainCard";
 import SpendingChart from "./SpendingChart";
 
 // chart options
 const barChartOptions = {
   chart: {
-    type: 'bar',
+    type: "bar",
     toolbar: {
-      show: true
-    }
+      show: true,
+    },
   },
   plotOptions: {
     bar: {
@@ -25,17 +25,17 @@ const barChartOptions = {
       borderRadius: 1,
       horizontal: true,
       dataLabels: {
-        position: 'bottom'
+        position: "bottom",
       },
       barHeight: 22,
-    }
+    },
   },
   xaxis: {
     axisBorder: {
-      show: true
+      show: true,
     },
     axisTicks: {
-      show: true
+      show: true,
     },
   },
   yaxis: {
@@ -43,33 +43,33 @@ const barChartOptions = {
     labels: {
       style: {
         fontSize: 14,
-        fontWeight: 400
-      }
-    }
+        fontWeight: 400,
+      },
+    },
   },
   dataLabels: {
     enabled: true,
-    textAnchor: 'start',
+    textAnchor: "start",
     offsetX: 0,
-    formatter: function(val, opt) {
+    formatter: function (val, opt) {
       // return "$" + val.toFixed(2)
-      return opt.config.series[opt.seriesIndex].name + ": $" + val.toFixed(0)// + " / $" + budget[opt.dataPointIndex].toFixed(0)
-    }
+      return opt.config.series[opt.seriesIndex].name + ": $" + val.toFixed(0); // + " / $" + budget[opt.dataPointIndex].toFixed(0)
+    },
   },
   grid: {
-    show: true
+    show: true,
   },
   legend: {
     show: true,
     showForSingleSeries: true,
-    customLegendItems: ['spent', 'budgeted']
+    customLegendItems: ["spent", "budgeted"],
   },
   tooltip: {
     enabled: true,
     y: {
-      formatter: (f) => '$' + f.toFixed(2)
-    }
-  }
+      formatter: (f) => "$" + f.toFixed(2),
+    },
+  },
 };
 
 // ==============================|| MONTHLY BAR CHART ||============================== //
@@ -82,7 +82,7 @@ export default function TopCategories() {
     until: new Date(),
     span: "YEAR",
     groupBy: "BUDGET_CATEGORY",
-  })
+  });
 
   const [categories, setCategories] = useState([]);
   const [spent, setSpent] = useState(new Map());
@@ -93,24 +93,30 @@ export default function TopCategories() {
       ...prevState,
       xaxis: {
         ...prevState.xaxis,
-        categories: categories
-      }}))
-  }, [categories])
+        categories: categories,
+      },
+    }));
+  }, [categories]);
 
   useMemo(() => {
     if (data) {
       const spendingMap = new Map(
-          data.aggregatedExpenditures.map(expense => [expense.groupByCategory, expense.amount])
-      )
-      setSpent(spendingMap)
+        data.aggregatedExpenditures.map((expense) => [
+          expense.groupByCategory,
+          expense.amount,
+        ]),
+      );
+      setSpent(spendingMap);
 
-      setCategories(data.aggregatedExpenditures
+      setCategories(
+        data.aggregatedExpenditures
           .toSorted((a, b) => a.amount - b.amount)
           .toReversed()
           .slice(0, 10)
-          .map(e => e.groupByCategory))
+          .map((e) => e.groupByCategory),
+      );
     }
-  }, [data])
+  }, [data]);
 
   useMemo(() => {
     setOptions((prevState) => ({
@@ -120,8 +126,8 @@ export default function TopCategories() {
         labels: {
           ...prevState.xaxis.labels,
           style: {
-            colors: theme.palette.text.secondary
-          }
+            colors: theme.palette.text.secondary,
+          },
         },
       },
       yaxis: {
@@ -130,35 +136,44 @@ export default function TopCategories() {
           ...prevState.yaxis.labels,
           style: {
             ...prevState.yaxis.labels.style,
-            colors: theme.palette.text.primary
-          }
-        }
+            colors: theme.palette.text.primary,
+          },
+        },
       },
       legend: {
         ...prevState.legend,
         markers: {
           ...prevState.legend.markers,
-          fillColors: [theme.palette.primary.main, theme.palette.primary.dark]
-        }
-      }
+          fillColors: [theme.palette.primary.main, theme.palette.primary.dark],
+        },
+      },
     }));
   }, [theme]);
 
-  console.log(options)
+  console.log(options);
 
   return (
-      <Box id="chart" sx={{ bgcolor: 'transparent', pt: 1, pr: 2}}>
-        <ReactApexChart options={options} series={buildSeries(spent, categories, theme)} type="bar" height={450} />
-      </Box>
+    <Box id="chart" sx={{ bgcolor: "transparent", pt: 1, pr: 2 }}>
+      <ReactApexChart
+        options={options}
+        series={buildSeries(spent, categories, theme)}
+        type="bar"
+        height={450}
+      />
+    </Box>
   );
 }
 
 function buildSeries(spent, categories, theme) {
-  let spentSeries = categories.map(category => spent.get(category) ? spent.get(category) : 0)
+  let spentSeries = categories.map((category) =>
+    spent.get(category) ? spent.get(category) : 0,
+  );
 
-  return [{
-    name: "spent",
-    data: spentSeries,
-    color: theme.palette.primary.main
-  }]
+  return [
+    {
+      name: "spent",
+      data: spentSeries,
+      color: theme.palette.primary.main,
+    },
+  ];
 }

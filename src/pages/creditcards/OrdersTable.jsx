@@ -1,37 +1,37 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // material-ui
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 // third-party
-import { NumericFormat } from 'react-number-format';
+import { NumericFormat } from "react-number-format";
 
 // project import
-import Dot from 'components/@extended/Dot';
+import Dot from "components/@extended/Dot";
 
 function createData(tracking_no, name, fat, carbs, protein) {
   return { tracking_no, name, fat, carbs, protein };
 }
 
 const rows = [
-  createData(84564564, 'Camera Lens', 40, 2, 40570),
-  createData(98764564, 'Laptop', 300, 0, 180139),
-  createData(98756325, 'Mobile', 355, 1, 90989),
-  createData(98652366, 'Handset', 50, 1, 10239),
-  createData(13286564, 'Computer Accessories', 100, 1, 83348),
-  createData(86739658, 'TV', 99, 0, 410780),
-  createData(13256498, 'Keyboard', 125, 2, 70999),
-  createData(98753263, 'Mouse', 89, 2, 10570),
-  createData(98753275, 'Desktop', 185, 1, 98063),
-  createData(98753291, 'Chair', 100, 0, 14001)
+  createData(84564564, "Camera Lens", 40, 2, 40570),
+  createData(98764564, "Laptop", 300, 0, 180139),
+  createData(98756325, "Mobile", 355, 1, 90989),
+  createData(98652366, "Handset", 50, 1, 10239),
+  createData(13286564, "Computer Accessories", 100, 1, 83348),
+  createData(86739658, "TV", 99, 0, 410780),
+  createData(13256498, "Keyboard", 125, 2, 70999),
+  createData(98753263, "Mouse", 89, 2, 10570),
+  createData(98753275, "Desktop", 185, 1, 98063),
+  createData(98753291, "Chair", 100, 0, 14001),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -45,7 +45,9 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 function stableSort(array, comparator) {
@@ -62,36 +64,36 @@ function stableSort(array, comparator) {
 
 const headCells = [
   {
-    id: 'tracking_no',
-    align: 'left',
+    id: "tracking_no",
+    align: "left",
     disablePadding: false,
-    label: 'Tracking No.'
+    label: "Tracking No.",
   },
   {
-    id: 'name',
-    align: 'left',
+    id: "name",
+    align: "left",
     disablePadding: true,
-    label: 'Product Name'
+    label: "Product Name",
   },
   {
-    id: 'fat',
-    align: 'right',
+    id: "fat",
+    align: "right",
     disablePadding: false,
-    label: 'Total Order'
+    label: "Total Order",
   },
   {
-    id: 'carbs',
-    align: 'left',
+    id: "carbs",
+    align: "left",
     disablePadding: false,
 
-    label: 'Status'
+    label: "Status",
   },
   {
-    id: 'protein',
-    align: 'right',
+    id: "protein",
+    align: "right",
     disablePadding: false,
-    label: 'Total Amount'
-  }
+    label: "Total Amount",
+  },
 ];
 
 // ==============================|| ORDER TABLE - HEADER ||============================== //
@@ -104,7 +106,7 @@ function OrderTableHead({ order, orderBy }) {
           <TableCell
             key={headCell.id}
             align={headCell.align}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             {headCell.label}
@@ -121,20 +123,20 @@ function OrderStatus({ status }) {
 
   switch (status) {
     case 0:
-      color = 'warning';
-      title = 'Pending';
+      color = "warning";
+      title = "Pending";
       break;
     case 1:
-      color = 'success';
-      title = 'Approved';
+      color = "success";
+      title = "Approved";
       break;
     case 2:
-      color = 'error';
-      title = 'Rejected';
+      color = "error";
+      title = "Rejected";
       break;
     default:
-      color = 'primary';
-      title = 'None';
+      color = "primary";
+      title = "None";
   }
 
   return (
@@ -148,49 +150,56 @@ function OrderStatus({ status }) {
 // ==============================|| ORDER TABLE ||============================== //
 
 export default function OrderTable() {
-  const order = 'asc';
-  const orderBy = 'tracking_no';
+  const order = "asc";
+  const orderBy = "tracking_no";
 
   return (
     <Box>
       <TableContainer
         sx={{
-          width: '100%',
-          overflowX: 'auto',
-          position: 'relative',
-          display: 'block',
-          maxWidth: '100%',
-          '& td, & th': { whiteSpace: 'nowrap' }
+          width: "100%",
+          overflowX: "auto",
+          position: "relative",
+          display: "block",
+          maxWidth: "100%",
+          "& td, & th": { whiteSpace: "nowrap" },
         }}
       >
         <Table aria-labelledby="tableTitle">
           <OrderTableHead order={order} orderBy={orderBy} />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
+            {stableSort(rows, getComparator(order, orderBy)).map(
+              (row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
 
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  tabIndex={-1}
-                  key={row.tracking_no}
-                >
-                  <TableCell component="th" id={labelId} scope="row">
-                    <Link color="secondary"> {row.tracking_no}</Link>
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell>
-                    <OrderStatus status={row.carbs} />
-                  </TableCell>
-                  <TableCell align="right">
-                    <NumericFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+                return (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    tabIndex={-1}
+                    key={row.tracking_no}
+                  >
+                    <TableCell component="th" id={labelId} scope="row">
+                      <Link color="secondary"> {row.tracking_no}</Link>
+                    </TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell align="right">{row.fat}</TableCell>
+                    <TableCell>
+                      <OrderStatus status={row.carbs} />
+                    </TableCell>
+                    <TableCell align="right">
+                      <NumericFormat
+                        value={row.protein}
+                        displayType="text"
+                        thousandSeparator
+                        prefix="$"
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              },
+            )}
           </TableBody>
         </Table>
       </TableContainer>

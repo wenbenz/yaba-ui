@@ -1,60 +1,60 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
 
 // third-party
-import ReactApexChart from 'react-apexcharts';
+import ReactApexChart from "react-apexcharts";
 
 // chart options
 const areaChartOptions = {
   chart: {
     height: 340,
-    type: 'line',
+    type: "line",
     toolbar: {
-      show: false
-    }
+      show: false,
+    },
   },
   dataLabels: {
-    enabled: false
+    enabled: false,
   },
   stroke: {
-    curve: 'smooth',
-    width: 1.5
+    curve: "smooth",
+    width: 1.5,
   },
   grid: {
-    strokeDashArray: 4
+    strokeDashArray: 4,
   },
   xaxis: {
-    type: 'datetime',
+    type: "datetime",
     categories: [
-      '2018-05-19T00:00:00.000Z',
-      '2018-06-19T00:00:00.000Z',
-      '2018-07-19T01:30:00.000Z',
-      '2018-08-19T02:30:00.000Z',
-      '2018-09-19T03:30:00.000Z',
-      '2018-10-19T04:30:00.000Z',
-      '2018-11-19T05:30:00.000Z',
-      '2018-12-19T06:30:00.000Z'
+      "2018-05-19T00:00:00.000Z",
+      "2018-06-19T00:00:00.000Z",
+      "2018-07-19T01:30:00.000Z",
+      "2018-08-19T02:30:00.000Z",
+      "2018-09-19T03:30:00.000Z",
+      "2018-10-19T04:30:00.000Z",
+      "2018-11-19T05:30:00.000Z",
+      "2018-12-19T06:30:00.000Z",
     ],
     labels: {
-      format: 'MMM'
+      format: "MMM",
     },
     axisBorder: {
-      show: false
+      show: false,
     },
     axisTicks: {
-      show: false
-    }
+      show: false,
+    },
   },
   yaxis: {
-    show: false
+    show: false,
   },
   tooltip: {
     x: {
-      format: 'MM'
-    }
-  }
+      format: "MM",
+    },
+  },
 };
 
 // ==============================|| REPORT AREA CHART ||============================== //
@@ -74,27 +74,43 @@ export default function ReportAreaChart() {
       xaxis: {
         labels: {
           style: {
-            colors: [secondary, secondary, secondary, secondary, secondary, secondary, secondary, secondary]
-          }
-        }
+            colors: [
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+              secondary,
+            ],
+          },
+        },
       },
       grid: {
-        borderColor: line
+        borderColor: line,
       },
       legend: {
         labels: {
-          colors: 'grey.500'
-        }
-      }
+          colors: "grey.500",
+        },
+      },
     }));
   }, [primary, secondary, line, theme]);
 
   const [series] = useState([
     {
-      name: 'Series 1',
-      data: [58, 115, 28, 83, 63, 75, 35, 55]
-    }
+      name: "Series 1",
+      data: [58, 115, 28, 83, 63, 75, 35, 55],
+    },
   ]);
 
-  return <ReactApexChart options={options} series={series} type="line" height={340} />;
+  return (
+    <ReactApexChart
+      options={options}
+      series={series}
+      type="line"
+      height={340}
+    />
+  );
 }
