@@ -47,7 +47,14 @@ export default function BudgetDashboard() {
   const [updateBudget, updateBudgetResponse] = useUpdateBudget(budget);
   const hasBudget = data && data.budgets && data.budgets.length > 0;
 
-  useMemo(() => data && setBudget(cloneDeep(data.budgets[0])), [data]);
+  useMemo(
+    () =>
+      data &&
+      data.budgets &&
+      data.budgets.length > 0 &&
+      setBudget(cloneDeep(data.budgets[0])),
+    [data],
+  );
 
   if (loading) {
     return <Loader />;
@@ -66,7 +73,7 @@ export default function BudgetDashboard() {
       <ManageBudget
         budget={budget}
         setBudget={setBudget}
-        saveBudget={(e) => {
+        saveBudget={() => {
           updateBudget();
           if (updateBudgetResponse.error) {
             console.log(error);
