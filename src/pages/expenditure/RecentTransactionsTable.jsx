@@ -11,23 +11,8 @@ import Box from '@mui/material/Box';
 // third-party
 import { NumericFormat } from 'react-number-format';
 import { useQuery, gql } from '@apollo/client';
-
-const LIST_EXPENDITURES = gql`query Expenditures {
-  expenditures(count: 10) {
-    id
-    owner
-    name
-    amount
-    date
-    method
-    budget_category
-    reward_category
-    comment
-    created
-    source
-  }
-}
-`
+import {useExpenditures} from "../../api/graph";
+import {startOfLastMonth} from "../../utils/dates";
 
 const headCells = [
   {
@@ -101,7 +86,9 @@ export default function RecentTransactionsTable() {
   const order = 'asc';
   const orderBy = 'tracking_no';
 
-  const { loading, error, data } = useQuery(LIST_EXPENDITURES);
+  const { loading, error, data } = useExpenditures({
+    since: startOfLastMonth(),
+    until: new Date()})
 
   if (loading) return (
     <p>Loading...</p>
