@@ -43,7 +43,13 @@ export default function DashboardDefault() {
   useMemo(() => {
     if (monthlySpending.data) {
       const spendingData = monthlySpending.data.aggregatedExpenditures;
-      setTotalSpent([spendingData[0].amount, spendingData[1].amount]);
+      let v = [0, 0];
+      spendingData.forEach((e) => {
+        const spanStart = e.spanStart;
+        const d = new Date(spanStart);
+        v[d.getUTCMonth() - startOfLastMonth().getMonth()] = e.amount;
+      });
+      setTotalSpent(v);
     }
   }, [monthlySpending.data]);
 
