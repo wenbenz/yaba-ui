@@ -21,7 +21,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const client = new ApolloClient({
-  uri: "http://localhost:9222/graphql",
+  uri: import.meta.env.VITE_API_URL + "/graphql",
   cache: new InMemoryCache(),
 });
 

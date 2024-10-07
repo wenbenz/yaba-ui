@@ -24,7 +24,7 @@ const FileUpload = () => {
   const handleUpload = () => {
     if (selectedFiles.length > 0) {
       axios
-        .postForm("http://localhost:9222/upload", {
+        .postForm(import.meta.env.VITE_API_URL + "/upload", {
           expenditures: selectedFiles,
         })
         .then(() =>
