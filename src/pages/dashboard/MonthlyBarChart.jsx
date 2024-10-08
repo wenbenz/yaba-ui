@@ -182,8 +182,6 @@ export default function MonthlyBarChart({ slot }) {
     }));
   }, [theme]);
 
-  console.log(options);
-
   return (
     <Box id="chart" sx={{ bgcolor: "transparent" }}>
       <ReactApexChart
