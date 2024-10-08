@@ -6,14 +6,8 @@ import { useTheme } from "@mui/material/styles";
 
 // third-party
 import ReactApexChart from "react-apexcharts";
-import { useQuery } from "@apollo/client";
-import { AGGREGATE_EXPENDITURES } from "../../api/queries";
-import {
-  dateString,
-  oneWeekAgo,
-  startOfMonth,
-  startOfYear,
-} from "../../utils/dates";
+import { oneWeekAgo, startOfMonth, startOfYear } from "../../utils/dates";
+import { useExpenditureAggregate } from "../../api/graph";
 
 // chart options
 const areaChartOptions = {
@@ -52,15 +46,13 @@ export default function SpendingChart({ slot }) {
   const line = theme.palette.divider;
 
   const [options, setOptions] = useState(areaChartOptions);
-  const [start, setStart] = useState(dateString(oneWeekAgo()));
+  const [start, setStart] = useState(oneWeekAgo());
   const [span, setSpan] = useState("DAY");
-  const { data } = useQuery(AGGREGATE_EXPENDITURES, {
-    variables: {
-      since: start,
-      until: dateString(new Date()),
-      span: span,
-      groupBy: "NONE",
-    },
+  const { data } = useExpenditureAggregate({
+    since: start,
+    until: new Date(),
+    span: span,
+    groupBy: "NONE",
   });
 
   // Initial state
@@ -107,10 +99,10 @@ export default function SpendingChart({ slot }) {
       },
     }));
     if (slot === "year") {
-      setStart(dateString(startOfYear()));
+      setStart(startOfYear());
       setSpan("MONTH");
     } else {
-      setStart(dateString(startOfMonth()));
+      setStart(startOfMonth());
       setSpan("DAY");
     }
 

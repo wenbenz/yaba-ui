@@ -150,8 +150,6 @@ export default function TopCategories() {
     }));
   }, [theme]);
 
-  console.log(options);
-
   return (
     <Box id="chart" sx={{ bgcolor: "transparent", pt: 1, pr: 2 }}>
       <ReactApexChart

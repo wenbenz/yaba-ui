@@ -17,11 +17,12 @@ import { handlerDrawerOpen, useGetMenuMaster } from "api/menu";
 
 // apollo client
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { getLocation } from "../../utils/location";
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const client = new ApolloClient({
-  uri: "http://localhost:9222/graphql",
+  uri: getLocation(import.meta.env.DEV) + "/graphql",
   cache: new InMemoryCache(),
 });
 

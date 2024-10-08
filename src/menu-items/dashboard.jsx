@@ -37,14 +37,14 @@ const dashboard = {
       icon: DollarOutlined,
       breadcrumbs: false,
     },
-    {
-      id: "creditcards",
-      title: "Credit Cards",
-      type: "item",
-      url: "/creditcards",
-      icon: CreditCardOutlined,
-      breadcrumbs: false,
-    },
+    // {
+    //   id: "creditcards",
+    //   title: "Credit Cards",
+    //   type: "item",
+    //   url: "/creditcards",
+    //   icon: CreditCardOutlined,
+    //   breadcrumbs: false,
+    // },
   ],
 };
 

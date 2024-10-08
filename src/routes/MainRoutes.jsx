@@ -33,10 +33,10 @@ const MainRoutes = {
       path: "expenditure",
       element: <ExpenditureDashboard />,
     },
-    {
-      path: "creditcards",
-      element: <CreditCards />,
-    },
+    // {
+    //   path: "creditcards",
+    //   element: <CreditCards />,
+    // },
   ],
 };
 

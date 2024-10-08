@@ -104,7 +104,6 @@ function Expense({ budget, setBudget, index }) {
   let toggleFixed = (e) => {
     expense.isFixed = e.target.checked;
     setBudget(budget);
-    console.log(budget, e);
   };
 
   return (
