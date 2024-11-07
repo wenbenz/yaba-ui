@@ -1,5 +1,9 @@
 // assets
-import {DashboardOutlined, DollarOutlined, PieChartOutlined,} from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  DollarOutlined,
+  PieChartOutlined,
+} from "@ant-design/icons";
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 

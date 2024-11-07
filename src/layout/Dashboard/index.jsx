@@ -16,15 +16,19 @@ import Breadcrumbs from "components/@extended/Breadcrumbs";
 import { handlerDrawerOpen, useGetMenuMaster } from "api/menu";
 
 // apollo client
-import {ApolloClient, ApolloProvider, createHttpLink, InMemoryCache} from "@apollo/client";
-import { getLocation } from "../../utils/location";
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const client = new ApolloClient({
   link: createHttpLink({
-      uri: getLocation(import.meta.env.DEV) + "/graphql",
-      credentials: 'include'
+    uri: "/graphql",
+    credentials: "include",
   }),
   cache: new InMemoryCache(),
 });

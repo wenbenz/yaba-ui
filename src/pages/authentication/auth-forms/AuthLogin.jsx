@@ -22,7 +22,6 @@ import AnimateButton from "components/@extended/AnimateButton";
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import EyeInvisibleOutlined from "@ant-design/icons/EyeInvisibleOutlined";
 import axios from "axios";
-import { getLocation } from "../../../utils/location";
 
 // ============================|| JWT - LOGIN ||============================ //
 
@@ -52,7 +51,7 @@ export default function AuthLogin({ isDemo = false }) {
         })}
         onSubmit={(values, actions) =>
           axios
-            .post(getLocation(import.meta.env.DEV) + "/login", values, {
+            .post("/login", values, {
               headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
               },

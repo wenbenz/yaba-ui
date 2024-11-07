@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
-import {useMemo, useState} from "react";
+import { useMemo, useState } from "react";
 
 // material-ui
-import {useTheme} from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 
 // third-party
 import ReactApexChart from "react-apexcharts";
-import {oneWeekAgo, startOfMonth, startOfYear} from "../../utils/dates";
-import {useExpenditureAggregate} from "../../api/graph";
+import { oneWeekAgo, startOfMonth, startOfYear } from "../../utils/dates";
+import { useExpenditureAggregate } from "../../api/graph";
 
 // chart options
 const areaChartOptions = {
