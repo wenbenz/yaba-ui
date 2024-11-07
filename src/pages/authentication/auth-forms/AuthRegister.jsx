@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Link as RouterLink} from "react-router-dom";
 
 // material-ui
 import Button from "@mui/material/Button";
@@ -17,15 +17,17 @@ import Box from "@mui/material/Box";
 
 // third party
 import * as Yup from "yup";
-import { Formik } from "formik";
+import {Formik} from "formik";
 
 // project import
 import AnimateButton from "components/@extended/AnimateButton";
-import { strengthColor, strengthIndicator } from "utils/password-strength";
+import {strengthColor, strengthIndicator} from "utils/password-strength";
 
 // assets
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import EyeInvisibleOutlined from "@ant-design/icons/EyeInvisibleOutlined";
+import axios from "axios";
+import {getLocation} from "../../../utils/location";
 
 // ============================|| JWT - REGISTER ||============================ //
 
@@ -53,22 +55,36 @@ export default function AuthRegister() {
     <>
       <Formik
         initialValues={{
-          firstname: "",
-          lastname: "",
-          email: "",
-          company: "",
+          username: "",
           password: "",
           submit: null,
         }}
         validationSchema={Yup.object().shape({
-          firstname: Yup.string().max(255).required("First Name is required"),
-          lastname: Yup.string().max(255).required("Last Name is required"),
-          email: Yup.string()
-            .email("Must be a valid email")
-            .max(255)
-            .required("Email is required"),
+          username: Yup.string().max(255).required("Username is required"),
           password: Yup.string().max(255).required("Password is required"),
         })}
+        onSubmit={(values, actions) =>
+          axios
+            .post(getLocation(import.meta.env.DEV) + "/register", values, {
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              withCredentials: true,
+            })
+            .then((response) => {
+              window.location = response.request.responseURL;
+            })
+            .catch((error) => {
+              if (error.response.status === 409) {
+                actions.setFieldError(
+                  "username",
+                  "Account with this username already exists.",
+                );
+              } else {
+                actions.setFieldError("submit", "Something has gone wrong.");
+              }
+            })
+        }
       >
         {({
           errors,
@@ -81,91 +97,25 @@ export default function AuthRegister() {
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="firstname-signup">
-                    First Name*
-                  </InputLabel>
-                  <OutlinedInput
-                    id="firstname-login"
-                    type="firstname"
-                    value={values.firstname}
-                    name="firstname"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="John"
-                    fullWidth
-                    error={Boolean(touched.firstname && errors.firstname)}
-                  />
-                </Stack>
-                {touched.firstname && errors.firstname && (
-                  <FormHelperText error id="helper-text-firstname-signup">
-                    {errors.firstname}
-                  </FormHelperText>
-                )}
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="lastname-signup">Last Name*</InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.lastname && errors.lastname)}
-                    id="lastname-signup"
-                    type="lastname"
-                    value={values.lastname}
-                    name="lastname"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Doe"
-                    inputProps={{}}
-                  />
-                </Stack>
-                {touched.lastname && errors.lastname && (
-                  <FormHelperText error id="helper-text-lastname-signup">
-                    {errors.lastname}
-                  </FormHelperText>
-                )}
-              </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="company-signup">Company</InputLabel>
+                  <InputLabel htmlFor="username-signup">Username</InputLabel>
                   <OutlinedInput
                     fullWidth
-                    error={Boolean(touched.company && errors.company)}
-                    id="company-signup"
-                    value={values.company}
-                    name="company"
+                    error={Boolean(touched.username && errors.username)}
+                    id="username-login"
+                    type="username"
+                    value={values.username}
+                    name="username"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Demo Inc."
+                    placeholder="Username"
                     inputProps={{}}
                   />
                 </Stack>
-                {touched.company && errors.company && (
-                  <FormHelperText error id="helper-text-company-signup">
-                    {errors.company}
-                  </FormHelperText>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
-                  <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.email && errors.email)}
-                    id="email-login"
-                    type="email"
-                    value={values.email}
-                    name="email"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="demo@company.com"
-                    inputProps={{}}
-                  />
-                </Stack>
-                {touched.email && errors.email && (
-                  <FormHelperText error id="helper-text-email-signup">
-                    {errors.email}
+                {touched.username && errors.username && (
+                  <FormHelperText error id="helper-text-username-signup">
+                    {errors.username}
                   </FormHelperText>
                 )}
               </Grid>
@@ -201,7 +151,7 @@ export default function AuthRegister() {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder="******"
+                    placeholder="Password"
                     inputProps={{}}
                   />
                 </Stack>

@@ -1,12 +1,12 @@
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import { Fab, Switch } from "@mui/material";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {Fab, Switch} from "@mui/material";
+import {DeleteOutlined, PlusOutlined} from "@ant-design/icons";
 import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { useMemo, useState } from "react";
+import {useState} from "react";
 
 function Income({ budget, setBudget, index }) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -165,11 +165,6 @@ function Expense({ budget, setBudget, index }) {
 export default function BudgetEditor({ budget, setBudget, saveBudget }) {
   let totalIncome = budget.incomes.reduce((a, b) => a + b.amount, 0);
   let totalExpenses = budget.expenses.reduce((a, b) => a + b.amount, 0);
-
-  useMemo(() => {
-    totalIncome = budget.incomes.reduce((a, b) => a + b.amount, 0);
-    totalExpenses = budget.expenses.reduce((a, b) => a + b.amount, 0);
-  }, [budget]);
 
   return (
     <Stack spacing={5}>
