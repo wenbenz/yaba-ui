@@ -84,7 +84,7 @@ const GET_BUDGET_BY_ID = gql`
   }
 `;
 
-const LIST_BUDGETS = gql`
+export const LIST_BUDGETS = gql`
   query Budgets($count: Int) {
     budgets(first: $count) {
       id

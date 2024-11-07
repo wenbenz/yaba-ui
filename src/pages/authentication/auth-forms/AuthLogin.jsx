@@ -1,21 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 // material-ui
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
-import Divider from "@mui/material/Divider";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
 // third party
 import * as Yup from "yup";
@@ -27,12 +21,13 @@ import AnimateButton from "components/@extended/AnimateButton";
 // assets
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import EyeInvisibleOutlined from "@ant-design/icons/EyeInvisibleOutlined";
-import FirebaseSocial from "./FirebaseSocial";
+import axios from "axios";
+import { getLocation } from "../../../utils/location";
 
 // ============================|| JWT - LOGIN ||============================ //
 
 export default function AuthLogin({ isDemo = false }) {
-  const [checked, setChecked] = React.useState(false);
+  // const [checked, setChecked] = React.useState(false);
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -47,17 +42,29 @@ export default function AuthLogin({ isDemo = false }) {
     <>
       <Formik
         initialValues={{
-          email: "",
+          username: "",
           password: "",
           submit: null,
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string()
-            .email("Must be a valid email")
-            .max(255)
-            .required("Email is required"),
+          username: Yup.string().max(255).required("username is required"),
           password: Yup.string().max(255).required("Password is required"),
         })}
+        onSubmit={(values, actions) =>
+          axios
+            .post(getLocation(import.meta.env.DEV) + "/login", values, {
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              withCredentials: true,
+            })
+            .then(
+              (response) => (window.location = response.request.responseURL),
+            )
+            .catch((_) => {
+              actions.setFieldError("submit", "Login failed.");
+            })
+        }
       >
         {({
           errors,
@@ -72,25 +79,25 @@ export default function AuthLogin({ isDemo = false }) {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="username-login">Username</InputLabel>
                   <OutlinedInput
-                    id="email-login"
-                    type="email"
-                    value={values.email}
-                    name="email"
+                    id="username-login"
+                    type="username"
+                    value={values.username}
+                    name="username"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder="Username"
                     fullWidth
-                    error={Boolean(touched.email && errors.email)}
+                    error={Boolean(touched.username && errors.username)}
                   />
                 </Stack>
-                {touched.email && errors.email && (
+                {touched.username && errors.username && (
                   <FormHelperText
                     error
-                    id="standard-weight-helper-text-email-login"
+                    id="standard-weight-helper-text-username-login"
                   >
-                    {errors.email}
+                    {errors.username}
                   </FormHelperText>
                 )}
               </Grid>
@@ -123,7 +130,7 @@ export default function AuthLogin({ isDemo = false }) {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder="Enter password"
+                    placeholder="Password"
                   />
                 </Stack>
                 {touched.password && errors.password && (
@@ -143,27 +150,27 @@ export default function AuthLogin({ isDemo = false }) {
                   alignItems="center"
                   spacing={2}
                 >
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={(event) => setChecked(event.target.checked)}
-                        name="checked"
-                        color="primary"
-                        size="small"
-                      />
-                    }
-                    label={
-                      <Typography variant="h6">Keep me sign in</Typography>
-                    }
-                  />
-                  <Link
-                    variant="h6"
-                    component={RouterLink}
-                    color="text.primary"
-                  >
-                    Forgot Password?
-                  </Link>
+                  {/*<FormControlLabel*/}
+                  {/*  control={*/}
+                  {/*    <Checkbox*/}
+                  {/*      checked={checked}*/}
+                  {/*      onChange={(event) => setChecked(event.target.checked)}*/}
+                  {/*      name="checked"*/}
+                  {/*      color="primary"*/}
+                  {/*      size="small"*/}
+                  {/*    />*/}
+                  {/*  }*/}
+                  {/*  label={*/}
+                  {/*    <Typography variant="h6">Keep me sign in</Typography>*/}
+                  {/*  }*/}
+                  {/*/>*/}
+                  {/*<Link*/}
+                  {/*  variant="h6"*/}
+                  {/*  component={RouterLink}*/}
+                  {/*  color="text.primary"*/}
+                  {/*>*/}
+                  {/*  Forgot Password?*/}
+                  {/*</Link>*/}
                 </Stack>
               </Grid>
               {errors.submit && (
@@ -177,6 +184,7 @@ export default function AuthLogin({ isDemo = false }) {
                     disableElevation
                     disabled={isSubmitting}
                     fullWidth
+                    name="submit"
                     size="large"
                     type="submit"
                     variant="contained"
@@ -186,14 +194,14 @@ export default function AuthLogin({ isDemo = false }) {
                   </Button>
                 </AnimateButton>
               </Grid>
-              <Grid item xs={12}>
-                <Divider>
-                  <Typography variant="caption"> Login with</Typography>
-                </Divider>
-              </Grid>
-              <Grid item xs={12}>
-                <FirebaseSocial />
-              </Grid>
+              {/*<Grid item xs={12}>*/}
+              {/*  <Divider>*/}
+              {/*    <Typography variant="caption"> Login with</Typography>*/}
+              {/*  </Divider>*/}
+              {/*</Grid>*/}
+              {/*<Grid item xs={12}>*/}
+              {/*  <FirebaseSocial />*/}
+              {/*</Grid>*/}
             </Grid>
           </form>
         )}

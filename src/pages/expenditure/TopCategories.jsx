@@ -1,15 +1,13 @@
-import { useMemo, useState } from "react";
+import {useMemo, useState} from "react";
 
 // material-ui
-import { useTheme } from "@mui/material/styles";
+import {useTheme} from "@mui/material/styles";
 import Box from "@mui/material/Box";
 
 // third-party
 import ReactApexChart from "react-apexcharts";
-import { startOfMonth, startOfYear } from "../../utils/dates";
-import { useExpenditureAggregate } from "../../api/graph";
-import MainCard from "../../components/MainCard";
-import SpendingChart from "./SpendingChart";
+import {startOfYear} from "../../utils/dates";
+import {useExpenditureAggregate} from "../../api/graph";
 
 // chart options
 const barChartOptions = {

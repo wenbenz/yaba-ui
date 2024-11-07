@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 
 // third-party
 import { NumericFormat } from "react-number-format";
-import { useQuery, gql } from "@apollo/client";
 import { useExpenditures } from "../../api/graph";
 import { startOfLastMonth } from "../../utils/dates";
 

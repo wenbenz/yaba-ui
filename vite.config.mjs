@@ -29,7 +29,26 @@ export default defineConfig({
     // this ensures that the browser opens upon server start
     open: true,
     // this sets a default port to 3000
-    port: 3000
+    port: 3000,
+    // rewrite urls
+    proxy: {
+      '/graphql': {
+        target: 'http://localhost/',
+        changeOrigin: true,
+      },
+      '/upload': {
+        target: 'http://localhost/',
+        changeOrigin: true,
+      },
+      '/register': {
+        target: 'http://localhost/',
+        changeOrigin: true,
+      },
+      '/login': {
+        target: 'http://localhost/',
+        changeOrigin: true,
+      }
+    }
   },
   preview: {
     // this ensures that the browser opens upon preview start

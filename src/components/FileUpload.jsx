@@ -27,6 +27,8 @@ const FileUpload = () => {
       axios
         .postForm(getLocation(import.meta.env.DEV) + "/upload", {
           expenditures: selectedFiles,
+        }, {
+          withCredentials: true,
         })
         .then(() =>
           apolloClient.refetchQueries({
