@@ -175,6 +175,10 @@ export default function BudgetEditor({ budget, setBudget, saveBudget }) {
         variant="standard"
         fullWidth={true}
         defaultValue={budget.name}
+        onChange={(e) => {
+            budget.name = e.target.value;
+            setBudget(budget);
+        }}
       />
 
       {/*Incomes*/}
