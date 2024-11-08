@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Button, Typography, Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useApolloClient } from "@apollo/client";
 import { Stack } from "@mui/system";
-import { getLocation } from "../utils/location";
 
 const MAX_FILE_SIZE_MB = 1;
 const ALLOWED_FILE_TYPES = ["text/csv"];
@@ -25,11 +24,15 @@ const FileUpload = () => {
   const handleUpload = () => {
     if (selectedFiles.length > 0) {
       axios
-        .postForm(getLocation(import.meta.env.DEV) + "/upload", {
-          expenditures: selectedFiles,
-        }, {
-          withCredentials: true,
-        })
+        .postForm(
+          "/upload",
+          {
+            expenditures: selectedFiles,
+          },
+          {
+            withCredentials: true,
+          },
+        )
         .then(() =>
           apolloClient.refetchQueries({
             include: ["Expenditures", "AggregatedExpenditures"],

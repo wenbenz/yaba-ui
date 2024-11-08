@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {Link as RouterLink} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 // material-ui
 import Button from "@mui/material/Button";
@@ -17,17 +17,16 @@ import Box from "@mui/material/Box";
 
 // third party
 import * as Yup from "yup";
-import {Formik} from "formik";
+import { Formik } from "formik";
 
 // project import
 import AnimateButton from "components/@extended/AnimateButton";
-import {strengthColor, strengthIndicator} from "utils/password-strength";
+import { strengthColor, strengthIndicator } from "utils/password-strength";
 
 // assets
 import EyeOutlined from "@ant-design/icons/EyeOutlined";
 import EyeInvisibleOutlined from "@ant-design/icons/EyeInvisibleOutlined";
 import axios from "axios";
-import {getLocation} from "../../../utils/location";
 
 // ============================|| JWT - REGISTER ||============================ //
 
@@ -65,7 +64,7 @@ export default function AuthRegister() {
         })}
         onSubmit={(values, actions) =>
           axios
-            .post(getLocation(import.meta.env.DEV) + "/register", values, {
+            .post("/register", values, {
               headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
               },

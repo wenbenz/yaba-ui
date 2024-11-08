@@ -131,3 +131,4 @@ dist
 
 .idea
 graphql.config.yml
+/dist.tar.gz

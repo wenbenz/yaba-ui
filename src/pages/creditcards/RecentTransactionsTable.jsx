@@ -9,8 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 
 // third-party
-import {NumericFormat} from "react-number-format";
-import {gql, useQuery} from "@apollo/client";
+import { NumericFormat } from "react-number-format";
+import { gql, useQuery } from "@apollo/client";
 
 const LIST_EXPENDITURES = gql`
   query Expenditures {
