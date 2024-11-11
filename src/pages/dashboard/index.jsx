@@ -153,8 +153,8 @@ export default function DashboardDefault() {
           sx={{ mt: 2 }}
           title="Upload CSV"
           secondary={
-            <Link color="primary" href="/">
-              Download CSV Template
+            <Link color="primary" href="https://raw.githubusercontent.com/wenbenz/yaba/refs/heads/main/internal/import/testdata/all_cols.csv">
+              CSV Template
             </Link>
           }
         >
