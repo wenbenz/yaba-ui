@@ -4,6 +4,10 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 // project import
 import Profile from "./Profile";
 import MobileSection from "./MobileSection";
+import {DatePicker} from "@mui/x-date-pickers";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import {DateRangeProvider} from "../../../../components/DateRangeProvider";
 
 // project import
 
@@ -29,8 +33,11 @@ export default function HeaderContent() {
       {/*</IconButton>*/}
 
       {/*<Notification />*/}
-      {!downLG && <Profile />}
-      {downLG && <MobileSection />}
+      {/*{!downLG && <Profile />}*/}
+      {/*{downLG && <MobileSection />}*/}
+      {/*  <DateRangeProvider>*/}
+      {/*      Blah*/}
+      {/*  </DateRangeProvider>*/}
     </>
   );
 }

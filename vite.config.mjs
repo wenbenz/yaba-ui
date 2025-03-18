@@ -33,19 +33,19 @@ export default defineConfig({
     // rewrite urls
     proxy: {
       '/graphql': {
-        target: 'http://localhost/',
+        target: 'http://localhost:9222/',
         changeOrigin: true,
       },
       '/upload': {
-        target: 'http://localhost/',
+        target: 'http://localhost:9222/',
         changeOrigin: true,
       },
       '/register': {
-        target: 'http://localhost/',
+        target: 'http://localhost:9222/',
         changeOrigin: true,
       },
       '/login': {
-        target: 'http://localhost/',
+        target: 'http://localhost:9222/',
         changeOrigin: true,
       }
     }
