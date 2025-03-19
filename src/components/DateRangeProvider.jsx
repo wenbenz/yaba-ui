@@ -21,8 +21,8 @@ export const DateRangeProvider = ({ children }) => {
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <Stack direction={"row"} spacing={2} alignItems={"center"}>
                         <Typography variant={"subtitle1"}>Date range</Typography>
-                        <DatePicker label={"Since"} value={dayjs(startDate)} onChange={date => setStartDate(date)}/>
-                        <DatePicker label={"Until"} value={dayjs(endDate)} onChange={date => setEndDate(date)}/>
+                        <DatePicker label={"Since"} value={dayjs(startDate)} onChange={date => setStartDate(date.toDate())}/>
+                        <DatePicker label={"Until"} value={dayjs(endDate)} onChange={date => setEndDate(date.toDate())}/>
                     </Stack>
                 </LocalizationProvider>
             </Grid>

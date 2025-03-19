@@ -12,7 +12,7 @@ import RecentTransactionsTable from "./RecentTransactionsTable";
 // assets
 import FileUpload from "components/FileUpload";
 import { Link } from "@mui/material";
-import {DateRangeProvider, useDateRange} from "../../components/DateRangeProvider";
+import {DateRangeProvider} from "../../components/DateRangeProvider";
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 

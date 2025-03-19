@@ -39,3 +39,22 @@ function pad(n) {
   const s = "0" + n;
   return s.substring(s.length - 2);
 }
+
+export function getTimeSpan(startDate, endDate) {
+  const oneDay = 24 * 60 * 60 * 1000;
+  const oneMonth = 30 * oneDay;
+  const threeMonths = 3 * oneMonth;
+  const threeYears = 3 * 365 * oneDay;
+
+  const timeDifference = endDate - startDate;
+
+  if (timeDifference <= oneMonth) {
+    return "DAY";
+  } else if (timeDifference <= threeMonths) {
+    return "WEEK";
+  } else if (timeDifference <= threeYears) {
+    return "MONTH";
+  } else {
+    return "YEAR";
+  }
+}

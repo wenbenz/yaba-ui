@@ -97,7 +97,7 @@ export default function DashboardDefault() {
       <Grid item xs={12} sx={{ mb: -2.25 }}>
         <Typography variant="h5">Overview</Typography>
       </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid item xs={12} sm={6} md={4}>
         <MonthlyStat
           title="Total Monthly Expenditure"
           prev={totalSpent[0]}
@@ -107,7 +107,7 @@ export default function DashboardDefault() {
           negativeMessage="Your spendig decreased by"
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid item xs={12} sm={6} md={4}>
         <MonthlyStat
           title="Cashflow"
           prev={cashflow[0]}
@@ -117,7 +117,7 @@ export default function DashboardDefault() {
           negativeMessage="Your casfhlow decreased by"
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Grid item xs={12} sm={6} md={4}>
         <MonthlyStat
           title="Budget Adherence"
           current={adherance}
@@ -126,15 +126,15 @@ export default function DashboardDefault() {
           positiveMessage="You stuck to your budget"
         />
       </Grid>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <MonthlyStat
-          title="Rewards"
-          current={0}
-          showDiff={false}
-          format={(v) => "$" + Math.abs(v).toFixed(2)}
-          positiveMessage="This is not yet implemnted."
-        />
-      </Grid>
+      {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
+      {/*  <MonthlyStat*/}
+      {/*    title="Rewards"*/}
+      {/*    current={0}*/}
+      {/*    showDiff={false}*/}
+      {/*    format={(v) => "$" + Math.abs(v).toFixed(2)}*/}
+      {/*    positiveMessage="This is not yet implemnted."*/}
+      {/*  />*/}
+      {/*</Grid>*/}
 
       {/* row 2 */}
       <Grid item xs={12}>

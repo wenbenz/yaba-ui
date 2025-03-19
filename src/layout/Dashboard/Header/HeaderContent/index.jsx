@@ -1,20 +1,7 @@
-// material-ui
-import useMediaQuery from "@mui/material/useMediaQuery";
-
-// project import
-import Profile from "./Profile";
-import MobileSection from "./MobileSection";
-import {DatePicker} from "@mui/x-date-pickers";
-import {LocalizationProvider} from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import {DateRangeProvider} from "../../../../components/DateRangeProvider";
-
-// project import
-
 // ==============================|| HEADER - CONTENT ||============================== //
 
 export default function HeaderContent() {
-  const downLG = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+  // const downLG = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
   return (
     <>

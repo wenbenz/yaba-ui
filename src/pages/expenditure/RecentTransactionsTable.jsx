@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 // third-party
 import { NumericFormat } from "react-number-format";
 import { useExpenditures } from "../../api/graph";
-import { startOfLastMonth } from "../../utils/dates";
+import {useDateRange} from "../../components/DateRangeProvider";
 
 const headCells = [
   {
@@ -84,10 +84,10 @@ function RecentTransactionsTableHeader({ order, orderBy }) {
 export default function RecentTransactionsTable() {
   const order = "asc";
   const orderBy = "tracking_no";
-
+  const {startDate, endDate} = useDateRange()
   const { loading, error, data } = useExpenditures({
-    since: startOfLastMonth(),
-    until: new Date(),
+    since: startDate,
+    until: endDate,
   });
 
   if (loading) return <p>Loading...</p>;
