@@ -1,15 +1,10 @@
 import { useMemo, useState } from "react";
-
-// material-ui
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-
-// third-party
 import ReactApexChart from "react-apexcharts";
-import { startOfYear } from "../../utils/dates";
 import { useExpenditureAggregate } from "../../api/graph";
+import { useDateRange } from "../../components/DateRangeProvider";
 
-// chart options
 const barChartOptions = {
   chart: {
     type: "bar",
@@ -19,7 +14,6 @@ const barChartOptions = {
   },
   plotOptions: {
     bar: {
-      // columnWidth: '45%',
       borderRadius: 1,
       horizontal: true,
       dataLabels: {
@@ -50,8 +44,7 @@ const barChartOptions = {
     textAnchor: "start",
     offsetX: 0,
     formatter: function (val, opt) {
-      // return "$" + val.toFixed(2)
-      return opt.config.series[opt.seriesIndex].name + ": $" + val.toFixed(0); // + " / $" + budget[opt.dataPointIndex].toFixed(0)
+      return opt.config.series[opt.seriesIndex].name + ": $" + val.toFixed(0);
     },
   },
   grid: {
@@ -70,14 +63,13 @@ const barChartOptions = {
   },
 };
 
-// ==============================|| MONTHLY BAR CHART ||============================== //
-
 export default function TopCategories() {
   const theme = useTheme();
+  const { startDate, endDate } = useDateRange();
 
   const { data } = useExpenditureAggregate({
-    since: startOfYear(),
-    until: new Date(),
+    since: startDate,
+    until: endDate,
     span: "YEAR",
     groupBy: "BUDGET_CATEGORY",
   });
@@ -99,19 +91,19 @@ export default function TopCategories() {
   useMemo(() => {
     if (data) {
       const spendingMap = new Map(
-        data.aggregatedExpenditures.map((expense) => [
-          expense.groupByCategory,
-          expense.amount,
-        ]),
+          data.aggregatedExpenditures.map((expense) => [
+            expense.groupByCategory,
+            expense.amount,
+          ]),
       );
       setSpent(spendingMap);
 
       setCategories(
-        data.aggregatedExpenditures
-          .toSorted((a, b) => a.amount - b.amount)
-          .toReversed()
-          .slice(0, 10)
-          .map((e) => e.groupByCategory),
+          data.aggregatedExpenditures
+              .toSorted((a, b) => a.amount - b.amount)
+              .toReversed()
+              .slice(0, 10)
+              .map((e) => e.groupByCategory),
       );
     }
   }, [data]);
@@ -149,20 +141,20 @@ export default function TopCategories() {
   }, [theme]);
 
   return (
-    <Box id="chart" sx={{ bgcolor: "transparent", pt: 1, pr: 2 }}>
-      <ReactApexChart
-        options={options}
-        series={buildSeries(spent, categories, theme)}
-        type="bar"
-        height={450}
-      />
-    </Box>
+      <Box id="chart" sx={{ bgcolor: "transparent", pt: 1, pr: 2 }}>
+        <ReactApexChart
+            options={options}
+            series={buildSeries(spent, categories, theme)}
+            type="bar"
+            height={450}
+        />
+      </Box>
   );
 }
 
 function buildSeries(spent, categories, theme) {
   let spentSeries = categories.map((category) =>
-    spent.get(category) ? spent.get(category) : 0,
+      spent.get(category) ? spent.get(category) : 0,
   );
 
   return [

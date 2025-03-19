@@ -1,16 +1,7 @@
-// material-ui
-import useMediaQuery from "@mui/material/useMediaQuery";
-
-// project import
-import Profile from "./Profile";
-import MobileSection from "./MobileSection";
-
-// project import
-
 // ==============================|| HEADER - CONTENT ||============================== //
 
 export default function HeaderContent() {
-  const downLG = useMediaQuery((theme) => theme.breakpoints.down("lg"));
+  // const downLG = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
   return (
     <>
@@ -29,8 +20,11 @@ export default function HeaderContent() {
       {/*</IconButton>*/}
 
       {/*<Notification />*/}
-      {!downLG && <Profile />}
-      {downLG && <MobileSection />}
+      {/*{!downLG && <Profile />}*/}
+      {/*{downLG && <MobileSection />}*/}
+      {/*  <DateRangeProvider>*/}
+      {/*      Blah*/}
+      {/*  </DateRangeProvider>*/}
     </>
   );
 }

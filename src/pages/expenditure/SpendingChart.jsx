@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 
 // third-party
 import ReactApexChart from "react-apexcharts";
-import { oneWeekAgo, startOfMonth, startOfYear } from "../../utils/dates";
+import {getTimeSpan} from "../../utils/dates";
 import { useExpenditureAggregate } from "../../api/graph";
 
 // chart options
@@ -39,19 +39,17 @@ const getXCategories = (data) => {
 
 // ==============================|| INCOME AREA CHART ||============================== //
 
-export default function SpendingChart({ slot }) {
+export default function SpendingChart({ startDate, endDate }) {
   const theme = useTheme();
 
   const { secondary } = theme.palette.text;
   const line = theme.palette.divider;
 
   const [options, setOptions] = useState(areaChartOptions);
-  const [start, setStart] = useState(oneWeekAgo());
-  const [span, setSpan] = useState("DAY");
   const { data } = useExpenditureAggregate({
-    since: start,
-    until: new Date(),
-    span: span,
+    since: startDate,
+    until: endDate,
+    span: getTimeSpan(startDate, endDate),
     groupBy: "NONE",
   });
 
@@ -59,7 +57,7 @@ export default function SpendingChart({ slot }) {
   const [series, setSeries] = useState([
     {
       name: "Spending",
-      data: slot === "year" ? new Array(12) : new Array(31),
+      data: [],
     },
   ]);
 
@@ -98,13 +96,6 @@ export default function SpendingChart({ slot }) {
         categories: getXCategories(data),
       },
     }));
-    if (slot === "year") {
-      setStart(startOfYear());
-      setSpan("MONTH");
-    } else {
-      setStart(startOfMonth());
-      setSpan("DAY");
-    }
 
     setSeries([
       {
@@ -112,16 +103,19 @@ export default function SpendingChart({ slot }) {
         data: data && data.aggregatedExpenditures.map((e) => e.amount),
       },
     ]);
-  }, [data, slot]);
+  }, [data]);
 
   return (
-    <ReactApexChart
-      options={options}
-      series={series}
-      type="area"
-      height={450}
-    />
+      <ReactApexChart
+          options={options}
+          series={series}
+          type="area"
+          height={450}
+      />
   );
 }
 
-SpendingChart.propTypes = { slot: PropTypes.string };
+SpendingChart.propTypes = {
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  endDate: PropTypes.instanceOf(Date).isRequired,
+};
