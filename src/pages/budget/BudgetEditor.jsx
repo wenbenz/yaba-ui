@@ -58,7 +58,7 @@ export default function BudgetEditor() {
             <Stack spacing={4} direction="row">
                 <Typography variant="subtitle2">Total Income: </Typography>
                 <Typography variant="subtitle1" color="primary">
-                    ${totalIncome}
+                    ${totalIncome.toFixed(2)}
                 </Typography>
             </Stack>
 
@@ -104,7 +104,7 @@ export default function BudgetEditor() {
             <Stack spacing={4} direction="row">
                 <Typography variant="subtitle2">Total Expenses: </Typography>
                 <Typography variant="subtitle1" color="primary">
-                    ${totalExpenses}
+                    ${totalExpenses.toFixed(2)}
                 </Typography>
             </Stack>
 
@@ -114,7 +114,7 @@ export default function BudgetEditor() {
                     variant="subtitle1"
                     color={totalIncome >= totalExpenses ? "primary" : "error"}
                 >
-                    ${totalIncome - totalExpenses}
+                    ${(totalIncome - totalExpenses).toFixed(2)}
                 </Typography>
             </Stack>
 

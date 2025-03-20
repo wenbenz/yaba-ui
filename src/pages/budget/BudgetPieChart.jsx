@@ -17,8 +17,9 @@ export default function BudgetPieChart() {
     return <Loader />;
   }
 
-  const labels = budget.expenses.map((e) => e.category);
-  const series = budget.expenses.map((e) => e.amount);
+  const expenses = budget.expenses.toSorted((a, b) => b.amount - a.amount);
+  const labels = expenses.map((e) => e.category);
+  const series = expenses.map((e) => e.amount);
 
   const options = {
     chart: {
