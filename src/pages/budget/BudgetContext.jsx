@@ -46,7 +46,7 @@ export function BudgetProvider({ children }) {
         if (hasBudget) {
             setBudget(data.budgets[0]);
         }
-    }, [data]);
+    }, [data, hasBudget]);
 
     if (loading) {
         return <Loader />;

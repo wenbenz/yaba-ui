@@ -4,8 +4,6 @@ import MainCard from "../../components/MainCard";
 import Box from "@mui/material/Box";
 import BudgetPieChart from "./BudgetPieChart";
 import BudgetEditor from "./BudgetEditor";
-import { clone } from "lodash";
-import {useBudget} from "../../api/graph";
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 export default function ManageBudget() {
