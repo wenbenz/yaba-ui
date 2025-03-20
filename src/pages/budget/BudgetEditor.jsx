@@ -44,8 +44,9 @@ export default function BudgetEditor() {
                             aria-label="add"
                             size="small"
                             onClick={() => {
-                                budget.incomes.push({ source: "", amount: 0 });
-                                setBudget(budget);
+                                var b = cloneDeep(budget);
+                                b.incomes.push({ source: "", amount: 0 });
+                                setBudget(b);
                             }}
                         >
                             <PlusOutlined style={{ fontSize: "1.3rem" }} />
@@ -77,12 +78,13 @@ export default function BudgetEditor() {
                             aria-label="add"
                             size="small"
                             onClick={() => {
-                                budget.expenses.push({
+                                var b = cloneDeep(budget);
+                                b.expenses.push({
                                     category: "",
                                     amount: 0,
                                     isFixed: false,
                                 });
-                                setBudget(budget);
+                                setBudget(b);
                             }}
                         >
                             <PlusOutlined style={{ fontSize: "1.3rem" }} />

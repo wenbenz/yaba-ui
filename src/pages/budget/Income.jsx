@@ -70,8 +70,9 @@ function Income({ index }) {
                     aria-label="remove"
                     size="small"
                     onClick={() => {
-                        budget.incomes.splice(index, 1);
-                        setBudget(budget);
+                        var b = cloneDeep(budget);
+                        b.incomes.splice(index, 1);
+                        setBudget(b);
                     }}
                 >
                     <DeleteOutlined style={{ fontSize: "1.3rem" }} />
