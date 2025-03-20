@@ -3,12 +3,20 @@ import Box from "@mui/material/Box";
 
 // third-party
 import ReactApexChart from "react-apexcharts";
+import Loader from "../../components/Loader";
+import {useBudget} from "./BudgetContext";
 
 // chart options
 // ==============================|| MONTHLY BAR CHART ||============================== //
 
-export default function BudgetPieChart({ budget }) {
+export default function BudgetPieChart() {
   // const theme = useTheme();
+  const { budget } = useBudget();
+
+  if (!budget) {
+    return <Loader />;
+  }
+
   const labels = budget.expenses.map((e) => e.category);
   const series = budget.expenses.map((e) => e.amount);
 

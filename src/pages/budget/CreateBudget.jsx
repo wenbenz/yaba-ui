@@ -1,5 +1,5 @@
 import { Alert } from "@mui/lab";
-import { QuestionCircleFilled } from "@ant-design/icons";
+import {ExclamationCircleFilled} from "@ant-design/icons";
 import { useCreateBudget } from "../../api/graph";
 import { useEffect } from "react";
 
@@ -11,7 +11,7 @@ export default function CreateBudget({ budget }) {
   });
 
   return (
-    <Alert color="primary" icon={<QuestionCircleFilled />}>
+    <Alert color="primary" icon={<ExclamationCircleFilled />}>
       No existing budget found. New budget created from template.
     </Alert>
   );
