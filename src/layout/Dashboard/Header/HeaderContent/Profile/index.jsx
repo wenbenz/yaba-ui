@@ -40,12 +40,12 @@ function TabPanel({ children, value, index, ...other }) {
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `profile-tab-${index}`,
-    "aria-controls": `profile-tabpanel-${index}`,
-  };
-}
+// function a11yProps(index) {
+//   return {
+//     id: `profile-tab-${index}`,
+//     "aria-controls": `profile-tabpanel-${index}`,
+//   };
+// }
 
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
@@ -65,11 +65,11 @@ export default function Profile() {
     setOpen(false);
   };
 
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
   const iconBackColorOpen = "grey.100";
 
