@@ -11,24 +11,19 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Popper from "@mui/material/Popper";
 import Stack from "@mui/material/Stack";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 // project import
-import ProfileTab from "./ProfileTab";
-import SettingTab from "./SettingTab";
 import Avatar from "components/@extended/Avatar";
 import MainCard from "components/MainCard";
 import Transitions from "components/@extended/Transitions";
 
 // assets
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
-import SettingOutlined from "@ant-design/icons/SettingOutlined";
-import UserOutlined from "@ant-design/icons/UserOutlined";
 import avatar1 from "assets/images/users/avatar-1.png";
+import axios from "axios";
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -105,7 +100,7 @@ export default function Profile() {
         >
           <Avatar alt="profile user" src={avatar1} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: "capitalize" }}>
-            John Doe
+            Account
           </Typography>
         </Stack>
       </ButtonBase>
@@ -162,10 +157,10 @@ export default function Profile() {
                             sx={{ width: 32, height: 32 }}
                           />
                           <Stack>
-                            <Typography variant="h6">John Doe</Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              UI/UX Designer
-                            </Typography>
+                            <Typography variant="h6">My Account</Typography>
+                            {/*<Typography variant="body2" color="text.secondary">*/}
+                            {/*  UI/UX Designer*/}
+                            {/*</Typography>*/}
                           </Stack>
                         </Stack>
                       </Grid>
@@ -174,6 +169,10 @@ export default function Profile() {
                           <IconButton
                             size="large"
                             sx={{ color: "text.primary" }}
+                            // href="/"
+                            onClick={() => {
+                                axios.post('/logout').then(() => window.location = "/");
+                            }}
                           >
                             <LogoutOutlined />
                           </IconButton>
@@ -182,53 +181,53 @@ export default function Profile() {
                     </Grid>
                   </CardContent>
 
-                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs
-                      variant="fullWidth"
-                      value={value}
-                      onChange={handleChange}
-                      aria-label="profile tabs"
-                    >
-                      <Tab
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          textTransform: "capitalize",
-                        }}
-                        icon={
-                          <UserOutlined
-                            style={{ marginBottom: 0, marginRight: "10px" }}
-                          />
-                        }
-                        label="Profile"
-                        {...a11yProps(0)}
-                      />
-                      <Tab
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          textTransform: "capitalize",
-                        }}
-                        icon={
-                          <SettingOutlined
-                            style={{ marginBottom: 0, marginRight: "10px" }}
-                          />
-                        }
-                        label="Setting"
-                        {...a11yProps(1)}
-                      />
-                    </Tabs>
-                  </Box>
-                  <TabPanel value={value} index={0} dir={theme.direction}>
-                    <ProfileTab />
-                  </TabPanel>
-                  <TabPanel value={value} index={1} dir={theme.direction}>
-                    <SettingTab />
-                  </TabPanel>
+                  {/*<Box sx={{ borderBottom: 1, borderColor: "divider" }}>*/}
+                    {/*<Tabs*/}
+                    {/*  variant="fullWidth"*/}
+                    {/*  value={value}*/}
+                    {/*  onChange={handleChange}*/}
+                    {/*  aria-label="profile tabs"*/}
+                    {/*>*/}
+                    {/*  <Tab*/}
+                    {/*    sx={{*/}
+                    {/*      display: "flex",*/}
+                    {/*      flexDirection: "row",*/}
+                    {/*      justifyContent: "center",*/}
+                    {/*      alignItems: "center",*/}
+                    {/*      textTransform: "capitalize",*/}
+                    {/*    }}*/}
+                    {/*    icon={*/}
+                    {/*      <UserOutlined*/}
+                    {/*        style={{ marginBottom: 0, marginRight: "10px" }}*/}
+                    {/*      />*/}
+                    {/*    }*/}
+                    {/*    label="Profile"*/}
+                    {/*    {...a11yProps(0)}*/}
+                    {/*  />*/}
+                    {/*  <Tab*/}
+                    {/*    sx={{*/}
+                    {/*      display: "flex",*/}
+                    {/*      flexDirection: "row",*/}
+                    {/*      justifyContent: "center",*/}
+                    {/*      alignItems: "center",*/}
+                    {/*      textTransform: "capitalize",*/}
+                    {/*    }}*/}
+                    {/*    icon={*/}
+                    {/*      <SettingOutlined*/}
+                    {/*        style={{ marginBottom: 0, marginRight: "10px" }}*/}
+                    {/*      />*/}
+                    {/*    }*/}
+                    {/*    label="Setting"*/}
+                    {/*    {...a11yProps(1)}*/}
+                    {/*  />*/}
+                    {/*</Tabs>*/}
+                  {/*</Box>*/}
+                  {/*<TabPanel value={value} index={0} dir={theme.direction}>*/}
+                  {/*  <ProfileTab />*/}
+                  {/*</TabPanel>*/}
+                  {/*<TabPanel value={value} index={1} dir={theme.direction}>*/}
+                  {/*  <SettingTab />*/}
+                  {/*</TabPanel>*/}
                 </MainCard>
               </ClickAwayListener>
             </Paper>
