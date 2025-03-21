@@ -1,5 +1,7 @@
 // ==============================|| HEADER - CONTENT ||============================== //
 
+import Profile from "./Profile";
+
 export default function HeaderContent() {
   // const downLG = useMediaQuery((theme) => theme.breakpoints.down("lg"));
 
@@ -20,11 +22,9 @@ export default function HeaderContent() {
       {/*</IconButton>*/}
 
       {/*<Notification />*/}
+      <Profile />
       {/*{!downLG && <Profile />}*/}
       {/*{downLG && <MobileSection />}*/}
-      {/*  <DateRangeProvider>*/}
-      {/*      Blah*/}
-      {/*  </DateRangeProvider>*/}
     </>
   );
 }

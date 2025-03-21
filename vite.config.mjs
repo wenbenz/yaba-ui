@@ -6,6 +6,8 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 
 // ----------------------------------------------------------------------
 
+const serverPort = 9222;
+
 export default defineConfig({
   plugins: [react(), jsconfigPaths()],
   // https://github.com/jpuri/react-draft-wysiwyg/issues/1317
@@ -33,19 +35,23 @@ export default defineConfig({
     // rewrite urls
     proxy: {
       '/graphql': {
-        target: 'http://localhost:9222/',
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
       },
       '/upload': {
-        target: 'http://localhost:9222/',
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
       },
       '/register': {
-        target: 'http://localhost:9222/',
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
       },
       '/login': {
-        target: 'http://localhost:9222/',
+        target: 'http://localhost:' + serverPort,
+        changeOrigin: true,
+      },
+      '/logout': {
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
       }
     }
