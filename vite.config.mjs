@@ -6,7 +6,7 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 
 // ----------------------------------------------------------------------
 
-const serverPort = 9222;
+const serverUrl = 'http://localhost:9222';
 
 export default defineConfig({
   plugins: [react(), jsconfigPaths()],
@@ -35,23 +35,23 @@ export default defineConfig({
     // rewrite urls
     proxy: {
       '/graphql': {
-        target: 'http://localhost:' + serverPort,
+        target: serverUrl,
         changeOrigin: true,
       },
       '/upload': {
-        target: 'http://localhost:' + serverPort,
+        target: serverUrl,
         changeOrigin: true,
       },
       '/register': {
-        target: 'http://localhost:' + serverPort,
+        target: serverUrl,
         changeOrigin: true,
       },
       '/login': {
-        target: 'http://localhost:' + serverPort,
+        target: serverUrl,
         changeOrigin: true,
       },
       '/logout': {
-        target: 'http://localhost:' + serverPort,
+        target: serverUrl,
         changeOrigin: true,
       }
     }

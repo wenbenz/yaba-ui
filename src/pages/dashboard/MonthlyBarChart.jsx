@@ -11,7 +11,9 @@ import {
   startOfLastMonth,
   startOfMonth,
 } from "../../utils/dates";
-import { useBudgets, useExpenditureAggregate } from "../../api/graph";
+import { useExpenditureAggregate } from "../../api/graph";
+import {expenseIdToName} from "../../utils/expense";
+import {useBudget} from "../budget/BudgetContext";
 
 // chart options
 const barChartOptions = {
@@ -79,7 +81,7 @@ const barChartOptions = {
 export default function MonthlyBarChart({ slot }) {
   const theme = useTheme();
 
-  const budgets = useBudgets(1);
+  const { budget } = useBudget();
 
   const { data } = useExpenditureAggregate({
     since: slot === "this" ? startOfMonth() : startOfLastMonth(),
@@ -95,17 +97,10 @@ export default function MonthlyBarChart({ slot }) {
 
   useMemo(() => {
     // If the user has (at least) one budget
-    if (
-      budgets &&
-      budgets.data &&
-      budgets.data.budgets &&
-      budgets.data.budgets.length > 0
-    ) {
-      const budget = budgets.data.budgets[0];
-
+    if (budget?.expenses) {
       // expenses
       const expensesMap = new Map(
-        budget.expenses.map((expense) => [expense.category, expense.amount]),
+        budget.expenses.map((expense) => [expense.id, expense.amount]),
       );
       setBudgeted(expensesMap);
 
@@ -115,28 +110,32 @@ export default function MonthlyBarChart({ slot }) {
       let slackCategory = "";
       budget.expenses.forEach((expense) => {
         if (expense.isFixed) {
-          fixedCategories.push(expense.category);
+          fixedCategories.push(expense.id);
         } else if (expense.isSlack) {
-          slackCategory = expense.category;
+          slackCategory = expense.id;
         } else {
-          variableCategories.push(expense.category);
+          variableCategories.push(expense.id);
         }
       });
+
+      // Select only variable and slack categories. Ignore fixed.
       setCategories(
-        variableCategories.concat(fixedCategories).concat(slackCategory),
+        variableCategories.concat(slackCategory),
       );
     }
-  }, [budgets]);
+  }, [budget]);
 
   useMemo(() => {
-    setOptions((prevState) => ({
-      ...prevState,
-      xaxis: {
-        ...prevState.xaxis,
-        categories: categories,
-      },
-    }));
-  }, [categories]);
+    if (budget?.expenses) {
+      setOptions((prevState) => ({
+        ...prevState,
+        xaxis: {
+          ...prevState.xaxis,
+          categories: categories.map((category) => expenseIdToName(budget, category)),
+        },
+      }))
+    };
+  }, [budget, categories]);
 
   useMemo(() => {
     if (data) {
@@ -198,7 +197,8 @@ function buildSeries(spent, budgeted, categories, theme) {
   const budgetedSeries = categories.map((category) =>
     budgeted.get(category) ? budgeted.get(category) : 0,
   );
-  let spentSeries = categories.map((category) =>
+
+  const spentSeries = categories.map((category) =>
     spent.get(category) ? spent.get(category) : 0,
   );
 

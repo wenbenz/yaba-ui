@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import ReactApexChart from "react-apexcharts";
 import { useExpenditureAggregate } from "../../api/graph";
 import { useDateRange } from "../../components/DateRangeProvider";
+import {useBudget} from "../budget/BudgetContext";
+import {expenseIdToName} from "../../utils/expense";
 
 const barChartOptions = {
   chart: {
@@ -53,7 +55,7 @@ const barChartOptions = {
   legend: {
     show: true,
     showForSingleSeries: true,
-    customLegendItems: ["spent", "budgeted"],
+    // customLegendItems: ["spent"],
   },
   tooltip: {
     enabled: true,
@@ -67,6 +69,7 @@ export default function TopCategories() {
   const theme = useTheme();
   const { startDate, endDate } = useDateRange();
 
+  const { budget } = useBudget();
   const { data } = useExpenditureAggregate({
     since: startDate,
     until: endDate,
@@ -89,24 +92,22 @@ export default function TopCategories() {
   }, [categories]);
 
   useMemo(() => {
-    if (data) {
+    if (data && budget) {
       const spendingMap = new Map(
-          data.aggregatedExpenditures.map((expense) => [
-            expense.groupByCategory,
-            expense.amount,
+          data.aggregatedExpenditures.map((e) => [
+            expenseIdToName(budget, e.groupByCategory),
+            e.amount,
           ]),
       );
       setSpent(spendingMap);
 
-      setCategories(
-          data.aggregatedExpenditures
+      setCategories(data.aggregatedExpenditures
               .toSorted((a, b) => a.amount - b.amount)
               .toReversed()
               .slice(0, 10)
-              .map((e) => e.groupByCategory),
-      );
+              .map((e) => expenseIdToName(budget, e.groupByCategory)));
     }
-  }, [data]);
+  }, [data, budget]);
 
   useMemo(() => {
     setOptions((prevState) => ({
