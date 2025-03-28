@@ -75,6 +75,7 @@ const GET_BUDGET_BY_ID = gql`
         amount
       }
       expenses {
+        id
         category
         amount
         isFixed
@@ -95,6 +96,7 @@ const LIST_BUDGETS = gql`
         amount
       }
       expenses {
+        id
         category
         amount
         isFixed
@@ -160,6 +162,7 @@ const CREATE_BUDGET = gql`
         amount
       }
       expenses {
+        id
         category
         amount
         isFixed
@@ -186,6 +189,7 @@ const UPDATE_BUDGET = gql`
         amount
       }
       expenses {
+        id
         category
         amount
         isFixed

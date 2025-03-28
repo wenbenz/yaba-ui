@@ -14,6 +14,7 @@ import { useMemo, useState } from "react";
 import { useBudgets, useExpenditureAggregate } from "../../api/graph";
 import { startOfLastMonth } from "../../utils/dates";
 import MonthlyStat from "./MonthlyStat";
+import {BudgetProvider} from "../budget/BudgetContext";
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
@@ -92,81 +93,83 @@ export default function DashboardDefault() {
   }, [groupedMonthlySpending, budgets.data]);
 
   return (
-    <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-      {/* row 1 */}
-      <Grid item xs={12} sx={{ mb: -2.25 }}>
-        <Typography variant="h5">Overview</Typography>
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <MonthlyStat
-          title="Total Monthly Expenditure"
-          prev={totalSpent[0]}
-          current={totalSpent[1]}
-          format={(v) => "$" + Math.abs(v).toFixed(2)}
-          positiveMessage="Your spending increased by"
-          negativeMessage="Your spendig decreased by"
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <MonthlyStat
-          title="Cashflow"
-          prev={cashflow[0]}
-          current={cashflow[1]}
-          format={(v) => "$" + v.toFixed(2)}
-          positiveMessage="Your cashflow increased by"
-          negativeMessage="Your casfhlow decreased by"
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={4}>
-        <MonthlyStat
-          title="Budget Adherence"
-          current={adherance}
-          showDiff={false}
-          format={(v) => v.toFixed(0) * 100 + "%"}
-          positiveMessage="You stuck to your budget"
-        />
-      </Grid>
-      {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
-      {/*  <MonthlyStat*/}
-      {/*    title="Rewards"*/}
-      {/*    current={0}*/}
-      {/*    showDiff={false}*/}
-      {/*    format={(v) => "$" + Math.abs(v).toFixed(2)}*/}
-      {/*    positiveMessage="This is not yet implemnted."*/}
-      {/*  />*/}
-      {/*</Grid>*/}
-
-      {/* row 2 */}
-      <Grid item xs={12}>
-        <SpendingCard />
-      </Grid>
-
-      {/* row 3 */}
-      <Grid item xs={12}>
-        <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5">Import Transactions</Typography>
+      <BudgetProvider>
+        <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+          {/* row 1 */}
+          <Grid item xs={12} sx={{ mb: -2.25 }}>
+            <Typography variant="h5">Overview</Typography>
           </Grid>
-          <Grid item />
-        </Grid>
-        <MainCard
-          sx={{ mt: 2 }}
-          title="Upload CSV"
-          secondary={
-            <Link color="primary" href="https://raw.githubusercontent.com/wenbenz/yaba/refs/heads/main/internal/import/testdata/all_cols.csv">
-              CSV Template
-            </Link>
-          }
-        >
-          <Stack spacing={3}>
-            <Typography variant="caption" color="text.secondary" gutterBottom>
-              Import transactions from a CSV file.
-            </Typography>
+          <Grid item xs={12} sm={6} md={4}>
+            <MonthlyStat
+              title="Total Monthly Expenditure"
+              prev={totalSpent[0]}
+              current={totalSpent[1]}
+              format={(v) => "$" + Math.abs(v).toFixed(2)}
+              positiveMessage="Your spending increased by"
+              negativeMessage="Your spendig decreased by"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <MonthlyStat
+              title="Cashflow"
+              prev={cashflow[0]}
+              current={cashflow[1]}
+              format={(v) => "$" + v.toFixed(2)}
+              positiveMessage="Your cashflow increased by"
+              negativeMessage="Your casfhlow decreased by"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6} md={4}>
+            <MonthlyStat
+              title="Budget Adherence"
+              current={adherance}
+              showDiff={false}
+              format={(v) => v.toFixed(0) * 100 + "%"}
+              positiveMessage="You stuck to your budget"
+            />
+          </Grid>
+          {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
+          {/*  <MonthlyStat*/}
+          {/*    title="Rewards"*/}
+          {/*    current={0}*/}
+          {/*    showDiff={false}*/}
+          {/*    format={(v) => "$" + Math.abs(v).toFixed(2)}*/}
+          {/*    positiveMessage="This is not yet implemnted."*/}
+          {/*  />*/}
+          {/*</Grid>*/}
 
-            <FileUpload />
-          </Stack>
-        </MainCard>
-      </Grid>
-    </Grid>
+          {/* row 2 */}
+          <Grid item xs={12}>
+            <SpendingCard />
+          </Grid>
+
+          {/* row 3 */}
+          <Grid item xs={12}>
+            <Grid container alignItems="center" justifyContent="space-between">
+              <Grid item>
+                <Typography variant="h5">Import Transactions</Typography>
+              </Grid>
+              <Grid item />
+            </Grid>
+            <MainCard
+              sx={{ mt: 2 }}
+              title="Upload CSV"
+              secondary={
+                <Link color="primary" href="https://raw.githubusercontent.com/wenbenz/yaba/refs/heads/main/internal/import/testdata/all_cols.csv">
+                  CSV Template
+                </Link>
+              }
+            >
+              <Stack spacing={3}>
+                <Typography variant="caption" color="text.secondary" gutterBottom>
+                  Import transactions from a CSV file.
+                </Typography>
+
+                <FileUpload />
+              </Stack>
+            </MainCard>
+          </Grid>
+        </Grid>
+      </BudgetProvider>
   );
 }
