@@ -1,15 +1,6 @@
-// material-ui
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
-// project import
-import MainCard from "components/MainCard";
 import SpendingCard from "./SpendingCard";
-
-// assets
-import FileUpload from "components/FileUpload";
-import { Link } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useBudgets, useExpenditureAggregate } from "../../api/graph";
 import { startOfLastMonth } from "../../utils/dates";
@@ -22,7 +13,6 @@ export default function DashboardDefault() {
   const [totalSpent, setTotalSpent] = useState([0, 0]);
   const [adherance, setAdherance] = useState(1);
   const [cashflow, setCashflow] = useState([0, 0]);
-  // const [rewards, setRewards] = useState(0);
 
   const monthlySpending = useExpenditureAggregate({
     since: startOfLastMonth(),
@@ -143,32 +133,6 @@ export default function DashboardDefault() {
             <SpendingCard />
           </Grid>
 
-          {/* row 3 */}
-          <Grid item xs={12}>
-            <Grid container alignItems="center" justifyContent="space-between">
-              <Grid item>
-                <Typography variant="h5">Import Transactions</Typography>
-              </Grid>
-              <Grid item />
-            </Grid>
-            <MainCard
-              sx={{ mt: 2 }}
-              title="Upload CSV"
-              secondary={
-                <Link color="primary" href="https://raw.githubusercontent.com/wenbenz/yaba/refs/heads/main/internal/import/testdata/all_cols.csv">
-                  CSV Template
-                </Link>
-              }
-            >
-              <Stack spacing={3}>
-                <Typography variant="caption" color="text.secondary" gutterBottom>
-                  Import transactions from a CSV file.
-                </Typography>
-
-                <FileUpload />
-              </Stack>
-            </MainCard>
-          </Grid>
         </Grid>
       </BudgetProvider>
   );
