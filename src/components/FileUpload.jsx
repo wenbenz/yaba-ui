@@ -25,7 +25,7 @@ const FileUpload = () => {
     if (selectedFiles.length > 0) {
       axios
         .postForm(
-          "/upload",
+          "/api/upload",
           {
             expenditures: selectedFiles,
           },

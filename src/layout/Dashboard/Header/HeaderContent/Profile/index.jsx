@@ -171,7 +171,7 @@ export default function Profile() {
                             sx={{ color: "text.primary" }}
                             // href="/"
                             onClick={() => {
-                                axios.post('/logout').then(() => window.location = "/");
+                                axios.post('/api/logout').then(() => window.location = "/");
                             }}
                           >
                             <LogoutOutlined />

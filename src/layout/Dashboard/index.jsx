@@ -17,21 +17,57 @@ import { handlerDrawerOpen, useGetMenuMaster } from "api/menu";
 
 // apollo client
 import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
+    ApolloClient,
+    ApolloProvider,
+    createHttpLink, from,
+    InMemoryCache,
 } from "@apollo/client";
+import axios from "axios";
+import {onError} from "@apollo/client/link/error";
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-const client = new ApolloClient({
-  link: createHttpLink({
+const httpLink = createHttpLink({
     uri: "/graphql",
     credentials: "include",
-  }),
-  cache: new InMemoryCache(),
 });
+
+const errorLink = onError(({ networkError, graphQLErrors }) => {
+    if (networkError?.statusCode === 401) {
+        console.error("Authentication error:", networkError);
+        window.location.href = "/login";
+    }
+    if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, extensions }) => {
+            if (extensions?.code === 'UNAUTHENTICATED') {
+                console.error("GraphQL authentication error:", message);
+                window.location.href = "/login";
+            }
+        });
+    }
+});
+
+const client = new ApolloClient({
+    link: from([errorLink, httpLink]),
+    cache: new InMemoryCache(),
+});
+
+// Set up axios interceptors to handle 401 errors
+// eslint-disable-next-line no-unused-expressions
+axios.interceptors.response.use(
+    (response) => {
+        if (response.status === 401) {
+        window.location.href = "/login";
+        }
+        return response;
+    },
+    (error) => {
+        if (error.response.status === 401) {
+        window.location.href = "/login";
+        }
+        return Promise.reject(error);
+    }
+)
 
 export default function DashboardLayout() {
   const { menuMasterLoading } = useGetMenuMaster();

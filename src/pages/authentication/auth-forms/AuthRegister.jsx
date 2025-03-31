@@ -64,7 +64,7 @@ export default function AuthRegister() {
         })}
         onSubmit={(values, actions) =>
           axios
-            .post("/register", values, {
+            .post("/api/register", values, {
               headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
               },
