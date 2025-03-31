@@ -6,7 +6,7 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 
 // ----------------------------------------------------------------------
 
-const serverUrl = 'http://localhost:9222';
+const serverUrl = 'http://localhost';
 
 export default defineConfig({
   plugins: [react(), jsconfigPaths()],
@@ -38,22 +38,10 @@ export default defineConfig({
         target: serverUrl,
         changeOrigin: true,
       },
-      '/upload': {
+      '/api': {
         target: serverUrl,
         changeOrigin: true,
       },
-      '/register': {
-        target: serverUrl,
-        changeOrigin: true,
-      },
-      '/login': {
-        target: serverUrl,
-        changeOrigin: true,
-      },
-      '/logout': {
-        target: serverUrl,
-        changeOrigin: true,
-      }
     }
   },
   preview: {

@@ -51,7 +51,7 @@ export default function AuthLogin({ isDemo = false }) {
         })}
         onSubmit={(values, actions) =>
           axios
-            .post("/login", values, {
+            .post("/api/login", values, {
               headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
               },
