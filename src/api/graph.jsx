@@ -64,6 +64,15 @@ export function useUpdateBudget({ id, name, incomes, expenses }) {
   });
 }
 
+export function useCreateExpenditures(expenditures) {
+  return useMutation(UPSERT_EXPENDITURE, {
+    variables: {
+      expenditures,
+    },
+    refetchQueries: [RECENT_EXPENDITURES],
+  });
+}
+
 const GET_BUDGET_BY_ID = gql`
   query Budget($id: ID!) {
     budget(id: $id) {
@@ -198,3 +207,9 @@ const UPDATE_BUDGET = gql`
     }
   }
 `;
+
+const UPSERT_EXPENDITURE = gql`
+  mutation CreateExpenditures($expenditures: [ExpenditureInput]!) {
+    createExpenditures(input: $expenditures)
+  }
+`

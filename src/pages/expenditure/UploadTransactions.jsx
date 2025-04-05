@@ -14,6 +14,8 @@ import IconButton from '@mui/material/IconButton';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useBudget } from '../budget/BudgetContext';
 import { UploadOutlined } from '@ant-design/icons';
+import {useCreateExpenditures} from "../../api/graph";
+import dayjs from "dayjs";
 
 export default function AddTransactionDialog({ open, onClose }) {
   const { budget } = useBudget();
@@ -28,65 +30,69 @@ export default function AddTransactionDialog({ open, onClose }) {
     source: 'user'
   }]);
   const fileInputRef = useRef(null);
+  const [createExpenditures] = useCreateExpenditures(transactions);
 
     const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const text = e.target.result;
+        const lines = text.split('\n');
+        const headers = lines[0].toLowerCase().split(',');
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const text = e.target.result;
-            const lines = text.split('\n');
-            const headers = lines[0].toLowerCase().split(',');
+        const newTransactions = lines.slice(1)
+            .filter(line => line.trim())
+            .map(line => {
+                const values = line.split(',');
+                const transaction = {
+                    amount: '',
+                    date: new Date().toISOString().split('T')[0],
+                    name: '',
+                    method: '',
+                    budget_category: '',
+                    reward_category: '',
+                    comment: '',
+                    source: file.name,
+                };
 
-            const newTransactions = lines.slice(1)
-                .filter(line => line.trim())
-                .map(line => {
-                    const values = line.split(',');
-                    const transaction = {
-                        amount: '',
-                        date: new Date().toISOString().split('T')[0],
-                        name: '',
-                        method: '',
-                        budget_category: '',
-                        reward_category: '',
-                        comment: '',
-                        source: 'user'
-                    };
-
-                    headers.forEach((header, index) => {
-                        const value = values[index]?.trim();
-                        if (value) {
-                            switch (header.trim()) {
-                                case 'amount':
-                                    transaction.amount = parseFloat(value) || '';
-                                    break;
-                                case 'date':
-                                    transaction.date = value;
-                                    break;
-                                case 'name':
-                                    transaction.name = value;
-                                    break;
-                                case 'method':
-                                    transaction.method = value.toLowerCase();
-                                    break;
-                                case 'budget_category':
-                                    transaction.budget_category = value;
-                                    break;
-                                case 'reward_category':
-                                    transaction.reward_category = value.toLowerCase();
-                                    break;
-                                case 'comment':
-                                    transaction.comment = value;
-                                    break;
-                            }
+                headers.forEach((header, index) => {
+                    const value = values[index]?.trim();
+                    if (value) {
+                        switch (header.trim()) {
+                            case 'amount':
+                                transaction.amount = parseFloat(value) || '';
+                                break;
+                            case 'date':
+                                transaction.date = dayjs(value).toISOString().split('T')[0];
+                                break;
+                            case 'name':
+                            case 'description':
+                                transaction.name = value;
+                                break;
+                            case 'method':
+                                transaction.method = value.toLowerCase();
+                                break;
+                            case 'budget_category':
+                                transaction.budget_category = value;
+                                break;
+                            case 'reward_category':
+                                transaction.reward_category = value.toLowerCase();
+                                break;
+                            case 'comment':
+                                transaction.comment = value;
+                                break;
+                            default:
+                                console.log("Header not valid: " + header);
                         }
-                    });
-                    return transaction;
+                    }
                 });
+                return transaction;
+            });
 
             setTransactions(newTransactions);
         };
+
         reader.readAsText(file);
         event.target.value = null;
     };
@@ -117,9 +123,33 @@ export default function AddTransactionDialog({ open, onClose }) {
     setTransactions(transactions.filter((_, i) => i !== index));
   };
 
+  const clearTransactions = () => {
+      setTransactions([{
+          amount: '',
+          date: new Date().toISOString().split('T')[0],
+          name: '',
+          method: '',
+          budget_category: '',
+          reward_category: '',
+          comment: '',
+          source: 'user'
+      }]);
+  };
+
+  const handleClose = () => {
+      clearTransactions();
+      onClose();
+  };
+
   const handleSubmit = () => {
-    // TODO: Add mutation to save transactions
-    onClose();
+      let x = createExpenditures({ variables: { expenditures: transactions } });
+      x.catch(
+            (e) => {
+                console.log(e)
+                alert("Error: " + e.message)
+            }
+      )
+      handleClose();
   };
 
   return (
@@ -187,10 +217,17 @@ export default function AddTransactionDialog({ open, onClose }) {
                 onChange={(e) => handleChange(index, 'reward_category', e.target.value)}
                 label="Reward Category"
               >
-                <MenuItem value="dining">Dining</MenuItem>
-                <MenuItem value="grocery">Grocery</MenuItem>
-                <MenuItem value="travel">Travel</MenuItem>
-                <MenuItem value="other">Other</MenuItem>
+                  <MenuItem value="">None</MenuItem>
+                  <MenuItem value="DRUG_STORE">Drug Store</MenuItem>
+                  <MenuItem value="ENTERTAINMENT">Entertainment</MenuItem>
+                  <MenuItem value="FURNITURE">Furniture</MenuItem>
+                  <MenuItem value="GAS">Gas</MenuItem>
+                  <MenuItem value="GROCERY">Grocery</MenuItem>
+                  <MenuItem value="HOME_IMPROVEMENT">Home Improvement</MenuItem>
+                  <MenuItem value="HOTEL">Hotel</MenuItem>
+                  <MenuItem value="PUBLIC_TRANSPORTATION">Public Transportation</MenuItem>
+                  <MenuItem value="RECURRING_BILL">Recurring Bill</MenuItem>
+                  <MenuItem value="RESTAURANT">Restaurant</MenuItem>
               </Select>
             </FormControl>
             <TextField
@@ -230,8 +267,14 @@ export default function AddTransactionDialog({ open, onClose }) {
         >
           Add Row
         </Button>
+          <Button
+              color="error"
+              onClick={clearTransactions}
+          >
+              Clear All
+          </Button>
         <Stack direction="row" spacing={1}>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={handleClose}>Cancel</Button>
           <Button onClick={handleSubmit} variant="contained">Save</Button>
         </Stack>
       </DialogActions>
