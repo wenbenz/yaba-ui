@@ -181,19 +181,13 @@ export default function AddTransactionDialog({ open, onClose }) {
               onChange={(e) => handleChange(index, 'name', e.target.value)}
               sx={{ width: '15%' }}
             />
-            <FormControl sx={{ width: '12%' }}>
-              <InputLabel>Method</InputLabel>
-              <Select
+            <TextField
                 name="method"
+                label="Method"
                 value={transaction.method}
                 onChange={(e) => handleChange(index, 'method', e.target.value)}
-                label="Method"
-              >
-                <MenuItem value="cash">Cash</MenuItem>
-                <MenuItem value="credit">Credit</MenuItem>
-                <MenuItem value="debit">Debit</MenuItem>
-              </Select>
-            </FormControl>
+                sx={{ width: '12%' }}
+            />
             <FormControl sx={{ width: '15%' }}>
               <InputLabel>Budget Category</InputLabel>
               <Select
