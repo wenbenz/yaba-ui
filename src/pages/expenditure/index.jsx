@@ -10,14 +10,18 @@ import SpendingCard from "./SpendingCard";
 import RecentTransactionsTable from "./RecentTransactionsTable";
 
 // assets
-import FileUpload from "components/FileUpload";
-import { Link } from "@mui/material";
 import {DateRangeProvider} from "../../components/DateRangeProvider";
 import {BudgetProvider} from "../budget/BudgetContext";
+import Button from "@mui/material/Button";
+import {PlusCircleFilled} from "@ant-design/icons";
+import {useState} from "react";
+import AddTransactionDialog from "./UploadTransactions";
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 
 export default function ExpenditureDashboard() {
+  const [openDialog, setOpenDialog] = useState(false);
+
   return (
       <DateRangeProvider>
         <BudgetProvider>
@@ -34,40 +38,33 @@ export default function ExpenditureDashboard() {
             </Grid>
 
             {/* row 2 */}
-            <Grid item xs={12} md={10} lg={8}>
+            <Grid item xs={12}>
               <Grid container alignItems="center" justifyContent="space-between">
                 <Grid item>
                   <Typography variant="h5">Recent Transactions</Typography>
                 </Grid>
-                <Grid item/>
+                <Grid item>
+                  <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setOpenDialog(true)}
+                      mt={2}
+                  >
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <PlusCircleFilled />
+                      <Typography>
+                        Add new transactions
+                      </Typography>
+                    </Stack>
+                  </Button>
+                  <AddTransactionDialog
+                      open={openDialog}
+                      onClose={() => setOpenDialog(false)}
+                  />
+                </Grid>
               </Grid>
               <MainCard sx={{mt: 2}} content={false}>
                 <RecentTransactionsTable/>
-              </MainCard>
-            </Grid>
-            <Grid item xs={12} md={5} lg={4}>
-              <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item>
-                  <Typography variant="h5">Import Transactions</Typography>
-                </Grid>
-                <Grid item/>
-              </Grid>
-              <MainCard
-                  sx={{mt: 2}}
-                  title="Upload CSV"
-                  secondary={
-                    <Link color="primary" href="/">
-                      Download CSV Template
-                    </Link>
-                  }
-              >
-                <Stack spacing={3}>
-                  <Typography variant="caption" color="text.secondary" gutterBottom>
-                    Import transactions from a CSV file.
-                  </Typography>
-
-                  <FileUpload/>
-                </Stack>
               </MainCard>
             </Grid>
           </Grid>
