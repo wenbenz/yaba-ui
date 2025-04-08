@@ -12,6 +12,12 @@ import Box from "@mui/material/Box";
 import { NumericFormat } from "react-number-format";
 import { useExpenditures } from "../../api/graph";
 import {useDateRange} from "../../components/DateRangeProvider";
+import Loader from "../../components/Loader";
+import {useMemo, useState} from "react";
+import Button from "@mui/material/Button";
+import {Stack} from "@mui/system";
+import Typography from "@mui/material/Typography";
+import {BorderHorizontalOutlined} from "@ant-design/icons";
 
 const headCells = [
   {
@@ -82,15 +88,27 @@ function RecentTransactionsTableHeader({ order, orderBy }) {
 // ==============================|| ORDER TABLE ||============================== //
 
 export default function RecentTransactionsTable() {
-  const order = "asc";
-  const orderBy = "tracking_no";
-  const {startDate, endDate} = useDateRange()
-  const { loading, error, data } = useExpenditures({
-    since: startDate,
-    until: endDate,
-  });
+  const order = "desc";
+  const orderBy = "date";
+  const {startDate, endDate} = useDateRange();
+  const [offset, setOffset] = useState(0);
+  const [expenditures, setExpenditures] = useState([]);
+  const { loading, error, data } = useExpenditures({ since: startDate, until: endDate, visibleCount: 10, offset: offset });
 
-  if (loading) return <p>Loading...</p>;
+  useMemo(() => {
+    if (data) {
+      setExpenditures((prevExpenditures) => [
+        ...prevExpenditures,
+        ...data.expenditures,
+      ]);
+    }
+  }, [data]);
+
+  const handleLoadMore = () => {
+    setOffset(offset + 10);
+  };
+
+  if (loading) return <Loader />;
 
   if (error) return <p>Error : {error.message}</p>;
 
@@ -109,8 +127,7 @@ export default function RecentTransactionsTable() {
         <Table aria-labelledby="tableTitle">
           <RecentTransactionsTableHeader order={order} orderBy={orderBy} />
           <TableBody>
-            {data.expenditures &&
-              data.expenditures.map(
+            {expenditures.map(
                 ({
                   id,
                   date,
@@ -154,6 +171,12 @@ export default function RecentTransactionsTable() {
           </TableBody>
         </Table>
       </TableContainer>
+      <Stack>
+        <BorderHorizontalOutlined />
+        <Button variant="text" onClick={handleLoadMore}>
+          <Typography variant={"subtitle1"}>Load More</Typography>
+        </Button>
+      </Stack>
     </Box>
   );
 }

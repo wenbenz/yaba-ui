@@ -6,7 +6,7 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 
 // ----------------------------------------------------------------------
 
-const serverUrl = 'http://localhost';
+const serverUrl = 'http://localhost:9222';
 
 export default defineConfig({
   plugins: [react(), jsconfigPaths()],
