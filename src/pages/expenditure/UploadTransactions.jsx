@@ -77,7 +77,7 @@ export default function AddTransactionDialog({ open, onClose }) {
                                 transaction.budget_category = value;
                                 break;
                             case 'reward_category':
-                                transaction.reward_category = value.toLowerCase();
+                                transaction.reward_category = value.toUpperCase();
                                 break;
                             case 'comment':
                                 transaction.comment = value;

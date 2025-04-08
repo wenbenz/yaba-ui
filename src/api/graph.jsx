@@ -13,12 +13,13 @@ export function useBudgets(count) {
   });
 }
 
-export function useExpenditures({ since, until, count }) {
+export function useExpenditures({ since, until, count, offset }) {
   return useQuery(RECENT_EXPENDITURES, {
     variables: {
       since: dateString(since),
       until: dateString(until),
-      count,
+      count: count || 10,
+      offset: offset || 0,
     },
   });
 }
@@ -116,8 +117,8 @@ const LIST_BUDGETS = gql`
 `;
 
 const RECENT_EXPENDITURES = gql`
-  query Expenditures($since: String, $until: String, $count: Int) {
-    expenditures(since: $since, until: $until, count: $count) {
+  query Expenditures($since: String, $until: String, $count: Int, $offset: Int) {
+    expenditures(since: $since, until: $until, count: $count, offset: $offset) {
       id
       owner
       name
