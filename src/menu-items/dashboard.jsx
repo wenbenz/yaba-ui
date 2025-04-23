@@ -9,7 +9,7 @@ import {
 
 const dashboard = {
   id: "group-dashboard",
-  title: "Navigation",
+  title: "My Finances",
   type: "group",
   children: [
     {

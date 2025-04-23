@@ -6,9 +6,8 @@ import Dashboard from "layout/Dashboard";
 
 const DashboardDefault = Loadable(lazy(() => import("pages/dashboard/index")));
 const BudgetDashboard = Loadable(lazy(() => import("pages/budget/index")));
-const ExpenditureDashboard = Loadable(
-  lazy(() => import("pages/expenditure/index")),
-);
+const ExpenditureDashboard = Loadable(lazy(() => import("pages/expenditure/index")));
+const CardBrowser = Loadable(lazy(() => import("pages/browse/index")));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -32,10 +31,10 @@ const MainRoutes = {
       path: "expenditure",
       element: <ExpenditureDashboard />,
     },
-    // {
-    //   path: "creditcards",
-    //   element: <CreditCards />,
-    // },
+    {
+      path: "browse",
+      element: <CardBrowser />
+    }
   ],
 };
 
