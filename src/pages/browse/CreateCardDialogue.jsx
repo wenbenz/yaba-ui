@@ -2,6 +2,9 @@ import {useState} from 'react';
 import {gql, useMutation} from '@apollo/client';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField,} from '@mui/material';
 import {DeleteOutlined} from '@ant-design/icons';
+import {Autocomplete} from "@mui/lab";
+import {COMMON_ISSUERS, COMMON_REGIONS, COMMON_REWARD_TYPES, COMMON_REWARDS_CATEGORIES} from "../../utils/constants";
+import Typography from "@mui/material/Typography";
 
 const CREATE_REWARD_CARD = gql`
     mutation CreateRewardCard($input: RewardCardInput!) {
@@ -18,8 +21,109 @@ const CREATE_REWARD_CARD = gql`
             }
         }
     }
-`;
+`
 
+const CategoryInput = ({ value, onChange, error }) => {
+    return (
+        <Stack direction="row" spacing={2} alignItems="center" sx={{ flex: 1 }}>
+            <Autocomplete
+                freeSolo
+                options={COMMON_REWARDS_CATEGORIES}
+                value={value}
+                onChange={(_, newValue) => onChange(newValue)}
+                sx={{ flex: 1 }}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        required
+                        label="Category"
+                        error={error}
+                        onChange={(e) => onChange(e.target.value)}
+                        sx={{
+                            '& .MuiInputBase-root': {
+                                height: '40px',
+                                padding: '0 9px'
+                            }
+                        }}
+                    />
+                )}
+            />
+        </Stack>
+    );
+};
+
+const RewardTypeInput = ({ value, onChange }) => {
+    return (
+        <Autocomplete
+            freeSolo
+            options={COMMON_REWARD_TYPES}
+            value={value}
+            onChange={(_, newValue) => onChange({ target: { name: 'rewardType', value: newValue }})}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    required
+                    label="Reward Type"
+                    onChange={(e) => onChange({ target: { name: 'rewardType', value: e.target.value }})}
+                    sx={{
+                        '& .MuiInputBase-root': {
+                            height: '40px',
+                            padding: '0 9px'
+                        }
+                    }}
+                />
+            )}
+        />
+    );
+};
+
+const IssuerInput = ({ value, onChange }) => {
+    return (
+        <Autocomplete
+            freeSolo
+            options={COMMON_ISSUERS}
+            value={value}
+            onChange={(_, newValue) => onChange({ target: { name: 'issuer', value: newValue }})}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    required
+                    label="Issuer"
+                    onChange={(e) => onChange({ target: { name: 'issuer', value: e.target.value }})}
+                    sx={{
+                        '& .MuiInputBase-root': {
+                            height: '40px',
+                            padding: '0 9px'
+                        }
+                    }}
+                />
+            )}
+        />
+    );
+};
+
+const RegionInput = ({ value, onChange }) => {
+    return (
+        <Autocomplete
+            options={COMMON_REGIONS}
+            value={value}
+            onChange={(_, newValue) => onChange({ target: { name: 'region', value: newValue }})}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    required
+                    label="Region"
+                    sx={{
+                        '& .MuiInputBase-root': {
+                            height: '40px',
+                            padding: '0 9px'
+                        }
+                    }}
+                />
+            )}
+        />
+    );
+};
 export default function CreateCardDialog({open, onClose, onSuccess, currentFilters}) {
     const [formData, setFormData] = useState({
         name: currentFilters?.name || '',
@@ -120,48 +224,38 @@ export default function CreateCardDialog({open, onClose, onSuccess, currentFilte
                             value={formData.name}
                             onChange={handleChange}
                         />
-                        <TextField
-                            required
-                            fullWidth
-                            name="issuer"
-                            label="Issuer"
+                        <IssuerInput
                             value={formData.issuer}
                             onChange={handleChange}
                         />
-                        <TextField
-                            required
-                            fullWidth
-                            name="region"
-                            label="Region"
+                        <RegionInput
                             value={formData.region}
                             onChange={handleChange}
                         />
-                        <TextField
-                            required
-                            fullWidth
-                            name="rewardType"
-                            label="Reward Type"
+                        <RewardTypeInput
                             value={formData.rewardType}
                             onChange={handleChange}
                         />
 
                         {formData.rewardCategories.map((cat, index) => (
                             <Stack key={index} direction="row" spacing={2} alignItems="center">
-                                <TextField
-                                    required
-                                    fullWidth
-                                    label="Category"
+                                <CategoryInput
                                     value={cat.category}
-                                    onChange={(e) => handleCategoryChange(index, 'category', e.target.value)}
+                                    onChange={(value) => handleCategoryChange(index, 'category', value)}
                                 />
                                 <TextField
                                     required
                                     label="Rate"
                                     type="number"
-                                    inputProps={{step: "0.01"}}
-                                    value={cat.rate}
+                                    inputProps={{
+                                        step: "1",
+                                        style: { textAlign: 'right' }
+                                    }}                                    value={cat.rate}
                                     onChange={(e) => handleCategoryChange(index, 'rate', e.target.value)}
                                 />
+                                <Typography sx={{ minWidth: 20 }}>
+                                    {formData.rewardType?.toLowerCase() === 'cashback' ? '% cashback' : 'X points'}
+                                </Typography>
                                 {formData.rewardCategories.length > 1 && (
                                     <IconButton onClick={() => removeCategory(index)} size="small">
                                         <DeleteOutlined/>

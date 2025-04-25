@@ -1,37 +1,81 @@
 import {useState} from 'react';
-import {gql, useQuery} from '@apollo/client';
 import {
     Box,
     Button,
     Card,
     CardContent,
     CircularProgress,
-    Container,
     Grid,
-    Paper,
     Stack,
     TextField,
     Typography
 } from '@mui/material';
 import CreateCardDialog from './CreateCardDialogue';
+import {COMMON_ISSUERS, COMMON_REGIONS} from '../../utils/constants';
 import {PlusCircleFilled} from '@ant-design/icons';
+import AddPaymentMethodDialog from "./AddPaymentMethodDialogue";
+import {useRewardCards} from "../../api/graph";
+import {Autocomplete} from "@mui/lab";
 
-const GET_REWARD_CARDS = gql`
-    query GetRewardCards($issuer: String, $name: String, $region: String) {
-        rewardCards(issuer: $issuer, name: $name, region: $region) {
-            id
-            name
-            issuer
-            region
-            version
-            rewardType
-            categories {
-                category
-                rate
-            }
-        }
-    }
-`;
+const BrowseFilters = ({ filters, onFilterChange }) => {
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+                <Autocomplete
+                    options={COMMON_REGIONS}
+                    value={filters.region}
+                    onChange={(_, value) => onFilterChange({
+                        target: { name: 'region', value }
+                    })}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            fullWidth
+                            name="region"
+                            label="Region"
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                <Autocomplete
+                    freeSolo
+                    options={COMMON_ISSUERS}
+                    value={filters.issuer}
+                    onChange={(_, value) => onFilterChange({
+                        target: { name: 'issuer', value }
+                    })}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            fullWidth
+                            name="issuer"
+                            label="Issuer"
+                        />
+                    )}
+                />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+                <Autocomplete
+                    freeSolo
+                    options={[]} // Empty array since we don't need suggestions
+                    value={filters.name}
+                    onInputChange={(_, value) => onFilterChange({
+                        target: { name: 'name', value }
+                    })}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            fullWidth
+                            name="name"
+                            label="Card Name"
+                        />
+                    )}
+                />
+            </Grid>
+        </Grid>
+    );
+};
 
 export default function BrowseCards() {
     const [filters, setFilters] = useState({
@@ -39,11 +83,21 @@ export default function BrowseCards() {
         name: '',
         region: '',
     });
-    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedCard, setSelectedCard] = useState(null);
+    const [openCreateCardDialogue, setOpenCreateCardDialogue] = useState(false);
+    const [openAddPaymentMethodDialogue, setOpenAddPaymentMethodDialogue] = useState(false);
 
-    const {loading, error, data} = useQuery(GET_REWARD_CARDS, {
-        variables: filters,
-    });
+    const handleOpenAddPaymentMethodDialog = (card) => {
+        setSelectedCard(card);
+        setOpenAddPaymentMethodDialogue(true);
+    };
+
+    const handleCloseAddPaymentMethodDialog = () => {
+        setOpenAddPaymentMethodDialogue(false);
+        setSelectedCard(null);
+    };
+
+    const {loading, error, data} = useRewardCards(filters)
 
     const handleFilterChange = (event) => {
         const {name, value} = event.target;
@@ -56,38 +110,13 @@ export default function BrowseCards() {
     return (
         <Grid container maxWidth="xl">
             <Grid item xs={12} sx={{mb: 3}}>
-            <Typography variant="h5" sx={{ mb: 3 }}>
-                Browse Cards
-            </Typography>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            fullWidth
-                            name="issuer"
-                            label="Issuer"
-                            value={filters.issuer}
-                            onChange={handleFilterChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            fullWidth
-                            name="name"
-                            label="Card Name"
-                            value={filters.name}
-                            onChange={handleFilterChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <TextField
-                            fullWidth
-                            name="region"
-                            label="Region"
-                            value={filters.region}
-                            onChange={handleFilterChange}
-                        />
-                    </Grid>
-                </Grid>
+                <Typography variant="h5" sx={{ mb: 3 }}>
+                    Browse Cards
+                </Typography>
+                <BrowseFilters
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                />
             </Grid>
             {loading && (
                 <Box sx={{display: 'flex', justifyContent: 'center', my: 4}}>
@@ -148,10 +177,20 @@ export default function BrowseCards() {
                                     <Typography variant="caption" color="text.secondary" sx={{ mt: 2 }}>
                                         Region: {card.region} | Version: {card.version}
                                     </Typography>
+                                    <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleOpenAddPaymentMethodDialog(card)}
+                                        >
+                                            Add to Payment Methods
+                                        </Button>
+                                    </Stack>
                                 </CardContent>
                             </Card>
                         </Grid>
                     ))}
+
                 </Grid>
             )}
 
@@ -159,7 +198,7 @@ export default function BrowseCards() {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => setOpenDialog(true)}
+                    onClick={() => setOpenCreateCardDialogue(true)}
                 >
                     <Stack direction="row" spacing={1} alignItems="center">
                         <PlusCircleFilled/>
@@ -169,12 +208,18 @@ export default function BrowseCards() {
             </Box>
 
             <CreateCardDialog
-                open={openDialog}
-                onClose={() => setOpenDialog(false)}
+                open={openCreateCardDialogue}
+                onClose={() => setOpenCreateCardDialogue(false)}
                 currentFilters={filters}
                 onSuccess={() => {
                     // Optionally update filters to match the new card
                 }}
+            />
+
+            <AddPaymentMethodDialog
+                open={openAddPaymentMethodDialogue}
+                onClose={handleCloseAddPaymentMethodDialog}
+                card={selectedCard}
             />
         </Grid>
     );
