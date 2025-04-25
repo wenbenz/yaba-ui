@@ -41,7 +41,16 @@ export function useExpenditureAggregate({
     },
   });
 }
-
+export const useRewardCards = ({ issuer, name, region }) => {
+  return useQuery(GET_REWARD_CARDS, {
+    variables: {
+      issuer, name, region
+    },
+  });
+}
+export const usePaymentMethods = () => {
+  return useQuery(GET_PAYMENT_METHODS);
+};
 export function useCreateBudget({ name, incomes, expenses }) {
   return useMutation(CREATE_BUDGET, {
     variables: {
@@ -49,7 +58,7 @@ export function useCreateBudget({ name, incomes, expenses }) {
       incomes,
       expenses,
     },
-    refetchQueries: [LIST_BUDGETS],
+    refetchQueries: [{ query: LIST_BUDGETS }],
   });
 }
 
@@ -61,7 +70,7 @@ export function useUpdateBudget({ id, name, incomes, expenses }) {
       incomes,
       expenses,
     },
-    refetchQueries: [GET_BUDGET_BY_ID],
+    refetchQueries: [{ query: GET_BUDGET_BY_ID }],
   });
 }
 
@@ -70,7 +79,19 @@ export function useCreateExpenditures(expenditures) {
     variables: {
       expenditures,
     },
-    refetchQueries: [RECENT_EXPENDITURES],
+    refetchQueries: [{ query: RECENT_EXPENDITURES }],
+  });
+}
+
+export function useCreatePaymentMethod() {
+  return useMutation(CREATE_PAYMENT_METHOD, {
+    refetchQueries: [{ query: GET_PAYMENT_METHODS }]
+  });
+}
+
+export function useDeletePaymentMethod() {
+  return useMutation(DELETE_PAYMENT_METHOD, {
+    refetchQueries: [{ query: GET_PAYMENT_METHODS }]
   });
 }
 
@@ -156,6 +177,44 @@ const AGGREGATE_EXPENDITURES = gql`
   }
 `;
 
+const GET_REWARD_CARDS = gql`
+  query GetRewardCards($issuer: String, $name: String, $region: String) {
+    rewardCards(issuer: $issuer, name: $name, region: $region) {
+      id
+      name
+      issuer
+      region
+      version
+      rewardType
+      categories {
+        category
+        rate
+      }
+    }
+  }
+`;
+
+const GET_PAYMENT_METHODS = gql`
+  query GetPaymentMethods {
+    paymentMethods {
+      id
+      displayName
+      acquiredDate
+      cancelByDate
+      cardType
+      rewards {
+        name
+        issuer
+        rewardType
+        categories {
+          category
+          rate
+        }
+      }
+    }
+  }
+`;
+
 const CREATE_BUDGET = gql`
   mutation CreateBudget(
     $name: String!
@@ -214,3 +273,21 @@ const UPSERT_EXPENDITURE = gql`
     createExpenditures(input: $expenditures)
   }
 `
+
+const CREATE_PAYMENT_METHOD = gql`
+  mutation CreatePaymentMethod($input: PaymentMethodInput!) {
+    createPaymentMethod(input: $input) {
+      id
+      displayName
+      acquiredDate
+      cancelByDate
+      cardType
+    }
+  }
+`;
+
+const DELETE_PAYMENT_METHOD = gql`
+  mutation DeletePaymentMethod($id: ID!) {
+    deletePaymentMethod(id: $id)
+  }
+`;

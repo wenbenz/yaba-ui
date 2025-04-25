@@ -16,6 +16,8 @@ import { useBudget } from '../budget/BudgetContext';
 import { UploadOutlined } from '@ant-design/icons';
 import {useCreateExpenditures} from "../../api/graph";
 import dayjs from "dayjs";
+import {Autocomplete} from "@mui/lab";
+import {COMMON_REWARDS_CATEGORIES} from "../../utils/constants";
 
 export default function AddTransactionDialog({ open, onClose }) {
   const { budget } = useBudget();
@@ -203,27 +205,25 @@ export default function AddTransactionDialog({ open, onClose }) {
                 ))}
               </Select>
             </FormControl>
-            <FormControl sx={{ width: '15%' }}>
-              <InputLabel>Reward Category</InputLabel>
-              <Select
-                name="reward_category"
-                value={transaction.reward_category}
-                onChange={(e) => handleChange(index, 'reward_category', e.target.value)}
-                label="Reward Category"
-              >
-                  <MenuItem value="">None</MenuItem>
-                  <MenuItem value="DRUG_STORE">Drug Store</MenuItem>
-                  <MenuItem value="ENTERTAINMENT">Entertainment</MenuItem>
-                  <MenuItem value="FURNITURE">Furniture</MenuItem>
-                  <MenuItem value="GAS">Gas</MenuItem>
-                  <MenuItem value="GROCERY">Grocery</MenuItem>
-                  <MenuItem value="HOME_IMPROVEMENT">Home Improvement</MenuItem>
-                  <MenuItem value="HOTEL">Hotel</MenuItem>
-                  <MenuItem value="PUBLIC_TRANSPORTATION">Public Transportation</MenuItem>
-                  <MenuItem value="RECURRING_BILL">Recurring Bill</MenuItem>
-                  <MenuItem value="RESTAURANT">Restaurant</MenuItem>
-              </Select>
-            </FormControl>
+              <FormControl sx={{ width: '15%' }}>
+                  <Autocomplete
+                      options={COMMON_REWARDS_CATEGORIES}
+                      value={transaction.reward_category || ''}
+                      onChange={(_, newValue) => handleChange(index, 'reward_category', newValue)}
+                      renderInput={(params) => (
+                          <TextField
+                              {...params}
+                              label="Reward Category"
+                              sx={{
+                                  '& .MuiInputBase-root': {
+                                      height: '40px',
+                                      padding: '0 9px'
+                                  }
+                              }}
+                          />
+                      )}
+                  />
+              </FormControl>
             <TextField
               name="comment"
               label="Comment"

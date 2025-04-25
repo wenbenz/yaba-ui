@@ -3,13 +3,14 @@ import {
   DashboardOutlined,
   DollarOutlined,
   PieChartOutlined,
+  WalletOutlined
 } from "@ant-design/icons";
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 
 const dashboard = {
   id: "group-dashboard",
-  title: "Navigation",
+  title: "My Finances",
   type: "group",
   children: [
     {
@@ -36,14 +37,14 @@ const dashboard = {
       icon: DollarOutlined,
       breadcrumbs: false,
     },
-    // {
-    //   id: "creditcards",
-    //   title: "Credit Cards",
-    //   type: "item",
-    //   url: "/creditcards",
-    //   icon: CreditCardOutlined,
-    //   breadcrumbs: false,
-    // },
+    {
+      id: 'payment-methods',
+      title: 'Payment Methods',
+      type: 'item',
+      url: '/payment-methods',
+      icon: WalletOutlined,
+      breadcrumbs: false
+    }
   ],
 };
 
