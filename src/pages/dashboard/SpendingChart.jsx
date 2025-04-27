@@ -64,21 +64,28 @@ export default function SpendingChart() {
   ]);
 
   useMemo(() => {
-    let spendingData = expenditures?.aggregatedExpenditures.map(e => e.amount) || []
+    let spendingData = expenditures?.aggregatedExpenditures.map(e => e.amount) || [];
 
     setOptions((prev) => ({
       ...prev,
       xaxis: {
         ...prev.xaxis,
-        categories: expenditures?.aggregatedExpenditures.map(e => e.spanStart) || []
+        categories: expenditures?.aggregatedExpenditures.map(e => e.spanStart) || [],
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: '50%', // Adjust column width
+        },
       },
     }));
 
     let s = [
       {
         name: "Spending",
+        type: "bar", // Change to bar for columns
         data: spendingData,
-      }]
+      },
+    ];
 
     budgets?.budgets.forEach(b => {
       const amount = adjustBudgetForSpan(
@@ -87,8 +94,9 @@ export default function SpendingChart() {
       );
       s.push({
         name: b.name,
-        data: expenditures?.aggregatedExpenditures.map(e => amount) || []
-      })
+        type: "line", // Keep budgets as lines
+        data: expenditures?.aggregatedExpenditures.map(e => amount) || [],
+      });
     });
 
     setSeries(s);
