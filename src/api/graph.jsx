@@ -1,11 +1,4 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { dateString } from "../utils/dates";
-
-export function useBudget(id) {
-  return useQuery(GET_BUDGET_BY_ID, {
-    variables: { id },
-  });
-}
 
 export function useBudgets(count) {
   return useQuery(LIST_BUDGETS, {
@@ -13,34 +6,6 @@ export function useBudgets(count) {
   });
 }
 
-export function useExpenditures({ since, until, count, offset }) {
-  return useQuery(RECENT_EXPENDITURES, {
-    variables: {
-      since: dateString(since),
-      until: dateString(until),
-      count: count || 10,
-      offset: offset || 0,
-    },
-  });
-}
-
-export function useExpenditureAggregate({
-  since,
-  span,
-  until = new Date(),
-  groupBy = "NONE",
-  aggregation = "SUM",
-}) {
-  return useQuery(AGGREGATE_EXPENDITURES, {
-    variables: {
-      since: dateString(since),
-      until: dateString(until),
-      span: span,
-      groupBy: groupBy,
-      aggregation: aggregation,
-    },
-  });
-}
 export const useRewardCards = ({ issuer, name, region }) => {
   return useQuery(GET_REWARD_CARDS, {
     variables: {
@@ -95,7 +60,7 @@ export function useDeletePaymentMethod() {
   });
 }
 
-const GET_BUDGET_BY_ID = gql`
+export const GET_BUDGET_BY_ID = gql`
   query Budget($id: ID!) {
     budget(id: $id) {
       id
@@ -116,7 +81,7 @@ const GET_BUDGET_BY_ID = gql`
   }
 `;
 
-const LIST_BUDGETS = gql`
+export const LIST_BUDGETS = gql`
   query Budgets($count: Int) {
     budgets(first: $count) {
       id
@@ -137,7 +102,7 @@ const LIST_BUDGETS = gql`
   }
 `;
 
-const RECENT_EXPENDITURES = gql`
+export const RECENT_EXPENDITURES = gql`
   query Expenditures($since: String, $until: String, $count: Int, $offset: Int) {
     expenditures(since: $since, until: $until, count: $count, offset: $offset) {
       id
@@ -155,7 +120,7 @@ const RECENT_EXPENDITURES = gql`
   }
 `;
 
-const AGGREGATE_EXPENDITURES = gql`
+export const AGGREGATE_EXPENDITURES = gql`
   query AggregatedExpenditures(
     $since: String
     $until: String
@@ -177,7 +142,7 @@ const AGGREGATE_EXPENDITURES = gql`
   }
 `;
 
-const GET_REWARD_CARDS = gql`
+export const GET_REWARD_CARDS = gql`
   query GetRewardCards($issuer: String, $name: String, $region: String) {
     rewardCards(issuer: $issuer, name: $name, region: $region) {
       id
@@ -194,7 +159,7 @@ const GET_REWARD_CARDS = gql`
   }
 `;
 
-const GET_PAYMENT_METHODS = gql`
+export const GET_PAYMENT_METHODS = gql`
   query GetPaymentMethods {
     paymentMethods {
       id
@@ -215,7 +180,7 @@ const GET_PAYMENT_METHODS = gql`
   }
 `;
 
-const CREATE_BUDGET = gql`
+export const CREATE_BUDGET = gql`
   mutation CreateBudget(
     $name: String!
     $incomes: [IncomeInput]
@@ -241,7 +206,7 @@ const CREATE_BUDGET = gql`
   }
 `;
 
-const UPDATE_BUDGET = gql`
+export const UPDATE_BUDGET = gql`
   mutation UpdateBudget(
     $id: ID!
     $name: String
@@ -268,13 +233,13 @@ const UPDATE_BUDGET = gql`
   }
 `;
 
-const UPSERT_EXPENDITURE = gql`
+export const UPSERT_EXPENDITURE = gql`
   mutation CreateExpenditures($expenditures: [ExpenditureInput]!) {
     createExpenditures(input: $expenditures)
   }
 `
 
-const CREATE_PAYMENT_METHOD = gql`
+export const CREATE_PAYMENT_METHOD = gql`
   mutation CreatePaymentMethod($input: PaymentMethodInput!) {
     createPaymentMethod(input: $input) {
       id
@@ -286,7 +251,7 @@ const CREATE_PAYMENT_METHOD = gql`
   }
 `;
 
-const DELETE_PAYMENT_METHOD = gql`
+export const DELETE_PAYMENT_METHOD = gql`
   mutation DeletePaymentMethod($id: ID!) {
     deletePaymentMethod(id: $id)
   }

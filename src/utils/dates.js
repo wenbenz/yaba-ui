@@ -58,3 +58,8 @@ export function getTimeSpan(startDate, endDate) {
     return "YEAR";
   }
 }
+
+export function dateDiff(startDate, endDate) {
+  const oneDay = 24 * 60 * 60 * 1000;
+  return Math.round((endDate - startDate) / oneDay);
+}
