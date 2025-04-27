@@ -155,7 +155,7 @@ const RECENT_EXPENDITURES = gql`
   }
 `;
 
-const AGGREGATE_EXPENDITURES = gql`
+export const AGGREGATE_EXPENDITURES = gql`
   query AggregatedExpenditures(
     $since: String
     $until: String

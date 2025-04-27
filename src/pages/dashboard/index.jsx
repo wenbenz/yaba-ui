@@ -1,139 +1,136 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import SpendingCard from "./SpendingCard";
-import { useMemo, useState } from "react";
-import { useBudgets, useExpenditureAggregate } from "../../api/graph";
-import { startOfLastMonth } from "../../utils/dates";
-import MonthlyStat from "./MonthlyStat";
+import { useState } from "react";
 import {BudgetProvider} from "../budget/BudgetContext";
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import Stack from "@mui/material/Stack";
+import dayjs from "dayjs";
+import {DateRangeProvider, useDateRange} from "../../components/DateRangeProvider";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import MainCard from "../../components/MainCard";
+import Box from "@mui/material/Box";
+import SpendingChart from "./SpendingChart";
+import CategoryChart from "./CategoryChart";
 
-// ==============================|| DASHBOARD - DEFAULT ||============================== //
+const DateRangeSelector = () => {
+    const { startDate, setStartDate, endDate, setEndDate } = useDateRange();
+    const [selectedRange, setSelectedRange] = useState('ytd');
+    const [customEnabled, setCustomEnabled] = useState(false);
 
-export default function DashboardDefault() {
-  const [totalSpent, setTotalSpent] = useState([0, 0]);
-  const [adherance, setAdherance] = useState(1);
-  const [cashflow, setCashflow] = useState([0, 0]);
+    const handleRangeChange = (event) => {
+        const value = event.target.value;
+        setSelectedRange(value);
 
-  const monthlySpending = useExpenditureAggregate({
-    since: startOfLastMonth(),
-    until: new Date(),
-    span: "MONTH",
-    groupBy: "NONE",
-  });
+        const now = new Date();
+        let start = now;
+        let end = now;
 
-  const groupedMonthlySpending = useExpenditureAggregate({
-    since: startOfLastMonth(),
-    until: new Date(),
-    span: "MONTH",
-    groupBy: "BUDGET_CATEGORY",
-  });
-
-  const budgets = useBudgets(1);
-
-  // calculate the total spent this and last month
-  useMemo(() => {
-    if (monthlySpending.data) {
-      const spendingData = monthlySpending.data.aggregatedExpenditures;
-      let v = [0, 0];
-      spendingData.forEach((e) => {
-        const spanStart = e.spanStart;
-        const d = new Date(spanStart);
-        v[d.getUTCMonth() - startOfLastMonth().getMonth()] = e.amount;
-      });
-      setTotalSpent(v);
-    }
-  }, [monthlySpending.data]);
-
-  // calculate the cash flow as a function of the total budgeted income and previously calculated spending
-  useMemo(() => {
-    if (budgets.data && budgets.data.budgets.length > 0) {
-      const budget = budgets.data.budgets[0];
-      const totalIncome = budget.incomes.reduce((sum, e) => sum + e.amount, 0);
-
-      setCashflow(totalSpent.map((spent) => totalIncome - spent));
-    }
-  }, [budgets.data, totalSpent]);
-
-  // find the budget adherance by counting the number of categories in budget
-  useMemo(() => {
-    if (
-      groupedMonthlySpending &&
-      groupedMonthlySpending.data &&
-      budgets.data &&
-      budgets.data.budgets.length > 0
-    ) {
-      const budget = budgets.data.budgets[0];
-      const categories = budget.expenses.length;
-      let overbudget = 0;
-
-      // build a map from budget category to amount
-      let b = {};
-      budget.expenses.forEach((e) => {
-        b[e.category] = e.amount;
-      });
-
-      groupedMonthlySpending.data.aggregatedExpenditures.forEach((e) => {
-        if (!b[e.groupByCategory] || b[e.groupByCategory] < e.amount) {
-          overbudget += 1;
+        switch (value) {
+            case 'thisMonth':
+                start = dayjs().startOf('month').toDate();
+                end = dayjs().endOf('month').toDate();
+                setCustomEnabled(false);
+                break;
+            case 'lastMonth':
+                start = dayjs().subtract(1, 'month').startOf('month').toDate();
+                end = dayjs().subtract(1, 'month').endOf('month').toDate();
+                setCustomEnabled(false);
+                break;
+            case 'last3':
+                start = dayjs().subtract(3, 'month').startOf('month').toDate();
+                end = dayjs().endOf('month').toDate();
+                setCustomEnabled(false);
+                break;
+            case 'ytd':
+                start = dayjs().startOf('year').toDate();
+                end = now;
+                setCustomEnabled(false);
+                break;
+            case 'past12':
+                start = dayjs().subtract(11, 'month').startOf('month').toDate();
+                end = dayjs().endOf('month').toDate();
+                setCustomEnabled(false);
+                break;
+            case 'custom':
+                setCustomEnabled(true);
+                return;
         }
-      });
 
-      setAdherance((categories - overbudget) / categories);
-    }
-  }, [groupedMonthlySpending, budgets.data]);
+        setStartDate(start);
+        setEndDate(end);
+    };
 
+    return (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <Select
+                        size="small"
+                        value={selectedRange}
+                        onChange={handleRangeChange}
+                        sx={{ minWidth: 150 }}
+                    >
+                        <MenuItem value="thisMonth">This Month</MenuItem>
+                        <MenuItem value="lastMonth">Last Month</MenuItem>
+                        <MenuItem value="last3">Last 3 Months</MenuItem>
+                        <MenuItem value="ytd">Year to Date</MenuItem>
+                        <MenuItem value="past12">Past 12 Months</MenuItem>
+                        <MenuItem value="custom">Custom Range</MenuItem>
+                    </Select>
+                    <DatePicker
+                        label="Since"
+                        value={dayjs(startDate)}
+                        onChange={date => setStartDate(date.toDate())}
+                        disabled={!customEnabled}
+                        slotProps={{ textField: { size: 'small' } }}
+                    />
+                    <DatePicker
+                        label="Until"
+                        value={dayjs(endDate)}
+                        onChange={date => setEndDate(date.toDate())}
+                        disabled={!customEnabled}
+                        slotProps={{ textField: { size: 'small' } }}
+                    />
+                </Stack>
+            </LocalizationProvider>
+    );
+};
+
+// DashboardDefault.jsx
+export default function DashboardDefault() {
   return (
+    <DateRangeProvider>
       <BudgetProvider>
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-          {/* row 1 */}
-          <Grid item xs={12} sx={{ mb: -2.25 }}>
-            <Typography variant="h5">Overview</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <MonthlyStat
-              title="Total Monthly Expenditure"
-              prev={totalSpent[0]}
-              current={totalSpent[1]}
-              format={(v) => "$" + Math.abs(v).toFixed(2)}
-              positiveMessage="Your spending increased by"
-              negativeMessage="Your spendig decreased by"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <MonthlyStat
-              title="Cashflow"
-              prev={cashflow[0]}
-              current={cashflow[1]}
-              format={(v) => "$" + v.toFixed(2)}
-              positiveMessage="Your cashflow increased by"
-              negativeMessage="Your casfhlow decreased by"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <MonthlyStat
-              title="Budget Adherence"
-              current={adherance}
-              showDiff={false}
-              format={(v) => v.toFixed(0) * 100 + "%"}
-              positiveMessage="You stuck to your budget"
-            />
-          </Grid>
-          {/*<Grid item xs={12} sm={6} md={4} lg={3}>*/}
-          {/*  <MonthlyStat*/}
-          {/*    title="Rewards"*/}
-          {/*    current={0}*/}
-          {/*    showDiff={false}*/}
-          {/*    format={(v) => "$" + Math.abs(v).toFixed(2)}*/}
-          {/*    positiveMessage="This is not yet implemnted."*/}
-          {/*  />*/}
-          {/*</Grid>*/}
-
-          {/* row 2 */}
-          <Grid item xs={12}>
-            <SpendingCard />
+          <Grid container item xs={12} sx={{ mb: -2.25 }}>
+            <Grid item xs={6}>
+              <Typography variant="h5">Overview</Typography>
+            </Grid>
+            <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <DateRangeSelector />
+            </Grid>
           </Grid>
 
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5">Budget vs Spending</Typography>
+            <MainCard content={false} sx={{ mt: 1.5, height: 450 }}>
+              <Box sx={{ p: 3 }}>
+                <SpendingChart />
+              </Box>
+            </MainCard>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5">Spending by Category</Typography>
+            <MainCard content={false} sx={{ mt: 1.5, height: 450 }}>
+              <Box sx={{ p: 3 }}>
+                <CategoryChart />
+              </Box>
+            </MainCard>
+          </Grid>
         </Grid>
       </BudgetProvider>
+    </DateRangeProvider>
   );
 }
