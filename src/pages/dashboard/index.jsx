@@ -53,7 +53,7 @@ const DateRangeSelector = () => {
                 end = dayjs().endOf('month').toDate();
                 setCustomEnabled(false);
                 break;
-            case 'custom':
+            default:
                 setCustomEnabled(true);
                 return;
         }

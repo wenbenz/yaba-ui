@@ -4,7 +4,7 @@ import { AGGREGATE_EXPENDITURES, useBudgets } from "../../api/graph";
 import { useDateRange } from "../../components/DateRangeProvider";
 import { useQuery } from "@apollo/client";
 import {dateDiff, dateString} from "../../utils/dates";
-import { adjustBudgetForSpan, calculateSpan } from "../../utils/expense";
+import {useTheme} from "@mui/material/styles";
 
 const columnChartOptions = {
   chart: {
@@ -28,6 +28,7 @@ const columnChartOptions = {
 };
 
 export default function CategoryChart() {
+    const theme = useTheme();
   const [options, setOptions] = useState(columnChartOptions);
   const { startDate, endDate } = useDateRange();
   const { data: expenditures } = useQuery(AGGREGATE_EXPENDITURES, {
@@ -93,13 +94,18 @@ export default function CategoryChart() {
                         ranges: spentSeries.map((spent, index) => ({
                             from: spent.y,
                             to: spent.y,
-                            color: spent.y > budgetedSeries[index].y ? '#AF0000' : '#00DF66'
+                            color: spent.y > budgetedSeries[index].y ? theme.palette.error.dark : theme.palette.success.dark
                         }))
                     }
                 }
+            },
+            legend: {
+                markers: {
+                    fillColors: [null, theme.palette.secondary.main]
+                }
             }
         }));
-    }, [expenditures?.aggregatedExpenditures, budgets?.budgets, startDate, endDate]);
+    }, [expenditures?.aggregatedExpenditures, budgets?.budgets, startDate, endDate, theme]);
 
   return (
     <ReactApexChart

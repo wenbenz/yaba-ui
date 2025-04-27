@@ -10,14 +10,14 @@ import Box from "@mui/material/Box";
 
 // third-party
 import { NumericFormat } from "react-number-format";
-import { useExpenditures } from "../../api/graph";
-import {useDateRange} from "../../components/DateRangeProvider";
 import Loader from "../../components/Loader";
 import {useMemo, useState} from "react";
 import Button from "@mui/material/Button";
 import {Stack} from "@mui/system";
 import Typography from "@mui/material/Typography";
-import {BorderHorizontalOutlined} from "@ant-design/icons";
+import {useQuery} from "@apollo/client";
+import {RECENT_EXPENDITURES} from "../../api/graph";
+import Divider from "@mui/material/Divider";
 
 const headCells = [
   {
@@ -90,10 +90,14 @@ function RecentTransactionsTableHeader({ order, orderBy }) {
 export default function RecentTransactionsTable() {
   const order = "desc";
   const orderBy = "date";
-  const {startDate, endDate} = useDateRange();
   const [offset, setOffset] = useState(0);
   const [expenditures, setExpenditures] = useState([]);
-  const { loading, error, data } = useExpenditures({ since: startDate, until: endDate, visibleCount: 10, offset: offset });
+  const { loading, error, data } = useQuery(RECENT_EXPENDITURES, {
+    variables: {
+      count: 10,
+      offset: offset,
+    },
+  });
 
   useMemo(() => {
     if (data) {
@@ -172,7 +176,7 @@ export default function RecentTransactionsTable() {
         </Table>
       </TableContainer>
       <Stack>
-        <BorderHorizontalOutlined />
+        <Divider />
         <Button variant="text" onClick={handleLoadMore}>
           <Typography variant={"subtitle1"}>Load More</Typography>
         </Button>

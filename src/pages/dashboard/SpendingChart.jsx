@@ -21,8 +21,7 @@ const areaChartOptions = {
     enabled: false,
   },
   stroke: {
-    curve: "smooth",
-    width: 3,
+    width: [0, 2],
   },
   grid: {
     strokeDashArray: 0,
@@ -66,40 +65,33 @@ export default function SpendingChart() {
   useMemo(() => {
     let spendingData = expenditures?.aggregatedExpenditures.map(e => e.amount) || [];
 
+    const budgetTotal = budgets?.budgets.reduce((acc, b) =>
+        acc + adjustBudgetForSpan(
+            b.expenses.reduce((total, e) => total + e.amount, 0),
+            calculateSpan(startDate, endDate)
+        ), 0)
+
+    setSeries([
+      {
+        name: "Spending",
+        type: "bar",
+        data: spendingData,
+      },
+      {
+        name: "Budgeted",
+        type: "line",
+        data: spendingData.map(() => budgetTotal),
+      }
+    ]);
+
     setOptions((prev) => ({
       ...prev,
       xaxis: {
         ...prev.xaxis,
         categories: expenditures?.aggregatedExpenditures.map(e => e.spanStart) || [],
       },
-      plotOptions: {
-        bar: {
-          columnWidth: '50%', // Adjust column width
-        },
-      },
     }));
 
-    let s = [
-      {
-        name: "Spending",
-        type: "bar", // Change to bar for columns
-        data: spendingData,
-      },
-    ];
-
-    budgets?.budgets.forEach(b => {
-      const amount = adjustBudgetForSpan(
-          b.expenses.reduce((total, e) => total + e.amount, 0),
-          calculateSpan(startDate, endDate)
-      );
-      s.push({
-        name: b.name,
-        type: "line", // Keep budgets as lines
-        data: expenditures?.aggregatedExpenditures.map(e => amount) || [],
-      });
-    });
-
-    setSeries(s);
   }, [expenditures?.aggregatedExpenditures, budgets?.budgets, startDate, endDate]);
 
   return (
