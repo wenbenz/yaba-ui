@@ -103,8 +103,8 @@ export const LIST_BUDGETS = gql`
 `;
 
 export const RECENT_EXPENDITURES = gql`
-  query Expenditures($since: String, $until: String, $count: Int, $offset: Int) {
-    expenditures(since: $since, until: $until, count: $count, offset: $offset) {
+  query Expenditures($filter: String, $since: String, $until: String, $paymentMethod: String, $category: String $count: Int, $offset: Int) {
+    expenditures(filter: $filter, since: $since, until: $until, paymentMethod: $paymentMethod, category: $category, count: $count, offset: $offset) {
       id
       owner
       name
@@ -114,7 +114,6 @@ export const RECENT_EXPENDITURES = gql`
       budget_category
       reward_category
       comment
-      created
       source
     }
   }
@@ -256,3 +255,16 @@ export const DELETE_PAYMENT_METHOD = gql`
     deletePaymentMethod(id: $id)
   }
 `;
+
+export const GET_PAYMENT_METHOD_NAMES = gql`
+  query GetPaymentMethodNames {
+    paymentMethods {
+      id
+      displayName
+    }
+  }
+`;
+
+export const usePaymentMethodNames = () => {
+  return useQuery(GET_PAYMENT_METHOD_NAMES);
+};
