@@ -18,10 +18,12 @@ import {useCreateExpenditures} from "../../api/graph";
 import dayjs from "dayjs";
 import {Autocomplete} from "@mui/lab";
 import {COMMON_REWARDS_CATEGORIES} from "../../utils/constants";
+import { usePaymentMethodNames } from "../../api/graph";
 
 export default function AddTransactionDialog({ open, onClose }) {
   const { budget } = useBudget();
-  const [transactions, setTransactions] = useState([{
+    const { data: paymentMethodsData } = usePaymentMethodNames();
+    const [transactions, setTransactions] = useState([{
     amount: '',
     date: new Date().toISOString().split('T')[0],
     name: '',
@@ -178,18 +180,40 @@ export default function AddTransactionDialog({ open, onClose }) {
             />
             <TextField
               name="name"
-              label="Name"
+              label="Description"
               value={transaction.name}
               onChange={(e) => handleChange(index, 'name', e.target.value)}
               sx={{ width: '15%' }}
             />
-            <TextField
-                name="method"
-                label="Method"
-                value={transaction.method}
-                onChange={(e) => handleChange(index, 'method', e.target.value)}
-                sx={{ width: '12%' }}
-            />
+              <FormControl sx={{ width: '12%' }}>
+                  <Autocomplete
+                      size="small"
+                      options={paymentMethodsData?.paymentMethods || []}
+                      value={transaction.method}
+                      onChange={(_, value) => handleChange(index, 'method', value?.displayName.toLowerCase())}
+                      getOptionLabel={(option) =>
+                          typeof option === 'string'
+                              ? option
+                              : option?.displayName || ''
+                      }
+                      renderInput={(params) => (
+                          <TextField
+                              {...params}
+                              label="Method"
+                              sx={{
+                                  '& .MuiInputBase-root': {
+                                      height: '40px',
+                                      padding: '0 9px'
+                                  }
+                              }}
+                          />
+                      )}
+                      isOptionEqualToValue={(option, value) =>
+                          option?.displayName.toLowerCase() === value ||
+                          option?.displayName === value
+                      }
+                  />
+              </FormControl>
             <FormControl sx={{ width: '15%' }}>
               <InputLabel>Budget Category</InputLabel>
               <Select

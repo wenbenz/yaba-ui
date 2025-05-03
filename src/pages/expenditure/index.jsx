@@ -1,13 +1,10 @@
-// material-ui
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-// project import
 import MainCard from "components/MainCard";
 import RecentTransactionsTable from "./RecentTransactionsTable";
 
-// assets
 import {BudgetProvider} from "../budget/BudgetContext";
 import Button from "@mui/material/Button";
 import {PlusCircleFilled} from "@ant-design/icons";
@@ -47,7 +44,7 @@ export default function ExpenditureDashboard() {
                 </Grid>
               </Grid>
               <MainCard sx={{mt: 2}} content={false}>
-                <RecentTransactionsTable/>
+                <RecentTransactionsTable />
               </MainCard>
             </Grid>
           </Grid>

@@ -4,7 +4,6 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Box from "@mui/material/Box";
 
@@ -18,102 +17,59 @@ import Typography from "@mui/material/Typography";
 import {useQuery} from "@apollo/client";
 import {RECENT_EXPENDITURES} from "../../api/graph";
 import Divider from "@mui/material/Divider";
-
-const headCells = [
-  {
-    id: "date",
-    align: "left",
-    disablePadding: false,
-    label: "Date",
-  },
-  {
-    id: "name",
-    align: "left",
-    disablePadding: true,
-    label: "Name",
-  },
-  {
-    id: "amount",
-    align: "left",
-    disablePadding: false,
-    label: "Amount",
-  },
-  {
-    id: "method",
-    align: "left",
-    disablePadding: false,
-    label: "Method",
-  },
-  {
-    id: "budget_category",
-    align: "left",
-    disablePadding: false,
-    label: "Budget Category",
-  },
-  {
-    id: "reward_category",
-    align: "left",
-    disablePadding: false,
-    label: "Reward Category",
-  },
-  {
-    id: "comment",
-    align: "right",
-    disablePadding: false,
-    label: "Comment",
-  },
-];
-
-// ==============================|| ORDER TABLE - HEADER ||============================== //
-
-function RecentTransactionsTableHeader({ order, orderBy }) {
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.align}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            {headCell.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-// ==============================|| ORDER TABLE ||============================== //
+import {RecentTransactionsTableHeader} from "./TableHeaders";
 
 export default function RecentTransactionsTable() {
-  const order = "desc";
-  const orderBy = "date";
   const [offset, setOffset] = useState(0);
   const [expenditures, setExpenditures] = useState([]);
+  const [queryVars, setQueryVars] = useState({
+    count: 10,
+    offset: 0,
+    since: null,
+    until: null,
+    paymentMethod: null,
+    category: null,
+  });
+
+  const handleFilterChange = (filters) => {
+    setOffset(0);
+    setQueryVars((prev) => {
+      let newFilters = {
+        ...prev,
+        ...Object.fromEntries(
+            Object.entries(filters)
+                .filter(([_, value]) => value !== null)
+        ),
+        offset: 0,
+      }
+        return newFilters;
+    });
+  };
+
+  const handleLoadMore = () => {
+    const newOffset = offset + 10;
+    setOffset(newOffset);
+    setQueryVars((prev) => ({
+      ...prev,
+      offset: newOffset,
+    }));
+  };
+
   const { loading, error, data } = useQuery(RECENT_EXPENDITURES, {
-    variables: {
-      count: 10,
-      offset: offset,
-    },
+    variables: queryVars,
   });
 
   useMemo(() => {
     if (data) {
-      setExpenditures((prevExpenditures) => [
-        ...prevExpenditures,
-        ...data.expenditures,
-      ]);
+      if (offset === 0) {
+        setExpenditures(data.expenditures);
+      } else {
+        setExpenditures((prev) => [...prev, ...data.expenditures]);
+      }
     }
-  }, [data]);
-
-  const handleLoadMore = () => {
-    setOffset(offset + 10);
-  };
+  }, [data, offset]);
 
   if (loading) return <Loader />;
-
   if (error) return <p>Error : {error.message}</p>;
 
   return (
@@ -129,7 +85,7 @@ export default function RecentTransactionsTable() {
         }}
       >
         <Table aria-labelledby="tableTitle">
-          <RecentTransactionsTableHeader order={order} orderBy={orderBy} />
+          <RecentTransactionsTableHeader filters={queryVars} onFilterChange={handleFilterChange} />
           <TableBody>
             {expenditures.map(
                 ({
