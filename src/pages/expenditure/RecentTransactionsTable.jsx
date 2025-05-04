@@ -15,13 +15,14 @@ import Button from "@mui/material/Button";
 import {Stack} from "@mui/system";
 import Typography from "@mui/material/Typography";
 import {useQuery} from "@apollo/client";
-import {RECENT_EXPENDITURES} from "../../api/graph";
+import {RECENT_EXPENDITURES, usePaymentMethodNames} from "../../api/graph";
 import Divider from "@mui/material/Divider";
 import {RecentTransactionsTableHeader} from "./TableHeaders";
 
 export default function RecentTransactionsTable() {
   const [offset, setOffset] = useState(0);
   const [expenditures, setExpenditures] = useState([]);
+  const { data: paymentMethodsData } = usePaymentMethodNames();
   const [queryVars, setQueryVars] = useState({
     count: 10,
     offset: 0,
@@ -120,7 +121,7 @@ export default function RecentTransactionsTable() {
                           prefix="$"
                         />
                       </TableCell>
-                      <TableCell>{method}</TableCell>
+                      <TableCell>{paymentMethodsData?.paymentMethods?.find(m => m.id === method)?.displayName}</TableCell>
                       <TableCell>{budget_category}</TableCell>
                       <TableCell>{reward_category}</TableCell>
                       <TableCell align="right">{comment}</TableCell>
