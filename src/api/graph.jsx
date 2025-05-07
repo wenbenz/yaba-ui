@@ -250,6 +250,14 @@ export const CREATE_PAYMENT_METHOD = gql`
   }
 `;
 
+export const UPDATE_PAYMENT_METHOD = gql`
+  mutation UpdatePaymentMethod($id: ID!, $input: PaymentMethodInput!) {
+    updatePaymentMethod(id: $id, input: $input) {
+      id
+    }
+  }
+`;
+
 export const DELETE_PAYMENT_METHOD = gql`
   mutation DeletePaymentMethod($id: ID!) {
     deletePaymentMethod(id: $id)
