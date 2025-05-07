@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
 import MainCard from 'components/MainCard';
 import { useDeletePaymentMethod } from "../../api/graph";
 import { DeleteOutlined } from '@ant-design/icons';
+import EditOutlined from "@ant-design/icons/EditOutlined";
+
+import EditPaymentMethodDialog from "./EditPaymentMethodDialogue";
 
 const PaymentMethodRow = ({ method }) => {
     const [deletePaymentMethod] = useDeletePaymentMethod();
-
+    const [editOpen, setEditOpen] = useState(false);
     const handleDelete = async () => {
         try {
             await deletePaymentMethod({
@@ -27,6 +31,15 @@ const PaymentMethodRow = ({ method }) => {
                             {method.cancelByDate && ` · Cancel by ${new Date(method.cancelByDate).toLocaleDateString()}`}
                         </Typography>
                     </Stack>
+                    <Stack>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => setEditOpen(true)}
+                        startIcon={<EditOutlined />}
+                    >
+                        Edit
+                    </Button>
                     <Button
                         variant="outlined"
                         color="error"
@@ -35,6 +48,7 @@ const PaymentMethodRow = ({ method }) => {
                     >
                         Delete
                     </Button>
+                    </Stack>
                 </Stack>
 
                 {method.rewards && (
@@ -62,6 +76,11 @@ const PaymentMethodRow = ({ method }) => {
                     </Stack>
                 )}
             </Stack>
+            <EditPaymentMethodDialog
+                open={editOpen}
+                onClose={() => setEditOpen(false)}
+                method={method}
+            />
         </MainCard>
     );
 };

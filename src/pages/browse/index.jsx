@@ -17,7 +17,7 @@ import AddPaymentMethodDialog from "./AddPaymentMethodDialogue";
 import {useRewardCards} from "../../api/graph";
 import {Autocomplete} from "@mui/lab";
 
-const BrowseFilters = ({ filters, onFilterChange }) => {
+export const BrowseFilters = ({ filters, onFilterChange }) => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
