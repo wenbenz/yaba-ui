@@ -129,8 +129,9 @@ export default function EditPaymentMethodDialog({ open, onClose, method }) {
                                 filters={filters}
                                 onFilterChange={handleFilterChange}
                             />
-                            {loading && <p>Loading...</p> || error && <p>Error: {error.message}</p> ||
-                            data?.rewardCards?.map((card) => (
+                            {(loading && <p>Loading...</p>)
+                                || (error && <p>Error: {error.message}</p>)
+                                || data?.rewardCards?.map((card) => (
                                     <Box key={card.id} sx={{ padding: 2, border: '1px solid #ccc', marginTop: 2 }}>
                                         <Stack direction="row" justifyContent="space-between" alignItems="center">
                                             <h4>{card.issuer} {card.name}</h4>
