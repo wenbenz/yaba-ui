@@ -101,7 +101,7 @@ export function RecentTransactionsTableHeader({ filters, onFilterChange }) {
   const handleCategoryChange = (_, value) => {
     onFilterChange({
       ...filters,
-      category: value?.toLowerCase(),
+      category: value,
     });
   };
 
