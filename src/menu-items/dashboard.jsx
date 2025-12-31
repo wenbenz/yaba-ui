@@ -3,9 +3,9 @@ import {
   DashboardOutlined,
   DollarOutlined,
   PieChartOutlined,
-  WalletOutlined
+  WalletOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
-
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
 
 const dashboard = {
@@ -43,6 +43,14 @@ const dashboard = {
       type: 'item',
       url: '/payment-methods',
       icon: WalletOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'profile',
+      title: 'Profile',
+      type: 'item',
+      url: '/profile',
+      icon: ProfileOutlined,
       breadcrumbs: false
     }
   ],

@@ -9,6 +9,7 @@ const BudgetDashboard = Loadable(lazy(() => import("pages/budget/index")));
 const ExpenditureDashboard = Loadable(lazy(() => import("pages/expenditure/index")));
 const CardBrowser = Loadable(lazy(() => import("pages/browse/index")));
 const PaymentMethods = Loadable(lazy(() => import("pages/payment-methods/index")));
+const Profile = Loadable(lazy(() => import("pages/profile/index")));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -38,6 +39,10 @@ const MainRoutes = {
     {
       path: "payment-methods",
       element: <PaymentMethods />
+    },
+    {
+      path: "profile",
+      element: <Profile />
     }
   ],
 };
