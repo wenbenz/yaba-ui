@@ -1,28 +1,37 @@
 # yaba-ui
-UI for yaba server
 
-# Dashboard
-The home dashboard will display
-- Monthly spending summary based on categories
-- Over- or under-budget
-- Cash flow
-- Spending difference from last month
-- Top transactions
-- Upload new spending
+UI for the [yaba](https://github.com/wenbenz/yaba) personal finance server.
 
-# Budget
-The budget page will display
-- Breakdown of categories budgeted
-- Option to add income
-- Edit categries and amounts
+## Prerequisites
 
-# Expenses
-The expenses page will display
-- Spendings over the last month/year
-- Average monthly spending categories
-- Recent transactions
-- Upload new spending
+- Node.js
+- yaba backend running on `http://localhost:9222`
 
-# Credit Cards
-Credit cards page will display
-- Calculator to compute expected rewards based on either budget or average monthly expenses
+## Setup
+
+```bash
+npm install
+npm start   # dev server on http://localhost:3000
+```
+
+## Pages
+
+| Route | Description |
+|-------|-------------|
+| `/dashboard` | Budget vs spending charts, category breakdown, date range selector |
+| `/budget` | Create and edit budgets with income sources and expense categories |
+| `/expenditure` | Browse, filter, upload, and export transactions |
+| `/browse` | Search reward cards and add them as payment methods |
+| `/payment-methods` | Manage payment methods and their linked reward cards |
+| `/profile` | Update account email and password |
+
+## Commands
+
+```bash
+npm start          # Dev server (port 3000, proxies /graphql and /api to localhost:9222)
+npm run build      # Production build
+npm run package    # Build + create dist.tar.gz
+npm run lint       # ESLint
+npm run lint:fix   # ESLint auto-fix
+npm run prettier   # Format with Prettier
+```
