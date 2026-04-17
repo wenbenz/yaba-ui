@@ -4,14 +4,26 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { Fab } from "@mui/material";
 import { PlusOutlined } from "@ant-design/icons";
-import Button from "@mui/material/Button";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import Income from "./Income";
 import Expense from "./Expense";
 import {cloneDeep} from "lodash";
 
+function SaveStatusLabel({ saveStatus }) {
+    if (saveStatus === "saving") {
+        return <Typography>Saving…</Typography>;
+    }
+    if (saveStatus === "saved") {
+        return <Typography>Saved</Typography>;
+    }
+    if (saveStatus === "failed") {
+        return <Typography color="error">Save failed</Typography>;
+    }
+    return null;
+}
+
 export default function BudgetEditor() {
-    const { budget, setBudget, saveBudget } = useBudget();
+    const { budget, setBudget, saveStatus } = useBudget();
 
     let totalIncome = budget.incomes.reduce((a, b) => a + b.amount, 0);
     let totalExpenses = budget.expenses.reduce((a, b) => a + b.amount, 0);
@@ -118,9 +130,7 @@ export default function BudgetEditor() {
                 </Typography>
             </Stack>
 
-            <Button variant="contained" onClick={saveBudget}>
-                Save
-            </Button>
+            <SaveStatusLabel saveStatus={saveStatus} />
         </Stack>
     );
 }
