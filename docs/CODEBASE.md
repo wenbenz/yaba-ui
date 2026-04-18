@@ -54,7 +54,7 @@ graph TD
 
 **`src/api/graph.jsx`** — single source of truth for all GraphQL operations. Exports named hook wrappers (`useBudgets`, `usePaymentMethods`, etc.) and raw `gql` documents used across pages.
 
-**`src/pages/budget/BudgetContext.jsx`** — React context that holds the currently selected budget and exposes it to the Dashboard and Expenditure pages (both wrap their trees in `<BudgetProvider>`).
+**`src/pages/budget/BudgetContext.jsx`** — React context that holds the currently selected budget and exposes it to the Dashboard and Expenditure pages (both wrap their trees in `<BudgetProvider>`). Edits are auto-saved with a 1000 ms debounce; the context exposes a `saveStatus` field (`"idle"` | `"saving"` | `"saved"` | `"failed"`) so the UI can reflect save state without a manual save button.
 
 **`src/components/DateRangeProvider.jsx`** — context for the date range filter used on the Dashboard. Consumed via `useDateRange()`.
 

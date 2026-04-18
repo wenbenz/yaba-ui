@@ -30,6 +30,7 @@ npm start   # dev server on http://localhost:3000
 ```bash
 npm start          # Dev server (port 3000, proxies /graphql and /api to localhost:9222)
 npm run build      # Production build
+npm test           # Run Vitest test suite
 npm run package    # Build + create dist.tar.gz
 npm run lint       # ESLint
 npm run lint:fix   # ESLint auto-fix

@@ -8,7 +8,7 @@ export default function CreateBudget({ budget }) {
 
   useEffect(() => {
     createBudget(budget);
-  });
+  }, []);
 
   return (
     <Alert color="primary" icon={<ExclamationCircleFilled />}>

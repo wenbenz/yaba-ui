@@ -11,12 +11,11 @@ yaba-ui is a personal finance management dashboard (budgeting, expense tracking,
 ```bash
 npm start          # Dev server on port 3000
 npm run build      # Production build
+npm test           # Run Vitest test suite
 npm run lint       # ESLint check
 npm run lint:fix   # ESLint auto-fix
 npm run prettier   # Format with Prettier
 ```
-
-No test suite is configured.
 
 ## Architecture
 
