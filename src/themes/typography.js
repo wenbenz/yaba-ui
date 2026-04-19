@@ -9,28 +9,31 @@ export default function Typography(fontFamily) {
     fontWeightMedium: 500,
     fontWeightBold: 600,
     h1: {
-      fontWeight: 600,
-      fontSize: "2.375rem",
-      lineHeight: 1.21,
+      fontWeight: 500,
+      fontSize: "2rem",
+      lineHeight: 1.25,
+      letterSpacing: "-0.02em",
     },
     h2: {
-      fontWeight: 600,
-      fontSize: "1.875rem",
-      lineHeight: 1.27,
+      fontWeight: 500,
+      fontSize: "1.625rem",
+      lineHeight: 1.3,
+      letterSpacing: "-0.015em",
     },
     h3: {
-      fontWeight: 600,
-      fontSize: "1.5rem",
-      lineHeight: 1.33,
+      fontWeight: 500,
+      fontSize: "1.375rem",
+      lineHeight: 1.35,
+      letterSpacing: "-0.01em",
     },
     h4: {
-      fontWeight: 600,
-      fontSize: "1.25rem",
+      fontWeight: 500,
+      fontSize: "1.125rem",
       lineHeight: 1.4,
     },
     h5: {
-      fontWeight: 600,
-      fontSize: "1rem",
+      fontWeight: 500,
+      fontSize: "0.9375rem",
       lineHeight: 1.5,
     },
     h6: {
@@ -45,7 +48,7 @@ export default function Typography(fontFamily) {
     },
     body1: {
       fontSize: "0.875rem",
-      lineHeight: 1.57,
+      lineHeight: 1.6,
     },
     body2: {
       fontSize: "0.75rem",
@@ -53,7 +56,7 @@ export default function Typography(fontFamily) {
     },
     subtitle1: {
       fontSize: "0.875rem",
-      fontWeight: 600,
+      fontWeight: 500,
       lineHeight: 1.57,
     },
     subtitle2: {
