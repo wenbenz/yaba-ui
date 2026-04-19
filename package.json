@@ -37,7 +37,7 @@
     "@mui/x-date-pickers": "^7.27.3",
     "@svgr/webpack": "^8.1.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "apexcharts": "^3.49.0",
+    "apexcharts": "^5.0.0",
     "axios": "^1.7.4",
     "dayjs": "^1.11.13",
     "formik": "^2.4.5",
