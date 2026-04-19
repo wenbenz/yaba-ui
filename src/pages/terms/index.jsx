@@ -71,9 +71,9 @@ export default function TermsOfService() {
         <Divider sx={{ my: 3 }} />
 
         <Typography variant="body2" color="text.secondary">
-          Questions?{" "}
+          Questions? Read our{" "}
           <Link component={RouterLink} to="/privacy">
-            Read our Privacy Policy
+            Privacy Policy
           </Link>
           .
         </Typography>
