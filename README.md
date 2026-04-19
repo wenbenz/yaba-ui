@@ -10,8 +10,8 @@ UI for the [yaba](https://github.com/wenbenz/yaba) personal finance server.
 ## Setup
 
 ```bash
-npm install
-npm start   # dev server on http://localhost:3000
+yarn install
+yarn start   # dev server on http://localhost:3000
 ```
 
 ## Pages
@@ -28,11 +28,11 @@ npm start   # dev server on http://localhost:3000
 ## Commands
 
 ```bash
-npm start          # Dev server (port 3000, proxies /graphql and /api to localhost:9222)
-npm run build      # Production build
-npm test           # Run Vitest test suite
-npm run package    # Build + create dist.tar.gz
-npm run lint       # ESLint
-npm run lint:fix   # ESLint auto-fix
-npm run prettier   # Format with Prettier
+yarn start          # Dev server (port 3000, proxies /graphql and /api to localhost:9222)
+yarn build          # Production build
+yarn test           # Run Vitest test suite
+yarn package        # Build + create dist.tar.gz
+yarn lint           # ESLint
+yarn lint:fix       # ESLint auto-fix
+yarn prettier       # Format with Prettier
 ```
