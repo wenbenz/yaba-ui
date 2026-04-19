@@ -59,6 +59,15 @@ export default function TermsOfService() {
           after changes constitutes acceptance of the updated terms.
         </Typography>
 
+        <Typography variant="h5" gutterBottom>
+          5. Provided As-Is
+        </Typography>
+        <Typography variant="body1" paragraph>
+          Yaba is provided as-is, without warranty of any kind. Use it at your
+          own risk. You are responsible for your data, your server, and any
+          consequences of using the software.
+        </Typography>
+
         <Divider sx={{ my: 3 }} />
 
         <Typography variant="body2" color="text.secondary">
