@@ -4,7 +4,7 @@ import {useMemo, useState} from "react";
 import ReactApexChart from "react-apexcharts";
 import {AGGREGATE_EXPENDITURES, useBudgets} from "../../api/graph";
 import {useDateRange} from "../../components/DateRangeProvider";
-import {useQuery} from "@apollo/client";
+import {useQuery} from "@apollo/client/react";
 import {dateString} from "../../utils/dates";
 import {adjustBudgetForSpan, calculateSpan} from "../../utils/expense";
 

@@ -18,10 +18,10 @@ import { handlerDrawerOpen, useGetMenuMaster } from "api/menu";
 // apollo client
 import {
     ApolloClient,
-    ApolloProvider,
     createHttpLink, from,
     InMemoryCache,
 } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client/react";
 import axios from "axios";
 import {onError} from "@apollo/client/link/error";
 
