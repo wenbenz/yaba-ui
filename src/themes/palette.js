@@ -9,8 +9,21 @@ import ThemeOption from "./theme";
 
 // ==============================|| DEFAULT THEME - PALETTE ||============================== //
 
+const teal = [
+  "#e6f7f5",
+  "#ccefec",
+  "#99dfda",
+  "#5eada6",
+  "#2d9089",
+  "#0f766e",
+  "#0d5e57",
+  "#0a4a44",
+  "#083b37",
+  "#052921",
+];
+
 export default function Palette(mode, presetColor) {
-  const colors = presetPalettes;
+  const colors = { ...presetPalettes, teal };
 
   let greyPrimary = [
     "#ffffff",
