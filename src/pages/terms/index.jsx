@@ -30,8 +30,7 @@ export default function TermsOfService() {
         <Typography variant="body1" paragraph>
           Yaba is a self-hosted personal finance tool for tracking budgets,
           transactions, and payment methods. You run Yaba on your own
-          infrastructure — Anthropic has no access to your data or your
-          instance.
+          infrastructure — no one else has access to your data or your instance.
         </Typography>
 
         <Typography variant="h5" gutterBottom>
