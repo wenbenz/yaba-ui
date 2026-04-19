@@ -133,3 +133,6 @@ dist
 graphql.config.yml
 /dist.tar.gz
 .worktrees/
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.tickets/
