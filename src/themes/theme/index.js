@@ -1,7 +1,7 @@
 // ==============================|| PRESET THEME - THEME SELECTOR ||============================== //
 
 export default function Theme(colors) {
-  const { blue, red, gold, cyan, green, grey } = colors;
+  const { teal, red, gold, cyan, green, grey } = colors;
   const greyColors = {
     0: grey[0],
     50: grey[1],
@@ -25,16 +25,16 @@ export default function Theme(colors) {
 
   return {
     primary: {
-      lighter: blue[0],
-      100: blue[1],
-      200: blue[2],
-      light: blue[3],
-      400: blue[4],
-      main: blue[5],
-      dark: blue[6],
-      700: blue[7],
-      darker: blue[8],
-      900: blue[9],
+      lighter: teal[0],
+      100: teal[1],
+      200: teal[2],
+      light: teal[3],
+      400: teal[4],
+      main: teal[5],
+      dark: teal[6],
+      700: teal[7],
+      darker: teal[8],
+      900: teal[9],
       contrastText,
     },
     secondary: {
