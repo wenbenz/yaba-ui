@@ -7,12 +7,19 @@
   resolved "https://registry.npmjs.org/@adobe/css-tools/-/css-tools-4.4.4.tgz"
   integrity sha512-Elp+iwUx5rN5+Y8xLt5/GRoG20WGoDCQ/1Fb+1LiGtvwbDavuSk0jhD/eZdckHAuzcDzccnkv+rEjyWfRx18gg==
 
-"@ant-design/colors@^7.0.0", "@ant-design/colors@^7.0.2":
+"@ant-design/colors@^7.0.0":
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/@ant-design/colors/-/colors-7.2.1.tgz#3bbc1c6c18550020d1622a0067ff03492318df98"
   integrity sha512-lCHDcEzieu4GA3n8ELeZ5VQ8pKQAWcGGLRTQ50aQM2iqPpq2evTxER84jfdPvsPAtEcZ7m44NI45edFMo8oOYQ==
   dependencies:
     "@ant-design/fast-color" "^2.0.6"
+
+"@ant-design/colors@^8.0.0":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@ant-design/colors/-/colors-8.0.1.tgz#6b5444f2ab4061c7b1aa4bc776adb023b0253161"
+  integrity sha512-foPVl0+SWIslGUtD/xBr1p9U4AKzPhNYEseXYRRo5QSzGACYZrQbe11AYJbYfAWnWSpGBx6JjBmSeugUsD9vqQ==
+  dependencies:
+    "@ant-design/fast-color" "^3.0.0"
 
 "@ant-design/fast-color@^2.0.6":
   version "2.0.6"
@@ -20,6 +27,11 @@
   integrity sha512-y2217gk4NqL35giHl72o6Zzqji9O7vHh9YmhUVkPtAOpoTCH4uWxo/pr4VE8t0+ChEPs0qo4eJRC5Q1eXWo3vA==
   dependencies:
     "@babel/runtime" "^7.24.7"
+
+"@ant-design/fast-color@^3.0.0":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@ant-design/fast-color/-/fast-color-3.0.1.tgz#fee56b95427c0b55b216c93d9a7f3473f31615b5"
+  integrity sha512-esKJegpW4nckh0o6kV3Tkb7NPIZYbPnnFxmQDUmL08ukXZAvV85TZBr70eGuke/CIArLaP6aw8lt9KILjnWuOw==
 
 "@ant-design/icons-svg@^4.4.0":
   version "4.4.2"
