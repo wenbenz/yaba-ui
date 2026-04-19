@@ -1817,24 +1817,24 @@
   integrity sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==
 
 "@fontsource/inter@^5.0.17":
-  version "5.0.18"
-  resolved "https://registry.npmjs.org/@fontsource/inter/-/inter-5.0.18.tgz"
-  integrity sha512-YCsoYPTcs713sI7tLtxaPrIhXAXvEetGg5Ry02ivA8qUOb3fQHojbK/X9HLD5OOKvFUNR2Ynkwb1kR1hVKQHpw==
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-5.2.8.tgz#10c95d877d972c7de5bd4592309d42fb6a5e1a5b"
+  integrity sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==
 
 "@fontsource/poppins@^5.0.12":
-  version "5.0.14"
-  resolved "https://registry.npmjs.org/@fontsource/poppins/-/poppins-5.0.14.tgz"
-  integrity sha512-nmM1zpPo3Uh4JcGAVSQuWaZNYh2FbbwWhZ5t6hRaynmJaNTBW85d3nEh9zMmzI0HX7X5xqQVdRHeDatKpOGsnA==
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-5.2.7.tgz#bad145a8a625340873faff1f95b254f032e0d588"
+  integrity sha512-6uQyPmseo4FgI97WIhA4yWRlNaoLk4vSDK/PyRwdqqZb5zAEuc+Kunt8JTMcsHYUEGYBtN15SNkMajMdqUSUmg==
 
 "@fontsource/public-sans@^5.0.17":
-  version "5.0.18"
-  resolved "https://registry.npmjs.org/@fontsource/public-sans/-/public-sans-5.0.18.tgz"
-  integrity sha512-dYx/ULF7pRkjBO1ncCwIRXWWmI2oCsMsWxheHgjtNANm4+prtfq3gdGy3KOsuNcAhEKn6BQeIyg0hFqeoTpAaQ==
+  version "5.2.7"
+  resolved "https://registry.yarnpkg.com/@fontsource/public-sans/-/public-sans-5.2.7.tgz#57b5532a8eebe62b8ea9c583cca60a558fcca2f2"
+  integrity sha512-pVttDr3HvhVIt2x6sZJfZKksNEpq23C1JCHTQwT9KWJdmFRdNeRM8gQftq8uP72sPW+p3Ku9x8HPk2E392DFvg==
 
 "@fontsource/roboto@^5.0.12":
-  version "5.0.13"
-  resolved "https://registry.npmjs.org/@fontsource/roboto/-/roboto-5.0.13.tgz"
-  integrity sha512-j61DHjsdUCKMXSdNLTOxcG701FWnF0jcqNNQi2iPCDxU8seN/sMxeh62dC++UiagCWq9ghTypX+Pcy7kX+QOeQ==
+  version "5.2.10"
+  resolved "https://registry.yarnpkg.com/@fontsource/roboto/-/roboto-5.2.10.tgz#b985d34de475913b41d0fb57e2dcd0b16ab9ecb5"
+  integrity sha512-8HlA5FtSfz//oFSr2eL7GFXAiE7eIkcGOtx7tjsLKq+as702x9+GU7K95iDeWFapHC4M2hv9RrpXKRTGGBI8Zg==
 
 "@graphql-typed-document-node/core@^3.1.1":
   version "3.2.0"
