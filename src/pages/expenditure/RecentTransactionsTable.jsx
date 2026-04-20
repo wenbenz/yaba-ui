@@ -14,7 +14,7 @@ import {useMemo, useState} from "react";
 import Button from "@mui/material/Button";
 import {Stack} from "@mui/system";
 import Typography from "@mui/material/Typography";
-import {useQuery} from "@apollo/client";
+import {useQuery} from "@apollo/client/react";
 import {RECENT_EXPENDITURES, usePaymentMethodNames} from "../../api/graph";
 import Divider from "@mui/material/Divider";
 import {RecentTransactionsTableHeader} from "./TableHeaders";

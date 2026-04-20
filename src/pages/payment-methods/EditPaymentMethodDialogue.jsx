@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import {UPDATE_PAYMENT_METHOD, GET_PAYMENT_METHODS, useRewardCards} from "../../api/graph";
 import Typography from "@mui/material/Typography";
 import SearchOutlined from "@ant-design/icons/SearchOutlined";
-import {useMutation} from "@apollo/client";
+import {useMutation} from "@apollo/client/react";
 
 export default function EditPaymentMethodDialog({ open, onClose, method }) {
     const NULL_UUID = "00000000-0000-0000-0000-000000000000";

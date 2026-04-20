@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client/react";
 import { Stack } from "@mui/system";
 
 const MAX_FILE_SIZE_MB = 1;
