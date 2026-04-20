@@ -1,27 +1,21 @@
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
-    paths: # make sure this action only runs when specific file extensions have been added/modified
+    paths:
       - '**.js'
       - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
 
 jobs:
-  test_job:
+  eslint:
     runs-on: ubuntu-latest
-    name: A job to test eslint-changeset action
+    name: ESLint
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-          ref: ${{ github.head_ref }}
-      - run: |
-          git fetch --no-tags --depth=1 origin main
-          git checkout main 
-          git checkout ${{ github.head_ref }}
-      - name: Eslint Changeset Step
-        uses: esrimo/gh-action-eslint-changeset@v1
-        id: eslint-changeset
-        with:
-          main-branch: 'main'
-          file-extension: 'js'
+          node-version: '20'
+          cache: 'yarn'
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
