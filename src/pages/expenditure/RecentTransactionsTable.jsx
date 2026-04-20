@@ -12,7 +12,7 @@ import { NumericFormat } from "react-number-format";
 import Loader from "../../components/Loader";
 import {useMemo, useState} from "react";
 import Button from "@mui/material/Button";
-import {Stack} from "@mui/system";
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import {useQuery} from "@apollo/client/react";
 import {RECENT_EXPENDITURES, usePaymentMethodNames} from "../../api/graph";

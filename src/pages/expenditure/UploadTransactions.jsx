@@ -17,7 +17,7 @@ import {useBudget} from '../budget/BudgetContext';
 import {UploadOutlined} from '@ant-design/icons';
 import {useCreateExpenditures} from "../../api/graph";
 import dayjs from "dayjs";
-import {Autocomplete} from "@mui/lab";
+import {Autocomplete} from "@mui/material";
 import {COMMON_REWARDS_CATEGORIES} from "../../utils/constants";
 import {usePaymentMethodNames} from "../../api/graph";
 import {PaymentMethodDialog} from "./PaymentMethodDialogue";

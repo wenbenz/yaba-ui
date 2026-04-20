@@ -3,7 +3,7 @@ import {gql} from '@apollo/client';
 import {useMutation} from '@apollo/client/react';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, TextField,} from '@mui/material';
 import {DeleteOutlined} from '@ant-design/icons';
-import {Autocomplete} from "@mui/lab";
+import {Autocomplete} from "@mui/material";
 import {COMMON_ISSUERS, COMMON_REGIONS, COMMON_REWARD_TYPES, COMMON_REWARDS_CATEGORIES} from "../../utils/constants";
 import Typography from "@mui/material/Typography";
 

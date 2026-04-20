@@ -15,7 +15,7 @@ import {COMMON_ISSUERS, COMMON_REGIONS} from '../../utils/constants';
 import {PlusCircleFilled} from '@ant-design/icons';
 import AddPaymentMethodDialog from "./AddPaymentMethodDialogue";
 import {useRewardCards} from "../../api/graph";
-import {Autocomplete} from "@mui/lab";
+import {Autocomplete} from "@mui/material";
 
 export const BrowseFilters = ({ filters, onFilterChange }) => {
     return (

@@ -1,4 +1,4 @@
-import { Alert } from "@mui/lab";
+import { Alert } from "@mui/material";
 import {ExclamationCircleFilled} from "@ant-design/icons";
 import { useCreateBudget } from "../../api/graph";
 import { useEffect } from "react";
