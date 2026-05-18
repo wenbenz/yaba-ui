@@ -1,21 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function Index() {
+const ME_QUERY = `
+  query Me {
+    me {
+      id
+      username
+      email
+      emailRemindersEnabled
+    }
+  }
+`;
+
+const UPDATE_PROFILE_MUTATION = `
+  mutation UpdateProfile($input: UpdateProfileInput!) {
+    updateProfile(input: $input) {
+      id
+      username
+      email
+      emailRemindersEnabled
+    }
+  }
+`;
+
+async function gql(query, variables) {
+    const res = await fetch('/graphql', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, variables }),
+    });
+    return res.json();
+}
+
+export default function ProfilePage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirm, setConfirm] = useState('');
+    const [emailRemindersEnabled, setEmailRemindersEnabled] = useState(false);
     const [status, setStatus] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const mutation = `
-    mutation UpdateProfile($input: UpdateProfileInput!) {
-      updateProfile(input: $input) {
-        id
-        username
-        email
-      }
-    }
-  `;
+    useEffect(() => {
+        gql(ME_QUERY).then((json) => {
+            if (json.data?.me) {
+                setEmail(json.data.me.email ?? '');
+                setEmailRemindersEnabled(json.data.me.emailRemindersEnabled);
+            }
+        });
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,32 +58,21 @@ export default function Index() {
             return;
         }
 
-        const input = {};
+        const input = { emailRemindersEnabled };
         if (email) input.email = email;
         if (password) input.password = password;
 
-        if (!input.email && !input.password) {
-            setStatus({ type: 'error', message: 'Provide email and/or password to update' });
-            return;
-        }
-
         setLoading(true);
         try {
-            const res = await fetch('/graphql', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ query: mutation, variables: { input } }),
-            });
-            const json = await res.json();
-            if (json.errors && json.errors.length) {
+            const json = await gql(UPDATE_PROFILE_MUTATION, { input });
+            if (json.errors?.length) {
                 setStatus({ type: 'error', message: json.errors[0].message || 'Update failed' });
             } else {
                 setStatus({ type: 'success', message: 'Profile updated successfully' });
                 setPassword('');
                 setConfirm('');
             }
-        } catch (err) {
+        } catch {
             setStatus({ type: 'error', message: 'Network error' });
         } finally {
             setLoading(false);
@@ -67,10 +88,21 @@ export default function Index() {
                     <input
                         type="email"
                         value={email}
-                        placeholder="new email (leave blank to keep current)"
+                        placeholder="email address"
                         onChange={(e) => setEmail(e.target.value)}
                         style={{ width: '100%', padding: 8 }}
                     />
+                </div>
+
+                <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                        <input
+                            type="checkbox"
+                            checked={emailRemindersEnabled}
+                            onChange={(e) => setEmailRemindersEnabled(e.target.checked)}
+                        />
+                        Send email reminders before credit card renewal dates
+                    </label>
                 </div>
 
                 <div style={{ marginBottom: 12 }}>
