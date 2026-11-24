@@ -2,6 +2,8 @@
 
 UI for the [yaba](https://github.com/wenbenz/yaba) personal finance server.
 
+> **Note:** This repo is being merged back into [yaba](https://github.com/wenbenz/yaba) as part of a planned cleanup and UI redesign. See the yaba README "Roadmap".
+
 ## Prerequisites
 
 - Node.js

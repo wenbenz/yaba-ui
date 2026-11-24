@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 yaba-ui is a personal finance management dashboard (budgeting, expense tracking, payment methods, credit card rewards). It connects to a yaba backend server at `http://localhost:9222`.
 
+## Direction
+
+This repo will be merged into `wenbenz/yaba` and the UI redesigned around shared components and a single palette (see the yaba README "Roadmap"). Use theme tokens from `src/themes/` instead of hard-coded colours, don't add new `fetch`/axios/Apollo patterns (the API is moving from GraphQL to Connect RPC/protobuf), and avoid large investments in the current template code.
+
 ## Commands
 
 ```bash
